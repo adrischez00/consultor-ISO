@@ -3,18 +3,36 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
 .venv/
 venv/
+env/
+*.egg-info/
 
 # Backend local env
 backend/.env
 backend/.env.local
 frontend/.env
 .env
+.env.local
 
 # Node / frontend
 frontend/node_modules/
 frontend/dist/
+frontend/.vite/
 
 # Logs
 *.log
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
