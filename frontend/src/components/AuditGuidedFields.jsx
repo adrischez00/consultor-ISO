@@ -56,7 +56,7 @@ const P09_MASTER_TEMPLATE_ROWS = [
     actions: "Análisis de mercado, revisión de posicionamiento y mejora continua.",
   },
   {
-    stakeholder: "Cambio climatico",
+    stakeholder: "Cambio climático",
     needs: "Adaptación, eficiencia y control del impacto ambiental.",
     expectations: "Mejora de imagen sostenible, reducción de costes y atracción de clientes sensibilizados.",
     requirements: "Consideración de impactos ambientales y requisitos aplicables.",
@@ -88,7 +88,7 @@ const P09_MASTER_TEMPLATE_ROWS = [
     expectations: "Prevención, comunicación rápida y cumplimiento.",
     requirements: "Gestión de accidentes y obligaciones preventivas.",
     risks: "Accidentes, incidencias laborales y deficiencias preventivas.",
-    opportunities: "Mejora preventiva y reduccion de siniestralidad.",
+    opportunities: "Mejora preventiva y reducción de siniestralidad.",
     actions: "Protocolos, seguimiento de accidentes, coordinación documental y acciones preventivas.",
   },
   {
