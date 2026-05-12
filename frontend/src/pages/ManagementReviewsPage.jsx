@@ -469,7 +469,7 @@ function ManagementReviewsPage() {
                 type="button"
                 className="btn-secondary"
                 onClick={startEditFromDetail}
-                disabled={!selectedDetail.review || saving}
+                disabled={!selectedDetail?.review || saving}
               >
                 Editar
               </button>
@@ -477,7 +477,7 @@ function ManagementReviewsPage() {
           >
             {loadingDetail ? (
               <p className="status">Cargando detalle...</p>
-            ) : !selectedDetail.review ? (
+            ) : !selectedDetail?.review ? (
               <p className="empty-state">Selecciona una revisión para ver su detalle.</p>
             ) : (
               <div className="stack-list">
