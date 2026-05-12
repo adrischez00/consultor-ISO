@@ -687,11 +687,11 @@ export function getSectionFieldDefinition(sectionCode) {
 }
 
 export function getSectionFieldGroups(sectionCode) {
-  return getSectionFieldDefinition(sectionCode).groups || [];
+  return getSectionFieldDefinition(sectionCode)?.groups || [];
 }
 
 export function getSectionFlatFields(sectionCode) {
-  return getSectionFieldDefinition(sectionCode).flat_fields || [];
+  return getSectionFieldDefinition(sectionCode)?.flat_fields || [];
 }
 
 
