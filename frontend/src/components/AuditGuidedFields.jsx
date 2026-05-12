@@ -1637,11 +1637,16 @@ function applyP09AutofillFields(onFieldChange, { code, revisionLabel, dateLabel 
   onFieldChange("interested_parties_date", dateLabel || "");
 }
 
-function applyContextAutofillFields(onFieldChange, { code, revisionLabel, dateLabel }) {
+function applyContextAutofillFields(
+  onFieldChange,
+  { code, revisionLabel, dateLabel, externalIssuesSummary = "", internalIssuesSummary = "" }
+) {
   if (typeof onFieldChange !== "function") return;
   onFieldChange("context_document_code", code || "P09");
   onFieldChange("context_document_revision", revisionLabel || "");
   onFieldChange("context_document_date", dateLabel || "");
+  onFieldChange("external_issues_summary", externalIssuesSummary || "");
+  onFieldChange("internal_issues_summary", internalIssuesSummary || "");
 }
 
 function renderBooleanField(field, value, onChange, disabled) {
@@ -2683,6 +2688,43 @@ function AuditGuidedFields({
     [performanceComputedRows]
   );
 
+  function syncAutofillField(fieldCode, value) {
+    if (typeof onFieldChange !== "function") return;
+    const nextValue = value == null ? "" : String(value);
+    const currentValue = valuesByFieldCode?.[fieldCode];
+    if (String(currentValue ?? "") === nextValue) return;
+    onFieldChange(fieldCode, nextValue);
+  }
+
+  useEffect(() => {
+    if (!hasP09Panel || !p09HasPersistedDocument) return;
+    syncAutofillField("interested_parties_document_code", "P09");
+    syncAutofillField("interested_parties_revision", p09RevisionLabel || "");
+    syncAutofillField("interested_parties_date", p09DocumentDate || "");
+  }, [
+    hasP09Panel,
+    p09HasPersistedDocument,
+    p09RevisionLabel,
+    p09DocumentDate,
+    valuesByFieldCode,
+  ]);
+
+  useEffect(() => {
+    if (!hasContextPanel || !contextHasPersistedDocument) return;
+    syncAutofillField("context_document_code", "P09");
+    syncAutofillField("context_document_revision", contextRevisionLabel || "");
+    syncAutofillField("context_document_date", contextDocumentDate || "");
+    syncAutofillField("external_issues_summary", contextAutoSummary.externalItems.join("\n"));
+    syncAutofillField("internal_issues_summary", contextAutoSummary.internalItems.join("\n"));
+  }, [
+    hasContextPanel,
+    contextHasPersistedDocument,
+    contextRevisionLabel,
+    contextDocumentDate,
+    contextAutoSummary,
+    valuesByFieldCode,
+  ]);
+
   function updatePerformanceModel(nextModel) {
     const normalizedModel = normalizePerformanceIndicatorsModel(nextModel);
     onFieldChange(PERFORMANCE_INDICATORS_FIELD_CODE, normalizedModel);
@@ -2980,6 +3022,9 @@ function AuditGuidedFields({
       const revisionLabel =
         String(saved.revision_label || "").trim() || formatP09Revision(safeRevisionNumber);
       const dateLabel = normalizeP09DateLabel(saved.document_date);
+      const nextContextSummary = buildContextAutoSummary(mappedRows);
+      const externalIssuesSummary = nextContextSummary.externalItems.join("\n");
+      const internalIssuesSummary = nextContextSummary.internalItems.join("\n");
 
       setContextSavedRows(mappedRows);
       setContextCompleted(String(saved.status || "").toLowerCase() === "completed");
@@ -2996,6 +3041,8 @@ function AuditGuidedFields({
         code: String(saved.code || "P09"),
         revisionLabel,
         dateLabel,
+        externalIssuesSummary,
+        internalIssuesSummary,
       });
     } catch (err) {
       setContextValidationError(
@@ -3322,6 +3369,9 @@ function AuditGuidedFields({
           String(documentData.revision_label || "").trim() || formatP09Revision(safeRevisionNumber);
         const dateLabel = normalizeP09DateLabel(documentData.document_date);
         const normalizedStatus = String(documentData.status || "").toLowerCase();
+        const nextContextSummary = buildContextAutoSummary(mappedRows);
+        const externalIssuesSummary = nextContextSummary.externalItems.join("\n");
+        const internalIssuesSummary = nextContextSummary.internalItems.join("\n");
 
         setContextSavedRows(mappedRows);
         setContextCompleted(normalizedStatus === "completed");
@@ -3336,6 +3386,8 @@ function AuditGuidedFields({
           code: String(documentData.code || "P09"),
           revisionLabel,
           dateLabel,
+          externalIssuesSummary,
+          internalIssuesSummary,
         });
       })
       .catch((err) => {
