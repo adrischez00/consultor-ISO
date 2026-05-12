@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose *)",
+      "Bash(docker ps *)",
+      "PowerShell($env:PGPASSWORD=\"\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" --list 2>&1 | head -20)",
+      "PowerShell(& \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" --list 2>&1)",
+      "PowerShell($env:PGPASSWORD = \"KyhM33gtw9dJC7oK\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" -h \"aws-1-eu-west-1.pooler.supabase.com\" -p 5432 -U \"postgres.xfwricvpvwqolvoaofef\" -d postgres --no-password -c \"SELECT enum_range\\(NULL::audit_section_status\\);\" 2>&1)",
+      "PowerShell($env:PGPASSWORD = \"KyhM33gtw9dJC7oK\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" -h \"aws-1-eu-west-1.pooler.supabase.com\" -p 5432 -U \"postgres.xfwricvpvwqolvoaofef\" -d postgres --no-password -c \"ALTER TYPE audit_section_status ADD VALUE IF NOT EXISTS 'completed'; ALTER TYPE audit_section_status ADD VALUE IF NOT EXISTS 'in_progress';\" 2>&1)",
+      "PowerShell($env:PGPASSWORD = \"KyhM33gtw9dJC7oK\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" -h \"aws-1-eu-west-1.pooler.supabase.com\" -p 5432 -U \"postgres.xfwricvpvwqolvoaofef\" -d postgres --no-password -c \"SELECT id, status FROM audit_report_sections WHERE section_code = '4' LIMIT 5;\" 2>&1)"
+    ]
+  }
+}

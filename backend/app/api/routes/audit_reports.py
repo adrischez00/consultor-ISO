@@ -1875,7 +1875,7 @@ def patch_audit_report_section(
         ) from exc
     except SQLAlchemyError as exc:
         logger.exception("Database error while updating section")
-        raise HTTPException(status_code=500, detail=f"No se pudo actualizar la sección [{type(exc).__name__}: {exc}]") from exc
+        raise HTTPException(status_code=500, detail="No se pudo actualizar la sección.") from exc
 
 
 def _validate_items_payload(items: list[AuditReportItemInput]) -> None:
