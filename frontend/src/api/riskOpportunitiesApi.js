@@ -10,7 +10,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `${raw}` : "";
+  return raw ? `?${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
@@ -137,7 +137,7 @@ export async function createRiskOpportunity(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear registro.");
   }
-return { ...data, id: ensureUuid(data.id, "id") };
+  return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function patchRiskOpportunity(itemId, payload) {
@@ -151,7 +151,7 @@ export async function patchRiskOpportunity(itemId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar registro.");
   }
-return { ...data, id: ensureUuid(data.id, "id") };
+  return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function deleteRiskOpportunity(itemId) {

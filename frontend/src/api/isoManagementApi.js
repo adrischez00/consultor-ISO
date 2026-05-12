@@ -27,7 +27,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `${raw}` : "";
+  return raw ? `?${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
@@ -101,7 +101,7 @@ function normalizeContextPayload(payload) {
   if (!payload || typeof payload !== "object") {
     throw new Error("Payload de contexto inválido.");
   }
-const reviewDate = normalizeDate(payload.review_date, "review_date", { required: true });
+  const reviewDate = normalizeDate(payload.review_date, "review_date", { required: true });
   const nextReviewDate = normalizeDate(payload.next_review_date, "next_review_date");
   if (reviewDate && nextReviewDate && nextReviewDate < reviewDate) {
     throw new Error("next_review_date no puede ser menor que review_date.");

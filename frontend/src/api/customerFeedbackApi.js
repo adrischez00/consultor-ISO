@@ -12,7 +12,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `${raw}` : "";
+  return raw ? `?${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
