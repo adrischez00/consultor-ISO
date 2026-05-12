@@ -227,7 +227,7 @@ export async function createSupplier(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear proveedor.");
   }
-return { ...data, id : ensureUuid(data.id, "id") };
+return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function patchSupplier(supplierId, payload) {
@@ -241,7 +241,7 @@ export async function patchSupplier(supplierId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar proveedor.");
   }
-return { ...data, id : ensureUuid(data.id, "id") };
+return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function deleteSupplier(supplierId) {

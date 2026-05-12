@@ -1,4 +1,4 @@
-import { clearAuthSession, getAccessToken } from "./authStorage";
+﻿import { clearAuthSession, getAccessToken } from "./authStorage";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 const REQUEST_TIMEOUT_MS = 20000;
@@ -31,7 +31,7 @@ export async function requestJson(
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const headers = body ? { "Content-Type" : "application/json" } : {};
+    const headers = body ? { "Content-Type": "application/json" } : {};
     const token = getAccessToken();
     if (token) {
       headers.Authorization = `Bearer ${token}`;
@@ -83,7 +83,7 @@ export async function requestBlob(
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const headers = body ? { "Content-Type" : "application/json" } : {};
+    const headers = body ? { "Content-Type": "application/json" } : {};
     const token = getAccessToken();
     if (token) {
       headers.Authorization = `Bearer ${token}`;

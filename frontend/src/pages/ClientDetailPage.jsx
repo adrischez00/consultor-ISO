@@ -74,7 +74,7 @@ function ClientDetailPage() {
         description="Contexto de empresa e histórico de auditorías P03 y diagnósticos legacy."
         actions={
           <div className="inline-actions">
-            <Link className="btn-primary link-btn" to={`/auditorias/nuevaclient_id=${clientId || ""}`}>
+            <Link className="btn-primary link-btn" to={`/auditorias/nueva?client_id=${clientId || ""}`}>
               Nueva auditoría
             </Link>
             <Link className="btn-secondary link-btn" to="/clientes">

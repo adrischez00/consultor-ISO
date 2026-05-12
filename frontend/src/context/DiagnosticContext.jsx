@@ -13,7 +13,7 @@ function getInitialDiagnosticId() {
   }
 
   const storedValue =
-    window.localStorage.getItem(ACTIVE_DIAGNOSTIC_ID_STORAGE_KEY) 
+    window.localStorage.getItem(ACTIVE_DIAGNOSTIC_ID_STORAGE_KEY) ??
     window.localStorage.getItem(DIAGNOSTIC_ID_STORAGE_KEY);
   return normalizeUuidOrNull(storedValue);
 }

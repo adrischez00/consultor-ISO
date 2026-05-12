@@ -152,7 +152,7 @@ function LoginPage() {
         </form>
 
         <p className="auth-footnote">
-          ¿No tienes cuenta <Link to="/register">Crear consultoría</Link>
+          ¿No tienes cuenta? <Link to="/register">Crear consultoría</Link>
         </p>
       </article>
     </section>

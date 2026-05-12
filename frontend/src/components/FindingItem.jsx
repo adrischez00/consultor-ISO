@@ -12,7 +12,7 @@ function FindingItem({ finding }) {
       </div>
       <p className="finding-meta">Cláusula {finding.clause}</p>
       {finding.description ? <p>{finding.description}</p> : null}
-{finding.recommendation ? <p>Recomendación : {finding.recommendation}</p> : null}
+      {finding.recommendation ? <p>Recomendación: {finding.recommendation}</p> : null}
     </article>
   );
 }

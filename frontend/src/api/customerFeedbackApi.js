@@ -135,7 +135,7 @@ export async function createCustomerFeedback(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear feedback.");
   }
-return { ...data, id : ensureUuid(data.id, "id") };
+return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function patchCustomerFeedback(feedbackId, payload) {
@@ -149,7 +149,7 @@ export async function patchCustomerFeedback(feedbackId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar feedback.");
   }
-return { ...data, id : ensureUuid(data.id, "id") };
+return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function deleteCustomerFeedback(feedbackId) {
