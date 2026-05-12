@@ -81,7 +81,7 @@ function LoginPage() {
     setError("");
     try {
       await login({ email, password }, { persistent: rememberSession });
-      const redirectPath = location.state.from || "/dashboard";
+      const redirectPath = location.state?.from || "/dashboard";
       navigate(redirectPath, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "No se pudo iniciar sesión.");

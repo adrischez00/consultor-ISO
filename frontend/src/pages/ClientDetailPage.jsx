@@ -63,14 +63,14 @@ function ClientDetailPage() {
     };
   }, [clientId]);
 
-  const client = clientDetail.client;
-  const diagnostics = Array.isArray(clientDetail.diagnostics) ? clientDetail.diagnostics : [];
+  const client = clientDetail?.client;
+  const diagnostics = Array.isArray(clientDetail?.diagnostics) ? clientDetail.diagnostics : [];
 
   return (
     <section className="page">
       <PageHeader
         eyebrow="Cliente"
-        title={client.name || "Detalle de cliente"}
+        title={client?.name || "Detalle de cliente"}
         description="Contexto de empresa e histórico de auditorías P03 y diagnósticos legacy."
         actions={
           <div className="inline-actions">

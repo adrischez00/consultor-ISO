@@ -66,7 +66,7 @@ function AuditCreatePage() {
         const fromQuery = normalizeUuidOrNull(searchParams.get("client_id"));
         if (fromQuery && safeClients.some((item) => item.id === fromQuery)) {
           setClientId(fromQuery);
-        } else if (safeClients[0].id) {
+        } else if (safeClients[0]?.id) {
           setClientId(safeClients[0].id);
         }
       } catch (err) {
@@ -113,7 +113,7 @@ function AuditCreatePage() {
         client_id: clientId,
         report_year: yearValue,
         template_code: "P03",
-        entity_name: selectedClient.name || null,
+        entity_name: selectedClient?.name || null,
         auditor_organization: planning.auditor_organization,
         audited_area: planning.audited_area,
         audit_date: planning.audit_date,

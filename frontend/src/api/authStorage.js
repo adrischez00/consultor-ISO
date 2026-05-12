@@ -59,7 +59,7 @@ export function loadAuthSession(options = {}) {
   if (fromLocal) {
     return withMeta ? { session : fromLocal, persistent: true } : fromLocal;
   }
-return withMeta ? { session : null, persistent: true } : null;
+  return withMeta ? { session: null, persistent: true } : null;
 }
 
 export function saveAuthSession(session, options = {}) {
@@ -95,5 +95,5 @@ export function clearAuthSession() {
 }
 
 export function getAccessToken() {
-  return loadAuthSession().access_token ?? null;
+  return loadAuthSession()?.access_token ?? null;
 }

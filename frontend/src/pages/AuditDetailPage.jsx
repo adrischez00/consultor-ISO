@@ -465,7 +465,7 @@ function AuditDetailPage() {
     setHistoryRecommendations(Array.isArray(history) ? history : []);
     setCompliance(nextCompliance && typeof nextCompliance === "object" ? nextCompliance : null);
 
-    const firstSection = nextSections[0].section_code;
+    const firstSection = nextSections[0]?.section_code;
     setActiveTabKey((current) => {
       if (current === RESULTS_TAB_KEY) return RESULTS_TAB_KEY;
       if (current && firstSection && sectionDrafts[current]) return current;
@@ -603,7 +603,7 @@ function AuditDetailPage() {
   }, [headerForm, interviewees, recommendations, sectionsWithDraftStatus]);
 
   const complianceBlocks = useMemo(
-    () => (Array.isArray(compliance.blocks) ? compliance.blocks : []),
+    () => (Array.isArray(compliance?.blocks) ? compliance.blocks : []),
     [compliance]
   );
 
@@ -652,7 +652,7 @@ function AuditDetailPage() {
   }, [recommendations]);
 
   const exportState = useMemo(() => {
-    const normalizedStatus = String(report.status || "draft")
+    const normalizedStatus = String(report?.status || "draft")
       .trim()
       .toLowerCase();
     const isFinal = ["completed", "approved", "closed", "final", "finalized"].includes(
@@ -662,7 +662,7 @@ function AuditDetailPage() {
       badgeValue: isFinal ? "completed" : "in_progress",
       label: isFinal ? "Exportación : versión final" : "Exportación: borrador controlado",
     };
-  }, [report.status]);
+  }, [report?.status]);
 
   const workspaceFlowLinks = useMemo(() => {
     return [
@@ -766,7 +766,7 @@ function AuditDetailPage() {
     [activeSectionDefinition, activeSectionItems]
   );
   const activeSectionFieldCompletion = useMemo(() => {
-    const fields = activeSectionDefinition.flat_fields || [];
+    const fields = activeSectionDefinition?.flat_fields || [];
     if (fields.length === 0) return { completed: 0, total: 0 };
     const completed = fields.filter((field) => {
       const value = activeSectionGuidedValues[field.field_code];
@@ -794,9 +794,9 @@ function AuditDetailPage() {
   }, [sectionsWithDraftStatus]);
 
   const contextualNavLinks = useMemo(() => {
-    const reportIdValue = report.id || "";
-    const clientIdValue = client.id || "";
-    const reportYearValue = report.report_year ? String(report.report_year) : "";
+    const reportIdValue = report?.id || "";
+    const clientIdValue = client?.id || "";
+    const reportYearValue = report?.report_year ? String(report.report_year) : "";
     const baseQuery = {
       report_id: reportIdValue,
       client_id: clientIdValue,
@@ -808,68 +808,68 @@ function AuditDetailPage() {
         key: "iso-core",
         label: "Contexto, alcance, política, roles, procesos y objetivos",
         detail:
-          `Contexto ${isoWorkbench.context_profile_completed ? "completo" : "pendiente"} · ` +
-          `Partes ${isoWorkbench.interested_parties_active ?? 0} · ` +
-          `Objetivos ${isoWorkbench.objectives_total ?? 0}`,
+          `Contexto ${isoWorkbench?.context_profile_completed ? "completo" : "pendiente"} · ` +
+          `Partes ${isoWorkbench?.interested_parties_active ?? 0} · ` +
+          `Objetivos ${isoWorkbench?.objectives_total ?? 0}`,
         to: buildQueryPath("/sistema-iso", baseQuery),
       },
       {
         key: "risks",
         label: "Riesgos y oportunidades",
-        detail: `Riesgos abiertos: ${isoWorkbench.risks_open ?? 0}`,
+        detail: `Riesgos abiertos: ${isoWorkbench?.risks_open ?? 0}`,
         to: buildQueryPath("/riesgos-oportunidades", baseQuery),
       },
       {
         key: "suppliers",
         label: "Proveedores evaluados",
-        detail: `Proveedores criticos: ${isoWorkbench.suppliers_critical ?? 0}`,
+        detail: `Proveedores criticos: ${isoWorkbench?.suppliers_critical ?? 0}`,
         to: buildQueryPath("/proveedores", baseQuery),
       },
       {
         key: "kpis",
         label: "Indicadores KPI",
         detail:
-          `Total KPI: ${isoWorkbench.kpis_total ?? 0} · ` +
-          `Alerta/Crítico: ${isoWorkbench.kpis_alert_or_critical ?? 0}`,
+          `Total KPI: ${isoWorkbench?.kpis_total ?? 0} · ` +
+          `Alerta/Crítico: ${isoWorkbench?.kpis_alert_or_critical ?? 0}`,
         to: buildQueryPath("/indicadores", baseQuery),
       },
       {
         key: "feedback",
         label: "Satisfacción del cliente",
         detail:
-          `Feedback: ${isoWorkbench.customer_feedback_total ?? 0} · ` +
-          `Media: ${isoWorkbench.customer_feedback_average == null ? "-" : Number(isoWorkbench.customer_feedback_average).toFixed(2)}`,
+          `Feedback: ${isoWorkbench?.customer_feedback_total ?? 0} · ` +
+          `Media: ${isoWorkbench?.customer_feedback_average == null ? "-" : Number(isoWorkbench.customer_feedback_average).toFixed(2)}`,
         to: buildQueryPath("/satisfaccion-cliente", baseQuery),
       },
       {
         key: "nonconformities",
         label: "No conformidades y mejora (CAPA)",
         detail:
-          `NC desde auditoría: ${isoWorkbench.nonconformities_from_audit_total ?? 0} · ` +
-          `Abiertas: ${isoWorkbench.nonconformities_from_audit_open ?? 0} · ` +
-          `Mejoras: ${isoWorkbench.improvements_from_audit_total ?? 0}`,
+          `NC desde auditoría: ${isoWorkbench?.nonconformities_from_audit_total ?? 0} · ` +
+          `Abiertas: ${isoWorkbench?.nonconformities_from_audit_open ?? 0} · ` +
+          `Mejoras: ${isoWorkbench?.improvements_from_audit_total ?? 0}`,
         to: buildQueryPath("/no-conformidades", baseQuery),
       },
       {
         key: "management-reviews",
         label: "Revisión por la dirección",
-        detail: `Revisiónes vinculadas: ${isoWorkbench.management_reviews_linked_total ?? 0}`,
+        detail: `Revisiónes vinculadas: ${isoWorkbench?.management_reviews_linked_total ?? 0}`,
         to: buildQueryPath("/revision-direccion", baseQuery),
       },
     ];
-  }, [client.id, isoWorkbench, report.id, report.report_year]);
+  }, [client?.id, isoWorkbench, report?.id, report?.report_year]);
 
   const isoMatrixLinks = useMemo(() => {
     const baseQuery = {
-      report_id: report.id || "",
-      client_id: client.id || "",
-      report_year: report.report_year ? String(report.report_year) : "",
+      report_id: report?.id || "",
+      client_id: client?.id || "",
+      report_year: report?.report_year ? String(report.report_year) : "",
     };
     return ISO_SECTION_MATRIX.map((item) => ({
       ...item,
       to: buildQueryPath(item.to, baseQuery),
     }));
-  }, [client.id, report.id, report.report_year]);
+  }, [client?.id, report?.id, report?.report_year]);
 
   function setSectionMetaDraft(sectionCode, patch) {
     const nextPatch = { ...(patch || {}) };
