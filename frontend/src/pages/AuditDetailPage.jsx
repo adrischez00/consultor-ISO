@@ -587,7 +587,7 @@ function AuditDetailPage() {
       sections.map((section) => ({
         ...section,
         status: normalizeSectionStatus(
-          sectionDraftByCode[section.section_code].status || section.status || "not_started"
+          sectionDraftByCode[section.section_code]?.status || section.status || "not_started"
         ),
       })),
     [sectionDraftByCode, sections]
