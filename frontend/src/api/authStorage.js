@@ -1,4 +1,4 @@
-﻿const AUTH_STORAGE_KEY_PERSISTENT = "consultor_iso9001.auth_session";
+const AUTH_STORAGE_KEY_PERSISTENT = "consultor_iso9001.auth_session";
 const AUTH_STORAGE_KEY_SESSION = "consultor_iso9001.auth_session.temp";
 
 function normalizeSession(raw) {

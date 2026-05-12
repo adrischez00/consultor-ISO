@@ -1,4 +1,4 @@
-﻿import { requestBlob, requestJson } from "./httpClient";
+import { requestBlob, requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 function toQuery(params) {

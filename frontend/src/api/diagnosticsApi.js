@@ -1,4 +1,4 @@
-﻿import { requestJson } from "./httpClient";
+import { requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 export async function createDiagnostic(payload = null) {
