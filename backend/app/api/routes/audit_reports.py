@@ -1704,7 +1704,7 @@ def patch_audit_report(
                 _get_report_or_404(db, report_id, auth.consultancy.id)
                 compliance = load_report_compliance(db, report_id)
                 pending_blocks = get_pending_blocks_for_report_close(compliance)
-                db.expire_all()
+                db.rollback()
                 if pending_blocks:
                     pending_labels = ", ".join(
                         f"{block.section_code}:{block.block_code}" for block in pending_blocks
@@ -1840,7 +1840,7 @@ def patch_audit_report_section(
                     compliance,
                     pre_section.section_code.strip(),
                 )
-                db.expire_all()
+                db.rollback()
                 if missing_requirements:
                     missing_text = ", ".join(missing_requirements)
                     raise HTTPException(
