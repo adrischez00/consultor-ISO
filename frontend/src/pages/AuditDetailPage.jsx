@@ -893,11 +893,15 @@ function AuditDetailPage() {
   }, [client?.id, report?.id, report?.report_year]);
 
   function setSectionMetaDraft(sectionCode, patch) {
+    const nextPatch = { ...(patch || {}) };
+    if (Object.prototype.hasOwnProperty.call(nextPatch, "status")) {
+      nextPatch.status = normalizeSectionStatus(nextPatch.status);
+    }
     setSectionDraftByCode((prev) => ({
       ...prev,
       [sectionCode]: {
         ...(prev[sectionCode] || {}),
-        ...patch,
+        ...nextPatch,
       },
     }));
   }
@@ -938,6 +942,7 @@ function AuditDetailPage() {
       sectionStatusAutosaveRef.current[key] = {
         timerId: null,
         inFlight: false,
+        pendingStatus: null,
       };
     }
     return { key, entry: sectionStatusAutosaveRef.current[key] };
@@ -961,7 +966,7 @@ function AuditDetailPage() {
   const flushSectionStatusAutosave = useCallback(
     async (sectionCode, nextStatusOverride = null) => {
       const { key, entry } = getSectionAutosaveEntry(sectionCode);
-      if (!reportId || !key || !entry || entry.inFlight) return;
+      if (!reportId || !key || !entry) return;
       let savedSuccessfully = false;
 
       const persistedSection = (sectionsRef.current || []).find(
@@ -971,6 +976,11 @@ function AuditDetailPage() {
       const draftStatus = normalizeSectionStatus(
         nextStatusOverride ?? sectionDraftByCodeRef.current?.[key]?.status ?? persistedStatus
       );
+
+      if (entry.inFlight) {
+        entry.pendingStatus = draftStatus;
+        return;
+      }
 
       if (draftStatus === persistedStatus) return;
 
@@ -1002,6 +1012,12 @@ function AuditDetailPage() {
         }
       } finally {
         entry.inFlight = false;
+        const queuedStatus = entry.pendingStatus;
+        entry.pendingStatus = null;
+        if (queuedStatus) {
+          void flushSectionStatusAutosave(key, queuedStatus);
+          return;
+        }
         if (!savedSuccessfully) return;
 
         const persistedAfter = normalizeSectionStatus(
