@@ -276,9 +276,9 @@ function buildQueryPath(pathname, query) {
 
 function sortByOrderAndCode(list, codeField = "item_code") {
   return [...(Array.isArray(list) ? list : [])].sort((a, b) => {
-    const orderDiff = (a.sort_order || 0) - (b.sort_order || 0);
+    const orderDiff = (a?.sort_order || 0) - (b?.sort_order || 0);
     if (orderDiff !== 0) return orderDiff;
-    return String(a[codeField] || "").localeCompare(String(b[codeField] || ""), "es");
+    return String(a?.[codeField] || "").localeCompare(String(b?.[codeField] || ""), "es");
   });
 }
 
@@ -390,9 +390,9 @@ function AuditDetailPage() {
   }, [sectionDraftByCode]);
 
   const hydrate = useCallback((detail, history, nextCompliance) => {
-    const nextReport = detail.report || null;
-    const nextClient = detail.client || null;
-    const nextSections = sortByOrderAndCode(detail.sections || [], "section_code");
+    const nextReport = detail?.report || null;
+    const nextClient = detail?.client || null;
+    const nextSections = sortByOrderAndCode(detail?.sections || [], "section_code");
 
     const header = createEmptyHeaderForm();
     if (nextReport) {
@@ -425,7 +425,7 @@ function AuditDetailPage() {
     });
 
     const itemsByCode = {};
-    Object.entries(mapBySection(detail.items || {})).forEach(([code, list]) => {
+    Object.entries(mapBySection(detail?.items || {})).forEach(([code, list]) => {
       itemsByCode[code] = normalizeSectionItems(list);
     });
 
@@ -439,7 +439,7 @@ function AuditDetailPage() {
     });
 
     const checksByCode = {};
-    Object.entries(mapBySection(detail.clause_checks || {})).forEach(([code, list]) => {
+    Object.entries(mapBySection(detail?.clause_checks || {})).forEach(([code, list]) => {
       checksByCode[code] = sortByOrderAndCode(list, "clause_code").map((entry) => ({
         id: entry.id,
         clause_code: entry.clause_code || "",
@@ -460,8 +460,8 @@ function AuditDetailPage() {
     setSectionItemsByCode(itemsByCode);
     setGuidedValuesBySection(nextGuidedValuesBySection);
     setClauseChecksByCode(checksByCode);
-    setInterviewees(Array.isArray(detail.interviewees) ? detail.interviewees : []);
-    setRecommendations(Array.isArray(detail.recommendations) ? detail.recommendations : []);
+    setInterviewees(Array.isArray(detail?.interviewees) ? detail.interviewees : []);
+    setRecommendations(Array.isArray(detail?.recommendations) ? detail.recommendations : []);
     setHistoryRecommendations(Array.isArray(history) ? history : []);
     setCompliance(nextCompliance && typeof nextCompliance === "object" ? nextCompliance : null);
 
@@ -633,21 +633,21 @@ function AuditDetailPage() {
   const clauseCheckSummary = useMemo(() => {
     const checks = Object.values(clauseChecksByCode || {}).flat();
     const total = checks.length;
-    const nonCompliant = checks.filter((item) => item.clause_status === "non_compliant").length;
-    const partial = checks.filter((item) => item.clause_status === "partial").length;
-    const compliant = checks.filter((item) => item.clause_status === "compliant").length;
+    const nonCompliant = checks.filter((item) => item?.clause_status === "non_compliant").length;
+    const partial = checks.filter((item) => item?.clause_status === "partial").length;
+    const compliant = checks.filter((item) => item?.clause_status === "compliant").length;
     return { total, compliant, partial, nonCompliant };
   }, [clauseChecksByCode]);
 
   const recommendationSummary = useMemo(() => {
     const total = recommendations.length;
     const nonConformities = recommendations.filter(
-      (item) => item.recommendation_type === "non_conformity"
+      (item) => item?.recommendation_type === "non_conformity"
     ).length;
     const observations = recommendations.filter(
-      (item) => item.recommendation_type === "observation"
+      (item) => item?.recommendation_type === "observation"
     ).length;
-    const open = recommendations.filter((item) => item.recommendation_status !== "done").length;
+    const open = recommendations.filter((item) => item?.recommendation_status !== "done").length;
     return { total, nonConformities, observations, open };
   }, [recommendations]);
 
