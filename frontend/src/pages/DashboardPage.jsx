@@ -189,7 +189,7 @@ function DashboardPage() {
         loading={Boolean(deletingAuditId)}
         title="Eliminar auditoría"
         description="Se eliminará por completo el expediente de auditoría. Esta acción no se puede deshacer."
-        entityLabel={pendingDeleteAudit.report_code || pendingDeleteAudit.id || ""}
+        entityLabel={pendingDeleteAudit?.report_code || pendingDeleteAudit?.id || ""}
         confirmLabel="Eliminar definitivamente"
         cancelLabel="Cancelar"
         onClose={closeDeleteModal}
