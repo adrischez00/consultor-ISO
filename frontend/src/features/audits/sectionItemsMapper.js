@@ -116,7 +116,7 @@ return { ...base, value_text : rawText };
 
 export function buildGuidedValuesFromItems(sectionDefinition, items) {
   const values = {};
-  const fields = sectionDefinition.flat_fields || [];
+  const fields = sectionDefinition?.flat_fields || [];
   const itemMap = new Map(
     (Array.isArray(items) ? items : []).map((item) => [String(item.item_code || "").trim(), item])
   );
@@ -147,9 +147,10 @@ values[field.field_code] = rawValue == null ? "" : String(rawValue);
   return values;
 }
 
-export function extractLegacyItems(sectionDefinition, items) {const knownCodes = new Set((sectionDefinition.flat_fields || []).map((field) => String(field.field_code || "").trim())
+export function extractLegacyItems(sectionDefinition, items) {
+  const knownCodes = new Set((sectionDefinition?.flat_fields || []).map((field) => String(field.field_code || "").trim())
   );
-  const normalizedSectionCode = String(sectionDefinition.section_code || "").trim();
+  const normalizedSectionCode = String(sectionDefinition?.section_code || "").trim();
   const shouldDropLegacyItems = normalizedSectionCode === "6" || normalizedSectionCode === "9";
 
   return (Array.isArray(items) ? items : []).filter((item) => {
@@ -162,7 +163,7 @@ export function extractLegacyItems(sectionDefinition, items) {const knownCodes =
 
 export function buildItemsFromGuidedValues(sectionDefinition, valuesByFieldCode, legacyItems = []) {
   const guidedItems = [];
-  const fields = sectionDefinition.flat_fields || [];
+  const fields = sectionDefinition?.flat_fields || [];
 
   fields.forEach((field, index) => {
     const value = valuesByFieldCode[field.field_code];
