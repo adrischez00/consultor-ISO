@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import {
@@ -107,6 +107,7 @@ const WORKSPACE_ANCHORS = {
 };
 
 const CLOSURE_PANEL_FOCUS_KEYS = new Set(["workspace", "compliance", "route", "matrix"]);
+const SECTION_STATUS_AUTOSAVE_DEBOUNCE_MS = 700;
 
 const ISO_SECTION_MATRIX = [
   {
@@ -190,6 +191,15 @@ function resolveSectionProgressText(status) {
   if (status === "completed") return "Lista para cierre";
   if (status === "in_progress") return "En trabajo";
   return "Pendiente de iniciar";
+}
+
+function normalizeSectionStatus(value) {
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase();
+  if (normalized === "completed") return "completed";
+  if (normalized === "in_progress") return "in_progress";
+  return "not_started";
 }
 
 function createEmptyHeaderForm() {
@@ -344,6 +354,9 @@ function AuditDetailPage() {
   const [showClosureValidationPanel, setShowClosureValidationPanel] = useState(
     CLOSURE_PANEL_FOCUS_KEYS.has(initialFocus)
   );
+  const sectionStatusAutosaveRef = useRef({});
+  const sectionsRef = useRef([]);
+  const sectionDraftByCodeRef = useRef({});
 
   const [loading, setLoading] = useState(true);
   const [savingHeader, setSavingHeader] = useState(false);
@@ -379,6 +392,14 @@ function AuditDetailPage() {
   const [compliance, setCompliance] = useState(null);
   const [isoWorkbench, setIsoWorkbench] = useState(null);
   const [isoWorkbenchError, setIsoWorkbenchError] = useState("");
+
+  useEffect(() => {
+    sectionsRef.current = sections;
+  }, [sections]);
+
+  useEffect(() => {
+    sectionDraftByCodeRef.current = sectionDraftByCode;
+  }, [sectionDraftByCode]);
 
   const hydrate = useCallback((detail, history, nextCompliance) => {
     const nextReport = detail?.report || null;
@@ -577,14 +598,25 @@ function AuditDetailPage() {
     });
   }, [initialFocus, loading, showClosureValidationPanel]);
 
+  const sectionsWithDraftStatus = useMemo(
+    () =>
+      sections.map((section) => ({
+        ...section,
+        status: normalizeSectionStatus(
+          sectionDraftByCode[section.section_code]?.status || section.status || "not_started"
+        ),
+      })),
+    [sectionDraftByCode, sections]
+  );
+
   const progressItems = useMemo(() => {
     return summarizeProgress({
       headerForm,
       interviewees,
-      sections,
+      sections: sectionsWithDraftStatus,
       recommendations,
     });
-  }, [headerForm, interviewees, sections, recommendations]);
+  }, [headerForm, interviewees, recommendations, sectionsWithDraftStatus]);
 
   const complianceBlocks = useMemo(
     () => (Array.isArray(compliance?.blocks) ? compliance.blocks : []),
@@ -687,7 +719,7 @@ function AuditDetailPage() {
   }, []);
 
   const sectionTabs = useMemo(() => {
-    const mapped = sections.map((section) => ({
+    const mapped = sectionsWithDraftStatus.map((section) => ({
       key: section.section_code,
       label: `${section.section_code}. ${SECTION_NAME_BY_CODE[section.section_code] || section.title}`,
       status: section.status || "not_started",
@@ -707,7 +739,12 @@ function AuditDetailPage() {
     });
 
     return mapped;
-  }, [headerForm.conclusions_text, headerForm.final_dispositions_text, recommendations.length, sections]);
+  }, [
+    headerForm.conclusions_text,
+    headerForm.final_dispositions_text,
+    recommendations.length,
+    sectionsWithDraftStatus,
+  ]);
 
   const activeTabIndex = useMemo(() => {
     const idx = sectionTabs.findIndex((item) => item.key === activeTabKey);
@@ -716,8 +753,8 @@ function AuditDetailPage() {
 
   const activeSectionCode = activeTabKey === RESULTS_TAB_KEY ? null : activeTabKey;
   const activeSection = useMemo(
-    () => sections.find((section) => section.section_code === activeSectionCode) || null,
-    [activeSectionCode, sections]
+    () => sectionsWithDraftStatus.find((section) => section.section_code === activeSectionCode) || null,
+    [activeSectionCode, sectionsWithDraftStatus]
   );
 
   const activeSectionDraft = activeSectionCode
@@ -770,12 +807,12 @@ function AuditDetailPage() {
   }, [activeSectionDefinition, activeSectionGuidedValues]);
 
   const sectionStatusSummary = useMemo(() => {
-    const total = sections.length;
-    const completed = sections.filter((section) => section.status === "completed").length;
-    const inProgress = sections.filter((section) => section.status === "in_progress").length;
+    const total = sectionsWithDraftStatus.length;
+    const completed = sectionsWithDraftStatus.filter((section) => section.status === "completed").length;
+    const inProgress = sectionsWithDraftStatus.filter((section) => section.status === "in_progress").length;
     const notStarted = Math.max(total - completed - inProgress, 0);
     return { total, completed, inProgress, notStarted };
-  }, [sections]);
+  }, [sectionsWithDraftStatus]);
 
   const contextualNavLinks = useMemo(() => {
     const reportIdValue = report?.id || "";
@@ -893,6 +930,117 @@ function AuditDetailPage() {
       [sectionCode]: nextChecks,
     }));
   }
+
+  function getSectionAutosaveEntry(sectionCode) {
+    const key = String(sectionCode || "").trim();
+    if (!key) return { key: "", entry: null };
+    if (!sectionStatusAutosaveRef.current[key]) {
+      sectionStatusAutosaveRef.current[key] = {
+        timerId: null,
+        inFlight: false,
+      };
+    }
+    return { key, entry: sectionStatusAutosaveRef.current[key] };
+  }
+
+  const flushSectionStatusAutosave = useCallback(
+    async (sectionCode) => {
+      const { key, entry } = getSectionAutosaveEntry(sectionCode);
+      if (!reportId || !key || !entry || entry.inFlight) return;
+      let savedSuccessfully = false;
+
+      const persistedSection = (sectionsRef.current || []).find(
+        (section) => section.section_code === key
+      );
+      const persistedStatus = normalizeSectionStatus(persistedSection?.status || "not_started");
+      const draftStatus = normalizeSectionStatus(
+        sectionDraftByCodeRef.current?.[key]?.status || persistedStatus
+      );
+
+      if (draftStatus === persistedStatus) return;
+
+      entry.inFlight = true;
+      try {
+        const updated = await patchAuditSection(reportId, key, { status: draftStatus });
+        const normalizedUpdatedStatus = normalizeSectionStatus(updated?.status || draftStatus);
+
+        setSections((prev) =>
+          prev.map((section) => (section.section_code === key ? updated : section))
+        );
+        setSectionMetaDraft(key, { status: normalizedUpdatedStatus });
+        savedSuccessfully = true;
+
+        if (activeSectionCode === key) {
+          setError("");
+          setStatusMessage(`Estado de sección ${key} guardado automáticamente.`);
+        }
+
+        await refreshCompliance();
+      } catch (err) {
+        if (activeSectionCode === key) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : `No se pudo autoguardar el estado de la sección ${key}.`
+          );
+        }
+      } finally {
+        entry.inFlight = false;
+        if (!savedSuccessfully) return;
+
+        const persistedAfter = normalizeSectionStatus(
+          (sectionsRef.current || []).find((section) => section.section_code === key)?.status ||
+            "not_started"
+        );
+        const draftAfter = normalizeSectionStatus(
+          sectionDraftByCodeRef.current?.[key]?.status || persistedAfter
+        );
+
+        if (draftAfter !== persistedAfter) {
+          if (entry.timerId) clearTimeout(entry.timerId);
+          entry.timerId = setTimeout(() => {
+            entry.timerId = null;
+            void flushSectionStatusAutosave(key);
+          }, SECTION_STATUS_AUTOSAVE_DEBOUNCE_MS);
+        }
+      }
+    },
+    [activeSectionCode, refreshCompliance, reportId]
+  );
+
+  const scheduleSectionStatusAutosave = useCallback(
+    (sectionCode) => {
+      const { key, entry } = getSectionAutosaveEntry(sectionCode);
+      if (!reportId || !key || !entry) return;
+      if (entry.timerId) clearTimeout(entry.timerId);
+      entry.timerId = setTimeout(() => {
+        entry.timerId = null;
+        void flushSectionStatusAutosave(key);
+      }, SECTION_STATUS_AUTOSAVE_DEBOUNCE_MS);
+    },
+    [flushSectionStatusAutosave, reportId]
+  );
+
+  function handleSectionStatusChange(sectionCode, statusValue) {
+    const normalizedStatus = normalizeSectionStatus(statusValue);
+    setSectionMetaDraft(sectionCode, { status: normalizedStatus });
+    scheduleSectionStatusAutosave(sectionCode);
+  }
+
+  useEffect(() => {
+    return () => {
+      Object.values(sectionStatusAutosaveRef.current || {}).forEach((entry) => {
+        if (entry?.timerId) clearTimeout(entry.timerId);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    Object.values(sectionStatusAutosaveRef.current || {}).forEach((entry) => {
+      if (entry?.timerId) clearTimeout(entry.timerId);
+    });
+    sectionStatusAutosaveRef.current = {};
+  }, [reportId]);
 
   async function handleSaveHeader() {
     if (!reportId) return;
@@ -2066,7 +2214,7 @@ function AuditDetailPage() {
                   className="input-select"
                   value={activeSectionDraft?.status || "not_started"}
                   onChange={(event) =>
-                    setSectionMetaDraft(activeSection.section_code, { status: event.target.value })
+                    handleSectionStatusChange(activeSection.section_code, event.target.value)
                   }
                 >
                   {SECTION_STATUS_OPTIONS.map((option) => (
