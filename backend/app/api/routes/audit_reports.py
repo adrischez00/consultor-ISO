@@ -1697,26 +1697,32 @@ def patch_audit_report(
         if not data:
             return _get_report_or_404(db, report_id, auth.consultancy.id)
 
+        status_value = data.get("status")
+        if status_value is not None:
+            normalized_status_check = _normalize_required_text(status_value, "status")
+            if normalized_status_check in {"completed", "approved"}:
+                _get_report_or_404(db, report_id, auth.consultancy.id)
+                compliance = load_report_compliance(db, report_id)
+                pending_blocks = get_pending_blocks_for_report_close(compliance)
+                db.expire_all()
+                if pending_blocks:
+                    pending_labels = ", ".join(
+                        f"{block.section_code}:{block.block_code}" for block in pending_blocks
+                    )
+                    raise HTTPException(
+                        status_code=409,
+                        detail=(
+                            "No se puede cerrar la auditoria: bloques ISO incompletos -> "
+                            f"{pending_labels}"
+                        ),
+                    )
+
         with _transaction_scope(db):
             report = _get_report_or_404(db, report_id, auth.consultancy.id)
             status_value = data.get("status")
             if status_value is not None:
                 normalized_status = _normalize_required_text(status_value, "status")
                 data["status"] = normalized_status
-                if normalized_status in {"completed", "approved"}:
-                    compliance = load_report_compliance(db, report_id)
-                    pending_blocks = get_pending_blocks_for_report_close(compliance)
-                    if pending_blocks:
-                        pending_labels = ", ".join(
-                            f"{block.section_code}:{block.block_code}" for block in pending_blocks
-                        )
-                        raise HTTPException(
-                            status_code=409,
-                            detail=(
-                                "No se puede cerrar la auditoria: bloques ISO incompletos -> "
-                                f"{pending_labels}"
-                            ),
-                        )
 
             for field, value in data.items():
                 if field == "entity_name":
@@ -1822,30 +1828,32 @@ def patch_audit_report_section(
             _get_report_or_404(db, report_id, auth.consultancy.id)
             return _ensure_section_exists(db, report_id, section_code)
 
+        status_value = data.get("status")
+        if status_value is not None:
+            normalized_status = _normalize_required_text(status_value, "status")
+            data["status"] = normalized_status
+            if normalized_status == "completed":
+                _get_report_or_404(db, report_id, auth.consultancy.id)
+                pre_section = _ensure_section_exists(db, report_id, section_code)
+                compliance = load_report_compliance(db, report_id)
+                missing_requirements = get_section_missing_requirements(
+                    compliance,
+                    pre_section.section_code.strip(),
+                )
+                db.expire_all()
+                if missing_requirements:
+                    missing_text = ", ".join(missing_requirements)
+                    raise HTTPException(
+                        status_code=409,
+                        detail=(
+                            "No se puede completar la seccion: faltan evidencias requeridas -> "
+                            f"{missing_text}"
+                        ),
+                    )
+
         with _transaction_scope(db):
             _get_report_or_404(db, report_id, auth.consultancy.id)
             section = _ensure_section_exists(db, report_id, section_code)
-            section_code_normalized = section.section_code.strip()
-            status_value = data.get("status")
-            if status_value is not None:
-                normalized_status = _normalize_required_text(status_value, "status")
-                data["status"] = normalized_status
-                if normalized_status == "completed":
-                    compliance = load_report_compliance(db, report_id)
-                    missing_requirements = get_section_missing_requirements(
-                        compliance,
-                        section_code_normalized,
-                    )
-                    if missing_requirements:
-                        missing_text = ", ".join(missing_requirements)
-                        raise HTTPException(
-                            status_code=409,
-                            detail=(
-                                "No se puede completar la seccion: faltan evidencias requeridas -> "
-                                f"{missing_text}"
-                            ),
-                        )
-
             for field, value in data.items():
                 if field in {"auditor_notes", "ai_draft_text", "final_text"}:
                     setattr(section, field, _normalize_optional_text(value))

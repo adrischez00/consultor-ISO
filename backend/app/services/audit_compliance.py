@@ -3,16 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from uuid import UUID
 
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.models.audit_context_document import AuditContextDocument
-from app.models.audit_context_document_row import AuditContextDocumentRow
 from app.models.audit_interested_parties_document import AuditInterestedPartiesDocument
-from app.models.audit_interested_parties_document_row import (
-    AuditInterestedPartiesDocumentRow,
-)
 from app.models.audit_risk_opportunity_document import AuditRiskOpportunityDocument
 from app.models.audit_report_item import AuditReportItem
 
@@ -52,8 +48,7 @@ YELLOW_BLOCK_RULES: tuple[BlockRule, ...] = (
         block_title="Contexto de la organizacion",
         section_code="4",
         required_fields=(
-            "context_document_code",
-            "external_issues_summary",
+            "context_document_completed",
             "scope_current_text",
             "process_map_updated",
             "sgc_processes_defined",
@@ -65,9 +60,7 @@ YELLOW_BLOCK_RULES: tuple[BlockRule, ...] = (
         block_title="Partes interesadas",
         section_code="4",
         required_fields=(
-            "interested_parties_document_code",
-            "interested_parties_revision",
-            "interested_parties_date",
+            "interested_parties_document_completed",
         ),
     ),
     BlockRule(
@@ -318,77 +311,64 @@ def build_report_compliance(
 
 
 def load_report_compliance(db: Session, report_id: UUID) -> ReportComplianceResult:
-    items = db.scalars(
-        select(AuditReportItem).where(AuditReportItem.audit_report_id == report_id)
-    ).all()
-    context_document = _safe_scalar(
+    try:
+        items: list[AuditReportItem] = list(
+            db.scalars(
+                select(AuditReportItem).where(AuditReportItem.audit_report_id == report_id)
+            ).all()
+        )
+    except SQLAlchemyError:
+        items = []
+
+    context_document_id = _safe_scalar(
         db,
-        select(AuditContextDocument).where(AuditContextDocument.audit_report_id == report_id),
+        select(AuditContextDocument.id).where(AuditContextDocument.audit_report_id == report_id),
     )
-    interested_parties_document = _safe_scalar(
+    context_document_status = _safe_scalar(
         db,
-        select(AuditInterestedPartiesDocument).where(
+        select(AuditContextDocument.status).where(AuditContextDocument.audit_report_id == report_id),
+    )
+
+    interested_document_id = _safe_scalar(
+        db,
+        select(AuditInterestedPartiesDocument.id).where(
             AuditInterestedPartiesDocument.audit_report_id == report_id
         ),
     )
-    risk_opportunity_document = _safe_scalar(
+    interested_document_status = _safe_scalar(
         db,
-        select(AuditRiskOpportunityDocument).where(
+        select(AuditInterestedPartiesDocument.status).where(
+            AuditInterestedPartiesDocument.audit_report_id == report_id
+        ),
+    )
+
+    risk_document_id = _safe_scalar(
+        db,
+        select(AuditRiskOpportunityDocument.id).where(
+            AuditRiskOpportunityDocument.audit_report_id == report_id
+        ),
+    )
+    risk_document_status = _safe_scalar(
+        db,
+        select(AuditRiskOpportunityDocument.status).where(
             AuditRiskOpportunityDocument.audit_report_id == report_id
         ),
     )
 
-    context_rows_count = 0
-    if context_document is not None:
-        context_rows_count = int(
-            _safe_scalar(
-                db,
-                select(func.count(AuditContextDocumentRow.id)).where(
-                    AuditContextDocumentRow.document_id == context_document.id
-                ),
-            )
-            or 0
-        )
-
-    interested_rows_count = 0
-    if interested_parties_document is not None:
-        interested_rows_count = int(
-            _safe_scalar(
-                db,
-                select(func.count(AuditInterestedPartiesDocumentRow.id)).where(
-                    AuditInterestedPartiesDocumentRow.document_id
-                    == interested_parties_document.id
-                ),
-            )
-            or 0
-        )
-
     context_document_completed = bool(
-        context_document
-        and (
-            _is_completed_status(context_document.status)
-            or context_rows_count > 0
-        )
+        context_document_id is not None or _is_completed_status(context_document_status)
     )
     interested_parties_document_completed = bool(
-        interested_parties_document
-        and (
-            _is_completed_status(interested_parties_document.status)
-            or interested_rows_count > 0
-        )
+        interested_document_id is not None or _is_completed_status(interested_document_status)
+    )
+    risk_opportunity_document_completed = bool(
+        risk_document_id is not None or _is_completed_status(risk_document_status)
     )
 
     document_flags = {
-        # Section 4 evidence can come from dedicated P09 documents.
-        "context_document_code": context_document_completed,
-        "external_issues_summary": context_document_completed,
-        "interested_parties_document_code": interested_parties_document_completed,
-        "interested_parties_revision": interested_parties_document_completed,
-        "interested_parties_date": interested_parties_document_completed,
-        "risk_opportunity_document_completed": bool(
-            risk_opportunity_document
-            and _is_completed_status(risk_opportunity_document.status)
-        )
+        "context_document_completed": context_document_completed,
+        "interested_parties_document_completed": interested_parties_document_completed,
+        "risk_opportunity_document_completed": risk_opportunity_document_completed,
     }
     return build_report_compliance(
         report_id=report_id,
