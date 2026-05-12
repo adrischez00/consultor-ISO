@@ -1,4 +1,4 @@
-import { requestJson } from "./httpClient";
+﻿import { requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 export async function createDiagnostic(payload = null) {
@@ -18,7 +18,8 @@ export async function createDiagnostic(payload = null) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta inválida al crear diagnóstico.");
   }
-return { ...data, id : ensureUuid(data.id, "id") };
+
+  return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function fetchDiagnostics({ limit = 20, offset = 0 } = {}) {
@@ -26,7 +27,7 @@ export async function fetchDiagnostics({ limit = 20, offset = 0 } = {}) {
   const safeOffset = Number.isFinite(offset) ? Number(offset) : 0;
 
   const data = await requestJson(
-    `/diagnosticslimit=${encodeURIComponent(safeLimit)}&offset=${encodeURIComponent(safeOffset)}`,
+    `/diagnostics?limit=${encodeURIComponent(safeLimit)}&offset=${encodeURIComponent(safeOffset)}`,
     {
       method: "GET",
       fallbackMessage: "No se pudieron cargar los diagnósticos.",
@@ -45,7 +46,7 @@ export async function fetchTasks({ diagnosticId } = {}) {
 
   if (diagnosticId != null) {
     const normalizedDiagnosticId = ensureUuid(diagnosticId, "diagnostic_id");
-    path = `/tasksdiagnostic_id=${encodeURIComponent(normalizedDiagnosticId)}`;
+    path = `/tasks?diagnostic_id=${encodeURIComponent(normalizedDiagnosticId)}`;
   }
 
   const data = await requestJson(path, {
@@ -71,12 +72,13 @@ export async function fetchDiagnostic(diagnosticId) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta inválida al cargar diagnóstico.");
   }
-return { ...data, id : ensureUuid(data.id, "id") };
+
+  return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function upsertAnswer(payload) {
-  const diagnosticId = ensureUuid(payload.diagnostic_id, "diagnostic_id");
-  const questionId = ensureUuid(payload.question_id, "question_id");
+  const diagnosticId = ensureUuid(payload?.diagnostic_id, "diagnostic_id");
+  const questionId = ensureUuid(payload?.question_id, "question_id");
 
   const data = await requestJson("/answers", {
     method: "POST",

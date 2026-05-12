@@ -1,6 +1,5 @@
-﻿import { useState, useEffect, useMemo, useRef } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -162,7 +161,7 @@ function ClientsPage() {
             <button
               type="button"
               className="btn-primary"
-              onClick={() => nameInputRef.current.focus()}
+              onClick={() => nameInputRef.current?.focus()}
             >
               Crear primer cliente
             </button>
@@ -196,7 +195,7 @@ function ClientsPage() {
               </div>
             </div>
             <div className="diagnostic-list-actions clients-item-actions">
-              <Link className="btn-ghost link-btn" to={`/auditorias/nuevaclient_id=${client.id}`}>
+              <Link className="btn-ghost link-btn" to={`/auditorias/nueva?client_id=${client.id}`}>
                 Nueva auditoría
               </Link>
               <Link className="btn-secondary link-btn" to={`/clientes/${client.id}`}>
@@ -218,7 +217,7 @@ function ClientsPage() {
       />
 
       {loading ? <p className="status">Cargando clientes...</p> : null}
-{error ? <p className="status error">{error}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
 
       <div className="layout-grid two-columns clients-grid">
         <SectionCard
@@ -266,7 +265,7 @@ function ClientsPage() {
 
             <label className="field-stack">
               <span>Descripción</span>
-              <RichTextarea
+              <textarea
                 className="input-textarea"
                 name="description"
                 rows={3}
@@ -295,7 +294,7 @@ function ClientsPage() {
                 type="search"
                 value={listSearch}
                 onChange={(event) => setListSearch(event.target.value)}
-                placeholder="Buscar por nombre año sector..."
+                placeholder="Buscar por nombre o sector..."
               />
               <select
                 className="input-select clients-sort-select"
@@ -344,7 +343,7 @@ function ClientsPage() {
                 type="search"
                 value={listSearch}
                 onChange={(event) => setListSearch(event.target.value)}
-                placeholder="Buscar por nombre año sector..."
+                placeholder="Buscar por nombre o sector..."
               />
               <select
                 className="input-select clients-sort-select"
@@ -368,8 +367,3 @@ function ClientsPage() {
 }
 
 export default ClientsPage;
-
-
-
-
-

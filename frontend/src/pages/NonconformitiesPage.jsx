@@ -1,6 +1,5 @@
-﻿import { useState, useEffect, useMemo, useCallback } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -96,7 +95,9 @@ function NonconformitiesPage() {
   const contextClientId = normalizeUuidOrNull(searchParams.get("client_id"));
   const contextRecommendationId = normalizeUuidOrNull(searchParams.get("source_recommendation_id"));
   const contextOriginTypeRaw = String(searchParams.get("origin_type") || "").trim().toLowerCase();
-  const contextOriginType = ISO_MANAGEMENT_OPTIONS.nonconformityOrigin.includes(contextOriginTypeRaw) ? contextOriginTypeRaw : "";
+  const contextOriginType = ISO_MANAGEMENT_OPTIONS.nonconformityOrigin.includes(contextOriginTypeRaw)
+    ? contextOriginTypeRaw
+    : "";
   const contextTitle = String(searchParams.get("title") || "").trim();
   const contextDescription = String(searchParams.get("description") || "").trim();
 
@@ -219,7 +220,7 @@ function NonconformitiesPage() {
   }
 
   async function handleDeleteNonconformity(itemId) {
-    if (!window.confirm("Se eliminara la no conformidad. Continuar")) return;
+    if (!window.confirm("Se eliminara la no conformidad. Continuar?")) return;
     setSaving(true);
     setError("");
     setStatusMessage("");
@@ -295,7 +296,7 @@ function NonconformitiesPage() {
   }
 
   async function handleDeleteImprovement(itemId) {
-    if (!window.confirm("Se eliminara la mejora. Continuar")) return;
+    if (!window.confirm("Se eliminara la mejora. Continuar?")) return;
     setSaving(true);
     setError("");
     setStatusMessage("");
@@ -318,8 +319,10 @@ function NonconformitiesPage() {
     <section className="page">
       <PageHeader
         eyebrow="ISO 9001"
-        title="No conformidades y mejora" description="Flujo CAPA : detección, acción correctiva, verificación y mejora continua."
-        actions={contextReportId ? (
+        title="No conformidades y mejora"
+        description="Flujo CAPA: deteccion, accion correctiva, verificacion y mejora continua."
+        actions={
+          contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
               Volver a auditoría
             </Link>
@@ -332,20 +335,22 @@ function NonconformitiesPage() {
           directamente a hallazgos del informe.
         </p>
       ) : null}
-{statusMessage ? <p className="status">{statusMessage}</p> : null}
-{error ? <p className="status error">{error}</p> : null}
-{loading ? <p className="status">Cargando flujo CAPA...</p> : null}
+
+      {statusMessage ? <p className="status">{statusMessage}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
+      {loading ? <p className="status">Cargando flujo CAPA...</p> : null}
 
       {!loading ? (
         <>
           <div className="layout-grid two-columns">
-            <SectionCard title={editingNonconformityId ? "Editar no conformidad" : "No conformidades"}
-              description="Origen, causa, acción correctiva, verificación y cierre."
+            <SectionCard
+              title={editingNonconformityId ? "Editar no conformidad" : "No conformidades"}
+              description="Origen, causa, accion correctiva, verificacion y cierre."
             >
               <div className="inline-actions">
-                <StatusBadge value="pending" label={`Total: ${nonconformitySummary.total ?? 0}`} />
-                <StatusBadge value="in_progress" label={`En progreso: ${nonconformitySummary.in_progress ?? 0}`} />
-                <StatusBadge value="completed" label={`Cerradas: ${nonconformitySummary.closed ?? 0}`} />
+                <StatusBadge value="pending" label={`Total: ${nonconformitySummary?.total ?? 0}`} />
+                <StatusBadge value="in_progress" label={`En progreso: ${nonconformitySummary?.in_progress ?? 0}`} />
+                <StatusBadge value="completed" label={`Cerradas: ${nonconformitySummary?.closed ?? 0}`} />
               </div>
               <form className="form-grid" onSubmit={handleSaveNonconformity}>
                 <div className="inline-actions">
@@ -403,14 +408,15 @@ function NonconformitiesPage() {
                   <span>Titulo *</span>
                   <input
                     className="input-text"
-                    value={nonconformityForm.title} onChange={(event) => setNonconformityForm((prev) => ({ ...prev, title : event.target.value }))}
+                    value={nonconformityForm.title}
+                    onChange={(event) => setNonconformityForm((prev) => ({ ...prev, title: event.target.value }))}
                     required
                     disabled={saving}
                   />
                 </label>
                 <label className="field-stack">
                   <span>Descripcion *</span>
-                  <RichTextarea
+                  <textarea
                     className="input-textarea"
                     value={nonconformityForm.description}
                     onChange={(event) =>
@@ -436,7 +442,7 @@ function NonconformitiesPage() {
                     />
                   </label>
                   <label className="field-inline">
-                    <span>Acción vinculada (UUID)</span>
+                    <span>Accion vinculada (UUID)</span>
                     <input
                       className="input-text"
                       value={nonconformityForm.linked_action_task_id}
@@ -451,8 +457,8 @@ function NonconformitiesPage() {
                   </label>
                 </div>
                 <label className="field-stack">
-                  <span>Análisis de causa</span>
-                  <RichTextarea
+                  <span>Analisis de causa</span>
+                  <textarea
                     className="input-textarea"
                     value={nonconformityForm.cause_analysis}
                     onChange={(event) =>
@@ -462,8 +468,8 @@ function NonconformitiesPage() {
                   />
                 </label>
                 <label className="field-stack">
-                  <span>Acción correctiva</span>
-                  <RichTextarea
+                  <span>Accion correctiva</span>
+                  <textarea
                     className="input-textarea"
                     value={nonconformityForm.corrective_action}
                     onChange={(event) =>
@@ -490,7 +496,8 @@ function NonconformitiesPage() {
                     <input
                       className="input-text"
                       type="date"
-                      value={nonconformityForm.due_date} onChange={(event) => setNonconformityForm((prev) => ({ ...prev, due_date : event.target.value }))}
+                      value={nonconformityForm.due_date}
+                      onChange={(event) => setNonconformityForm((prev) => ({ ...prev, due_date: event.target.value }))}
                       disabled={saving}
                     />
                   </label>
@@ -550,13 +557,14 @@ function NonconformitiesPage() {
               </div>
             </SectionCard>
 
-            <SectionCard title={editingImprovementId ? "Editar mejora" : "Mejora continua"}
+            <SectionCard
+              title={editingImprovementId ? "Editar mejora" : "Mejora continua"}
               description="Oportunidades, acciones y beneficios observados."
             >
               <div className="inline-actions">
-                <StatusBadge value="pending" label={`Total: ${improvementSummary.total ?? 0}`} />
-                <StatusBadge value="in_progress" label={`En progreso: ${improvementSummary.in_progress ?? 0}`} />
-                <StatusBadge value="completed" label={`Cerradas: ${improvementSummary.closed ?? 0}`} />
+                <StatusBadge value="pending" label={`Total: ${improvementSummary?.total ?? 0}`} />
+                <StatusBadge value="in_progress" label={`En progreso: ${improvementSummary?.in_progress ?? 0}`} />
+                <StatusBadge value="completed" label={`Cerradas: ${improvementSummary?.closed ?? 0}`} />
               </div>
               <form className="form-grid" onSubmit={handleSaveImprovement}>
                 <div className="inline-actions">
@@ -581,7 +589,8 @@ function NonconformitiesPage() {
                     <span>Fuente</span>
                     <select
                       className="input-select"
-                      value={improvementForm.source_type} onChange={(event) => setImprovementForm((prev) => ({ ...prev, source_type : event.target.value }))}
+                      value={improvementForm.source_type}
+                      onChange={(event) => setImprovementForm((prev) => ({ ...prev, source_type: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.improvementSource.map((value) => (
                         <option key={value} value={value}>
@@ -594,7 +603,8 @@ function NonconformitiesPage() {
                     <span>Estado</span>
                     <select
                       className="input-select"
-                      value={improvementForm.status} onChange={(event) => setImprovementForm((prev) => ({ ...prev, status : event.target.value }))}
+                      value={improvementForm.status}
+                      onChange={(event) => setImprovementForm((prev) => ({ ...prev, status: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.improvementStatus.map((value) => (
                         <option key={value} value={value}>
@@ -608,25 +618,28 @@ function NonconformitiesPage() {
                   <span>Titulo *</span>
                   <input
                     className="input-text"
-                    value={improvementForm.title} onChange={(event) => setImprovementForm((prev) => ({ ...prev, title : event.target.value }))}
+                    value={improvementForm.title}
+                    onChange={(event) => setImprovementForm((prev) => ({ ...prev, title: event.target.value }))}
                     required
                     disabled={saving}
                   />
                 </label>
                 <label className="field-stack">
                   <span>Descripcion *</span>
-                  <RichTextarea
+                  <textarea
                     className="input-textarea"
-                    value={improvementForm.description} onChange={(event) => setImprovementForm((prev) => ({ ...prev, description : event.target.value }))}
+                    value={improvementForm.description}
+                    onChange={(event) => setImprovementForm((prev) => ({ ...prev, description: event.target.value }))}
                     required
                     disabled={saving}
                   />
                 </label>
                 <label className="field-stack">
-                  <span>Plan de acción *</span>
-                  <RichTextarea
+                  <span>Plan de accion *</span>
+                  <textarea
                     className="input-textarea"
-                    value={improvementForm.action_plan} onChange={(event) => setImprovementForm((prev) => ({ ...prev, action_plan : event.target.value }))}
+                    value={improvementForm.action_plan}
+                    onChange={(event) => setImprovementForm((prev) => ({ ...prev, action_plan: event.target.value }))}
                     required
                     disabled={saving}
                   />
@@ -649,16 +662,18 @@ function NonconformitiesPage() {
                     <input
                       className="input-text"
                       type="date"
-                      value={improvementForm.due_date} onChange={(event) => setImprovementForm((prev) => ({ ...prev, due_date : event.target.value }))}
+                      value={improvementForm.due_date}
+                      onChange={(event) => setImprovementForm((prev) => ({ ...prev, due_date: event.target.value }))}
                       disabled={saving}
                     />
                   </label>
                   <label className="field-inline">
-                    <span>Fecha revisión</span>
+                    <span>Fecha revision</span>
                     <input
                       className="input-text"
                       type="date"
-                      value={improvementForm.review_date} onChange={(event) => setImprovementForm((prev) => ({ ...prev, review_date : event.target.value }))}
+                      value={improvementForm.review_date}
+                      onChange={(event) => setImprovementForm((prev) => ({ ...prev, review_date: event.target.value }))}
                       disabled={saving}
                     />
                   </label>
@@ -690,7 +705,7 @@ function NonconformitiesPage() {
                       <div className="diagnostic-list-meta">
                         <StatusBadge value={mapStatusToBadge(item.status)} label={item.status} />
                         <span>Fuente: {item.source_type}</span>
-                        <span>Revisión: {formatDate(item.review_date)}</span>
+                        <span>Revision: {formatDate(item.review_date)}</span>
                       </div>
                     </div>
                     <div className="diagnostic-list-actions">
@@ -713,9 +728,3 @@ function NonconformitiesPage() {
 }
 
 export default NonconformitiesPage;
-
-
-
-
-
-

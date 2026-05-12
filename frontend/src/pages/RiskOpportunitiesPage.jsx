@@ -1,6 +1,5 @@
-﻿import { useState, useEffect, useMemo, useCallback } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -204,7 +203,7 @@ function RiskOpportunitiesPage() {
 
   async function handleDelete(itemId) {
     if (deletingId) return;
-    const confirmed = window.confirm("Se eliminara el registro seleccionado. Continuar");
+    const confirmed = window.confirm("Se eliminara el registro seleccionado. Continuar?");
     if (!confirmed) return;
     setDeletingId(itemId);
     setError("");
@@ -229,7 +228,8 @@ function RiskOpportunitiesPage() {
         eyebrow="ISO 9001"
         title="Riesgos y Oportunidades"
         description="Gestión estructurada de riesgos y oportunidades con nivel calculado automáticamente."
-        actions={contextReportId ? (
+        actions={
+          contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
               Volver a auditoría
             </Link>
@@ -242,22 +242,23 @@ function RiskOpportunitiesPage() {
           informe.
         </p>
       ) : null}
-{statusMessage ? <p className="status">{statusMessage}</p> : null}
-{error ? <p className="status error">{error}</p> : null}
-{loading ? <p className="status">Cargando riesgos y oportunidades...</p> : null}
+
+      {statusMessage ? <p className="status">{statusMessage}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
+      {loading ? <p className="status">Cargando riesgos y oportunidades...</p> : null}
 
       <SectionCard
         title="Resumen"
         description="Preparado para seguimiento del sistema y futuras revisiones por la dirección."
       >
         <div className="inline-actions">
-          <StatusBadge value="non_compliant" label={`Críticos: ${summary.critical_count ?? 0}`} />
-          <StatusBadge value="high" label={`Altos: ${summary.high_count ?? 0}`} />
-          <StatusBadge value="pending" label={`Abiertos: ${summary.open_items ?? 0}`} />
-          <StatusBadge value="completed" label={`Completados: ${summary.completed_items ?? 0}`} />
-          <span className="soft-label">Riesgos: {summary.risks_count ?? 0}</span>
-          <span className="soft-label">Oportunidades: {summary.opportunities_count ?? 0}</span>
-          <span className="soft-label">Total: {summary.total_items ?? 0}</span>
+          <StatusBadge value="non_compliant" label={`Críticos: ${summary?.critical_count ?? 0}`} />
+          <StatusBadge value="high" label={`Altos: ${summary?.high_count ?? 0}`} />
+          <StatusBadge value="pending" label={`Abiertos: ${summary?.open_items ?? 0}`} />
+          <StatusBadge value="completed" label={`Completados: ${summary?.completed_items ?? 0}`} />
+          <span className="soft-label">Riesgos: {summary?.risks_count ?? 0}</span>
+          <span className="soft-label">Oportunidades: {summary?.opportunities_count ?? 0}</span>
+          <span className="soft-label">Total: {summary?.total_items ?? 0}</span>
         </div>
       </SectionCard>
 
@@ -323,9 +324,11 @@ function RiskOpportunitiesPage() {
       </SectionCard>
 
       <div className="layout-grid two-columns">
-        <SectionCard title={editingId ? "Editar registro" : "Nuevo registro"}
+        <SectionCard
+          title={editingId ? "Editar registro" : "Nuevo registro"}
           description="Formulario de alta/edición con cálculo automático del nivel."
-          actions={editingId ? (
+          actions={
+            editingId ? (
               <button type="button" className="btn-ghost" onClick={resetForm} disabled={saving}>
                 Cancelar edición
               </button>
@@ -346,7 +349,7 @@ function RiskOpportunitiesPage() {
 
             <label className="field-stack">
               <span>Descripción</span>
-              <RichTextarea
+              <textarea
                 className="input-textarea"
                 value={form.description}
                 onChange={(event) => setFormField("description", event.target.value)}
@@ -434,7 +437,7 @@ function RiskOpportunitiesPage() {
 
             <label className="field-stack">
               <span>Acción *</span>
-              <RichTextarea
+              <textarea
                 className="input-textarea"
                 value={form.action_plan}
                 onChange={(event) => setFormField("action_plan", event.target.value)}
@@ -512,7 +515,3 @@ function RiskOpportunitiesPage() {
 }
 
 export default RiskOpportunitiesPage;
-
-
-
-

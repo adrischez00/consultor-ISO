@@ -79,7 +79,7 @@ function DiagnosticResultPage() {
         description="Analiza score, madurez, hallazgos y tareas generadas."
         actions={
           <div className="inline-actions">
-            {diagnosticMeta.client_id ? (
+            {diagnosticMeta?.client_id ? (
               <Link className="btn-ghost link-btn" to={`/clientes/${diagnosticMeta.client_id}`}>
                 Ir a cliente
               </Link>
@@ -92,15 +92,15 @@ function DiagnosticResultPage() {
       />
 
       {loading ? <p className="status">Cargando resultado...</p> : null}
-{error ? <p className="status error">{error}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
 
-      {!loading && !error && diagnosticMeta.status !== "completed" ? (
+      {!loading && !error && diagnosticMeta?.status !== "completed" ? (
         <SectionCard
           title="Resultado no disponible"
           description="El diagnóstico tiene cambios pendientes y debe evaluarse nuevamente."
         >
           <div className="inline-actions">
-            <StatusBadge value={diagnosticMeta.status || "draft"} />
+            <StatusBadge value={diagnosticMeta?.status || "draft"} />
             <Link className="btn-primary link-btn" to={wizardPath}>
               Ir al diagnóstico
             </Link>
@@ -112,7 +112,7 @@ function DiagnosticResultPage() {
         <>
           <div className="stats-grid">
             <StatCard
-              label="Puntuación total"
+              label="Puntuacion total"
               value={`${formatNumber(evaluationResult.total_percentage)}%`}
             />
             <StatCard
@@ -160,7 +160,7 @@ function DiagnosticResultPage() {
 
             <SectionCard
               title={`Tareas iniciales (${evaluationResult.tasks_generated || 0})`}
-              description="Acciónes para brechas parciales año no conformes."
+              description="Acciones para brechas parciales o no conformes."
             >
               {normalizeArray(evaluationResult.tasks).length === 0 ? (
                 <p className="empty-state">Sin tareas generadas.</p>
@@ -180,5 +180,3 @@ function DiagnosticResultPage() {
 }
 
 export default DiagnosticResultPage;
-
-

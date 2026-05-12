@@ -1,7 +1,5 @@
-﻿import { useState, useEffect, useMemo, useCallback } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import RichTextarea from "../components/RichTextarea";
-import RichTextContent from "../components/RichTextContent";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -69,7 +67,7 @@ function mapScoreToBadge(score) {
 }
 
 function feedbackTypeLabel(value) {
-  return FEEDBACK_TYPE_OPTIONS.find((option) => option.value === value).label || value || "-";
+  return FEEDBACK_TYPE_OPTIONS.find((option) => option.value === value)?.label || value || "-";
 }
 
 function normalizeFilters(filters) {
@@ -131,7 +129,7 @@ function CustomerSatisfactionPage() {
       setSummary(summaryData && typeof summaryData === "object" ? summaryData : null);
       setForm((prev) => {
         if (prev.client_id) return prev;
-        return { ...prev, client_id: safeClients[0].id || "" };
+        return { ...prev, client_id: safeClients[0]?.id || "" };
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "No se pudieron cargar los datos.");
@@ -163,7 +161,7 @@ function CustomerSatisfactionPage() {
 
   function resetForm() {
     setEditingId("");
-    setForm((prev) => ({ ...createEmptyForm(), client_id: prev.client_id || clients[0].id || "" }));
+    setForm((prev) => ({ ...createEmptyForm(), client_id: prev.client_id || clients[0]?.id || "" }));
   }
 
   function startEdit(item) {
@@ -213,7 +211,7 @@ function CustomerSatisfactionPage() {
 
   async function handleDelete(itemId) {
     if (!itemId || deletingId) return;
-    const confirmed = window.confirm("Se eliminara el feedback seleccionado. Continuar");
+    const confirmed = window.confirm("Se eliminara el feedback seleccionado. Continuar?");
     if (!confirmed) return;
 
     setDeletingId(itemId);
@@ -237,9 +235,10 @@ function CustomerSatisfactionPage() {
     <section className="page">
       <PageHeader
         eyebrow="ISO 9001"
-        title="Satisfacción del Cliente"
-        description="Registro y seguimiento de feedback de clientes para análisis operativo y dirección."
-        actions={contextReportId ? (
+        title="Satisfaccion del Cliente"
+        description="Registro y seguimiento de feedback de clientes para analisis operativo y direccion."
+        actions={
+          contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
               Volver a auditoría
             </Link>
@@ -251,22 +250,23 @@ function CustomerSatisfactionPage() {
           Vista contextual desde auditoría {contextReportId}. El cliente del informe se aplica como filtro inicial.
         </p>
       ) : null}
-{statusMessage ? <p className="status">{statusMessage}</p> : null}
-{error ? <p className="status error">{error}</p> : null}
-{loading ? <p className="status">Cargando satisfacción del cliente...</p> : null}
 
-      <SectionCard title="Resumen" description="Media general y distribución simple de puntuaciónes.">
+      {statusMessage ? <p className="status">{statusMessage}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
+      {loading ? <p className="status">Cargando satisfaccion del cliente...</p> : null}
+
+      <SectionCard title="Resumen" description="Media general y distribucion simple de puntuaciones.">
         <div className="inline-actions">
-          <StatusBadge value="compliant" label={`Satisfechos: ${summary.satisfied_count ?? 0}`} />
-          <StatusBadge value="partial" label={`Neutros: ${summary.neutral_count ?? 0}`} />
-          <StatusBadge value="non_compliant" label={`Insatisfechos: ${summary.unsatisfied_count ?? 0}`} />
-          <span className="soft-label">Media: {formatAverage(summary.average_score)} / 5</span>
-          <span className="soft-label">Total: {summary.total_feedback ?? 0}</span>
-          <span className="soft-label">Ultimo: {formatDate(summary.latest_feedback_date)}</span>
+          <StatusBadge value="compliant" label={`Satisfechos: ${summary?.satisfied_count ?? 0}`} />
+          <StatusBadge value="partial" label={`Neutros: ${summary?.neutral_count ?? 0}`} />
+          <StatusBadge value="non_compliant" label={`Insatisfechos: ${summary?.unsatisfied_count ?? 0}`} />
+          <span className="soft-label">Media: {formatAverage(summary?.average_score)} / 5</span>
+          <span className="soft-label">Total: {summary?.total_feedback ?? 0}</span>
+          <span className="soft-label">Ultimo: {formatDate(summary?.latest_feedback_date)}</span>
         </div>
       </SectionCard>
 
-      <SectionCard title="Filtros" description="Filtra por rango de fecha, puntuación y origen.">
+      <SectionCard title="Filtros" description="Filtra por rango de fecha, puntuacion y origen.">
         <div className="inline-actions">
           <label className="field-inline">
             <span>Cliente</span>
@@ -304,7 +304,7 @@ function CustomerSatisfactionPage() {
           </label>
 
           <label className="field-inline">
-            <span>Puntuación min</span>
+            <span>Puntuacion min</span>
             <input
               className="input-text"
               type="number"
@@ -316,7 +316,7 @@ function CustomerSatisfactionPage() {
           </label>
 
           <label className="field-inline">
-            <span>Puntuación max</span>
+            <span>Puntuacion max</span>
             <input
               className="input-text"
               type="number"
@@ -355,11 +355,13 @@ function CustomerSatisfactionPage() {
       </SectionCard>
 
       <div className="layout-grid two-columns">
-        <SectionCard title={editingId ? "Editar feedback" : "Nuevo feedback"}
-          description="Registro manual de feedback de clientes con puntuación."
-          actions={editingId ? (
+        <SectionCard
+          title={editingId ? "Editar feedback" : "Nuevo feedback"}
+          description="Registro manual de feedback de clientes con puntuacion."
+          actions={
+            editingId ? (
               <button type="button" className="btn-ghost" onClick={resetForm} disabled={saving}>
-                Cancelar edición
+                Cancelar edicion
               </button>
             ) : null
           }
@@ -397,7 +399,7 @@ function CustomerSatisfactionPage() {
               </label>
 
               <label className="field-inline">
-                <span>Puntuación *</span>
+                <span>Puntuacion *</span>
                 <input
                   className="input-text"
                   type="number"
@@ -429,7 +431,7 @@ function CustomerSatisfactionPage() {
 
             <label className="field-stack">
               <span>Comentario *</span>
-              <RichTextarea
+              <textarea
                 className="input-textarea"
                 value={form.comment}
                 onChange={(event) => setFormField("comment", event.target.value)}
@@ -446,7 +448,7 @@ function CustomerSatisfactionPage() {
           </form>
         </SectionCard>
 
-        <SectionCard title="Listado de feedback" description="Comentarios y puntuaciónes por cliente.">
+        <SectionCard title="Listado de feedback" description="Comentarios y puntuaciones por cliente.">
           {!loading && items.length === 0 ? (
             <p className="empty-state">No hay feedback para los filtros seleccionados.</p>
           ) : (
@@ -456,12 +458,12 @@ function CustomerSatisfactionPage() {
                   <div className="finding-head">
                     <p className="finding-title">{clientMap.get(item.client_id) || item.client_id}</p>
                     <div className="finding-badges">
-                      <StatusBadge value={mapScoreToBadge(item.score)} label={`Puntuación: ${item.score}/5`} />
+                      <StatusBadge value={mapScoreToBadge(item.score)} label={`Puntuacion: ${item.score}/5`} />
                       <StatusBadge value="draft" label={feedbackTypeLabel(item.feedback_type)} />
                     </div>
                   </div>
                   <p className="finding-meta">Fecha: {formatDate(item.feedback_date)}</p>
-                  <RichTextContent value={item.comment} />
+                  <p>{item.comment}</p>
                   <div className="inline-actions">
                     <button
                       type="button"
@@ -491,9 +493,3 @@ function CustomerSatisfactionPage() {
 }
 
 export default CustomerSatisfactionPage;
-
-
-
-
-
-

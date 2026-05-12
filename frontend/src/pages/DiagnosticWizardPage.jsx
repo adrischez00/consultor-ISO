@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import PageHeader from "../components/PageHeader";
@@ -190,7 +190,7 @@ function DiagnosticWizardPage() {
         answer_value: answerValue,
       });
 
-      const savedValue = String(savedAnswer.answer_value ?? answerValue);
+      const savedValue = String(savedAnswer?.answer_value ?? answerValue);
       setAnswersByQuestion((prev) => ({ ...prev, [questionIdKey]: savedValue }));
       setDiagnosticMeta((prev) => ({ ...(prev ?? {}), id: diagnosticId, status: "in_progress" }));
       setQuestionSaveState(questionIdKey, "saved");
@@ -237,8 +237,8 @@ function DiagnosticWizardPage() {
         actions={
           <div className="inline-actions">
             <StatusBadge
-              value={diagnosticMeta.status || "draft"}
-              label={formatDiagnosticStatus(diagnosticMeta.status)}
+              value={diagnosticMeta?.status || "draft"}
+              label={formatDiagnosticStatus(diagnosticMeta?.status)}
             />
             <Link className="btn-ghost link-btn" to={resultPath}>
               Ver resultado
@@ -248,7 +248,7 @@ function DiagnosticWizardPage() {
       />
 
       {loading ? <p className="status">Cargando diagnóstico...</p> : null}
-{error ? <p className="status error">{error}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
 
       {!loading && !error ? (
         <>
@@ -264,7 +264,8 @@ function DiagnosticWizardPage() {
             />
           </SectionCard>
 
-          <SectionCard title={activeClause ? `Cláusula ${activeClause}` : "Preguntas"}
+          <SectionCard
+            title={activeClause ? `Cláusula ${activeClause}` : "Preguntas"}
             description={`${activeQuestions.length} preguntas en esta cláusula.`}
             actions={
               <div className="inline-actions">

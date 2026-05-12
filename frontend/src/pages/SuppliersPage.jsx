@@ -1,7 +1,5 @@
-﻿import { useState, useEffect, useMemo, useCallback } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import RichTextarea from "../components/RichTextarea";
-import RichTextContent from "../components/RichTextContent";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -19,12 +17,12 @@ const RATING_OPTIONS = [
   { value: "excellent", label: "Excelente" },
   { value: "approved", label: "Aprobado" },
   { value: "conditional", label: "Condicional" },
-  { value: "critical", label: "Crítico" },
+  { value: "critical", label: "Critico" },
 ];
 
 const ORDER_BY_OPTIONS = [
-  { value: "evaluation_date", label: "Fecha evaluación" },
-  { value: "global_score", label: "Puntuación global" },
+  { value: "evaluation_date", label: "Fecha evaluacion" },
+  { value: "global_score", label: "Puntuacion global" },
   { value: "name", label: "Nombre" },
   { value: "incidents_count", label: "Incidencias" },
   { value: "created_at", label: "Fecha alta" },
@@ -95,7 +93,7 @@ function ratingLabel(rating) {
   if (rating === "excellent") return "Excelente";
   if (rating === "approved") return "Aprobado";
   if (rating === "conditional") return "Condicional";
-  if (rating === "critical") return "Crítico";
+  if (rating === "critical") return "Critico";
   return "-";
 }
 
@@ -138,7 +136,7 @@ function SuppliersPage() {
   }, [loadData]);
 
   const averageScoreLabel = useMemo(() => {
-    const value = Number(summary.average_global_score);
+    const value = Number(summary?.average_global_score);
     if (!Number.isFinite(value)) return "-";
     return value.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }, [summary]);
@@ -219,7 +217,7 @@ function SuppliersPage() {
 
   async function handleDelete(supplierId) {
     if (!supplierId || deletingId) return;
-    const confirmed = window.confirm("Se eliminara el proveedor seleccionado. Continuar");
+    const confirmed = window.confirm("Se eliminara el proveedor seleccionado. Continuar?");
     if (!confirmed) return;
 
     setDeletingId(supplierId);
@@ -244,8 +242,9 @@ function SuppliersPage() {
       <PageHeader
         eyebrow="ISO 9001"
         title="Proveedores"
-        description="Gestión profesional de proveedores y evaluación por criterios para seguimiento operativo."
-        actions={contextReportId ? (
+        description="Gestion profesional de proveedores y evaluacion por criterios para seguimiento operativo."
+        actions={
+          contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
               Volver a auditoría
             </Link>
@@ -258,23 +257,24 @@ function SuppliersPage() {
           operación y control externo.
         </p>
       ) : null}
-{statusMessage ? <p className="status">{statusMessage}</p> : null}
-{error ? <p className="status error">{error}</p> : null}
-{loading ? <p className="status">Cargando proveedores...</p> : null}
 
-      <SectionCard title="Resumen de evaluación" description="Puntuación media y distribución por valoración final.">
+      {statusMessage ? <p className="status">{statusMessage}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
+      {loading ? <p className="status">Cargando proveedores...</p> : null}
+
+      <SectionCard title="Resumen de evaluacion" description="Puntuacion media y distribucion por valoracion final.">
         <div className="inline-actions">
-          <StatusBadge value="compliant" label={`Excelente: ${summary.excellent_count ?? 0}`} />
-          <StatusBadge value="compliant" label={`Aprobado: ${summary.approved_count ?? 0}`} />
-          <StatusBadge value="partial" label={`Condicional: ${summary.conditional_count ?? 0}`} />
-          <StatusBadge value="non_compliant" label={`Crítico: ${summary.critical_count ?? 0}`} />
+          <StatusBadge value="compliant" label={`Excelente: ${summary?.excellent_count ?? 0}`} />
+          <StatusBadge value="compliant" label={`Aprobado: ${summary?.approved_count ?? 0}`} />
+          <StatusBadge value="partial" label={`Condicional: ${summary?.conditional_count ?? 0}`} />
+          <StatusBadge value="non_compliant" label={`Critico: ${summary?.critical_count ?? 0}`} />
           <span className="soft-label">Media: {averageScoreLabel} / 5</span>
-          <span className="soft-label">Total: {summary.total_suppliers ?? 0}</span>
-          <span className="soft-label">Última evaluación: {formatDate(summary.latest_evaluation_date)}</span>
+          <span className="soft-label">Total: {summary?.total_suppliers ?? 0}</span>
+          <span className="soft-label">Ultima evaluacion: {formatDate(summary?.latest_evaluation_date)}</span>
         </div>
       </SectionCard>
 
-      <SectionCard title="Filtros y orden" description="Filtra y ordena por categoria, valoración, fecha y puntuación.">
+      <SectionCard title="Filtros y orden" description="Filtra y ordena por categoria, valoracion, fecha y puntuacion.">
         <div className="inline-actions">
           <label className="field-inline">
             <span>Categoria</span>
@@ -363,7 +363,7 @@ function SuppliersPage() {
           </label>
 
           <label className="field-inline">
-            <span>Dirección</span>
+            <span>Direccion</span>
             <select
               className="input-select"
               value={filters.order_dir}
@@ -384,11 +384,13 @@ function SuppliersPage() {
       </SectionCard>
 
       <div className="layout-grid two-columns">
-        <SectionCard title={editingId ? "Editar proveedor" : "Nuevo proveedor"}
-          description="Datos base y evaluación por criterios (calidad, plazo, incidencias, certificaciones)."
-          actions={editingId ? (
+        <SectionCard
+          title={editingId ? "Editar proveedor" : "Nuevo proveedor"}
+          description="Datos base y evaluacion por criterios (calidad, plazo, incidencias, certificaciones)."
+          actions={
+            editingId ? (
               <button type="button" className="btn-ghost" onClick={resetForm} disabled={saving}>
-                Cancelar edición
+                Cancelar edicion
               </button>
             ) : null
           }
@@ -531,7 +533,7 @@ function SuppliersPage() {
                 />
               </label>
               <label className="field-inline">
-                <span>Fecha evaluación *</span>
+                <span>Fecha evaluacion *</span>
                 <input
                   className="input-text"
                   type="date"
@@ -544,8 +546,8 @@ function SuppliersPage() {
             </div>
 
             <label className="field-stack">
-              <span>Notas de evaluación</span>
-              <RichTextarea
+              <span>Notas de evaluacion</span>
+              <textarea
                 className="input-textarea"
                 value={form.evaluation_notes}
                 onChange={(event) => setFormField("evaluation_notes", event.target.value)}
@@ -561,7 +563,7 @@ function SuppliersPage() {
           </form>
         </SectionCard>
 
-        <SectionCard title="Listado de proveedores" description="Seguimiento por puntuación global, incidencias y valoración final.">
+        <SectionCard title="Listado de proveedores" description="Seguimiento por puntuacion global, incidencias y valoracion final.">
           {!loading && suppliers.length === 0 ? (
             <p className="empty-state">No hay proveedores con los filtros seleccionados.</p>
           ) : (
@@ -581,12 +583,12 @@ function SuppliersPage() {
                     Categoria: {supplier.service_category || "-"} · Score global: {formatScore(supplier.global_score)} / 5
                   </p>
                   <p className="finding-meta">
-                    Evaluación: {formatDate(supplier.evaluation_date)} · Incidencias: {supplier.incidents_count}
+                    Evaluacion: {formatDate(supplier.evaluation_date)} · Incidencias: {supplier.incidents_count}
                   </p>
                   <p className="finding-meta">
                     Contacto: {supplier.contact_name || "-"} · {supplier.contact_email || "-"} · {supplier.contact_phone || "-"}
                   </p>
-                  {supplier.evaluation_notes ? <RichTextContent value={supplier.evaluation_notes} /> : null}
+                  {supplier.evaluation_notes ? <p>{supplier.evaluation_notes}</p> : null}
                   <div className="inline-actions">
                     <button
                       type="button"
@@ -616,9 +618,3 @@ function SuppliersPage() {
 }
 
 export default SuppliersPage;
-
-
-
-
-
-

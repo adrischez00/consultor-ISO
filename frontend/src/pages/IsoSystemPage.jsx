@@ -1,6 +1,5 @@
-﻿import { useState, useEffect, useMemo, useCallback } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -217,7 +216,8 @@ function IsoSystemPage() {
       } else {
         setContextForm(EMPTY_CONTEXT);
       }
-setParties(Array.isArray(partiesData) ? partiesData : []);
+
+      setParties(Array.isArray(partiesData) ? partiesData : []);
       setPolicies(Array.isArray(policiesData) ? policiesData : []);
       setRoles(Array.isArray(rolesData) ? rolesData : []);
       setProcesses(Array.isArray(processData) ? processData : []);
@@ -328,7 +328,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
   }
 
   async function handleDeleteParty(partyId) {
-    if (!window.confirm("Se eliminara la parte interesada. Continuar")) return;
+    if (!window.confirm("Se eliminara la parte interesada. Continuar?")) return;
     setSaving(true);
     setStatusMessage("");
     setError("");
@@ -378,23 +378,23 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
       };
       if (editingPolicyId) {
         await patchQualityPolicy(editingPolicyId, payload);
-        setMessage("Política de calidad actualizada.");
+        setMessage("Politica de calidad actualizada.");
       } else {
         await createQualityPolicy(payload);
-        setMessage("Política de calidad creada.");
+        setMessage("Politica de calidad creada.");
       }
       setPolicyForm(EMPTY_POLICY);
       setEditingPolicyId("");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo guardar la política de calidad.");
+      setError(err instanceof Error ? err.message : "No se pudo guardar la politica de calidad.");
     } finally {
       setSaving(false);
     }
   }
 
   async function handleDeletePolicy(policyId) {
-    if (!window.confirm("Se eliminara la política de calidad. Continuar")) return;
+    if (!window.confirm("Se eliminara la politica de calidad. Continuar?")) return;
     setSaving(true);
     setStatusMessage("");
     setError("");
@@ -404,10 +404,10 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
         setEditingPolicyId("");
         setPolicyForm(EMPTY_POLICY);
       }
-      setMessage("Política de calidad eliminada.");
+      setMessage("Politica de calidad eliminada.");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo eliminar la política de calidad.");
+      setError(err instanceof Error ? err.message : "No se pudo eliminar la politica de calidad.");
     } finally {
       setSaving(false);
     }
@@ -456,7 +456,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
   }
 
   async function handleDeleteRole(roleId) {
-    if (!window.confirm("Se eliminara el rol. Continuar")) return;
+    if (!window.confirm("Se eliminara el rol. Continuar?")) return;
     setSaving(true);
     setStatusMessage("");
     setError("");
@@ -524,7 +524,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
   }
 
   async function handleDeleteProcess(processId) {
-    if (!window.confirm("Se eliminara el proceso. Continuar")) return;
+    if (!window.confirm("Se eliminara el proceso. Continuar?")) return;
     setSaving(true);
     setStatusMessage("");
     setError("");
@@ -594,7 +594,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
   }
 
   async function handleDeleteObjective(objectiveId) {
-    if (!window.confirm("Se eliminara el objetivo. Continuar")) return;
+    if (!window.confirm("Se eliminara el objetivo. Continuar?")) return;
     setSaving(true);
     setStatusMessage("");
     setError("");
@@ -662,7 +662,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
   }
 
   async function handleDeleteChange(changeId) {
-    if (!window.confirm("Se eliminara el cambio planificado. Continuar")) return;
+    if (!window.confirm("Se eliminara el cambio planificado. Continuar?")) return;
     setSaving(true);
     setStatusMessage("");
     setError("");
@@ -686,8 +686,9 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
       <PageHeader
         eyebrow="ISO 9001"
         title="Sistema ISO"
-        description="Contexto, partes interesadas, política, roles, procesos, objetivos y cambios."
-        actions={contextReportId ? (
+        description="Contexto, partes interesadas, politica, roles, procesos, objetivos y cambios."
+        actions={
+          contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
               Volver a auditoría
             </Link>
@@ -697,13 +698,14 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
       {contextReportId ? (
         <p className="status">
           Contexto de auditoría activo {contextReportId}
-{contextReportYear ? ` · Año ${contextReportYear}` : ""}. Completa aquí los bloques base antes de cerrar
+          {contextReportYear ? ` · Año ${contextReportYear}` : ""}. Completa aquí los bloques base antes de cerrar
           la auditoría.
         </p>
       ) : null}
-{statusMessage ? <p className="status">{statusMessage}</p> : null}
-{error ? <p className="status error">{error}</p> : null}
-{loading ? <p className="status">Cargando informacion del sistema ISO...</p> : null}
+
+      {statusMessage ? <p className="status">{statusMessage}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
+      {loading ? <p className="status">Cargando informacion del sistema ISO...</p> : null}
 
       {!loading ? (
         <>
@@ -711,52 +713,57 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
             <form className="form-grid" onSubmit={handleSaveContext}>
               <label className="field-stack">
                 <span>Contexto interno *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
-                  value={contextForm.internal_context} onChange={(event) => setContextForm((prev) => ({ ...prev, internal_context : event.target.value }))}
+                  value={contextForm.internal_context}
+                  onChange={(event) => setContextForm((prev) => ({ ...prev, internal_context: event.target.value }))}
                   required
                   disabled={saving}
                 />
               </label>
               <label className="field-stack">
                 <span>Contexto externo *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
-                  value={contextForm.external_context} onChange={(event) => setContextForm((prev) => ({ ...prev, external_context : event.target.value }))}
+                  value={contextForm.external_context}
+                  onChange={(event) => setContextForm((prev) => ({ ...prev, external_context: event.target.value }))}
                   required
                   disabled={saving}
                 />
               </label>
               <label className="field-stack">
                 <span>Alcance del sistema *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
-                  value={contextForm.system_scope} onChange={(event) => setContextForm((prev) => ({ ...prev, system_scope : event.target.value }))}
+                  value={contextForm.system_scope}
+                  onChange={(event) => setContextForm((prev) => ({ ...prev, system_scope: event.target.value }))}
                   required
                   disabled={saving}
                 />
               </label>
               <label className="field-stack">
                 <span>Exclusiones</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
-                  value={contextForm.exclusions} onChange={(event) => setContextForm((prev) => ({ ...prev, exclusions : event.target.value }))}
+                  value={contextForm.exclusions}
+                  onChange={(event) => setContextForm((prev) => ({ ...prev, exclusions: event.target.value }))}
                   disabled={saving}
                 />
               </label>
               <div className="inline-actions">
                 <label className="field-inline">
-                  <span>Revisión actual *</span>
+                  <span>Revision actual *</span>
                   <input
                     className="input-text"
                     type="date"
-                    value={contextForm.review_date} onChange={(event) => setContextForm((prev) => ({ ...prev, review_date : event.target.value }))}
+                    value={contextForm.review_date}
+                    onChange={(event) => setContextForm((prev) => ({ ...prev, review_date: event.target.value }))}
                     required
                     disabled={saving}
                   />
                 </label>
                 <label className="field-inline">
-                  <span>Próxima revisión</span>
+                  <span>Proxima revision</span>
                   <input
                     className="input-text"
                     type="date"
@@ -777,7 +784,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
           </SectionCard>
 
           <div className="layout-grid two-columns">
-            <SectionCard title={editingPartyId ? "Editar parte interesada" : "Partes interesadas"}
+            <SectionCard
+              title={editingPartyId ? "Editar parte interesada" : "Partes interesadas"}
               description="Necesidades, expectativas y seguimiento."
             >
               <form className="form-grid" onSubmit={handleSaveParty}>
@@ -785,14 +793,15 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Nombre *</span>
                   <input
                     className="input-text"
-                    value={partyForm.name} onChange={(event) => setPartyForm((prev) => ({ ...prev, name : event.target.value }))}
+                    value={partyForm.name}
+                    onChange={(event) => setPartyForm((prev) => ({ ...prev, name: event.target.value }))}
                     required
                     disabled={saving}
                   />
                 </label>
                 <label className="field-stack">
                   <span>Necesidades y expectativas *</span>
-                  <RichTextarea
+                  <textarea
                     className="input-textarea"
                     value={partyForm.needs_expectations}
                     onChange={(event) =>
@@ -807,7 +816,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Tipo</span>
                     <select
                       className="input-select"
-                      value={partyForm.party_type} onChange={(event) => setPartyForm((prev) => ({ ...prev, party_type : event.target.value }))}
+                      value={partyForm.party_type}
+                      onChange={(event) => setPartyForm((prev) => ({ ...prev, party_type: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.partyTypes.map((value) => (
                         <option key={value} value={value}>
@@ -820,7 +830,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Prioridad</span>
                     <select
                       className="input-select"
-                      value={partyForm.priority} onChange={(event) => setPartyForm((prev) => ({ ...prev, priority : event.target.value }))}
+                      value={partyForm.priority}
+                      onChange={(event) => setPartyForm((prev) => ({ ...prev, priority: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.priorityValues.map((value) => (
                         <option key={value} value={value}>
@@ -833,7 +844,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Estado</span>
                     <select
                       className="input-select"
-                      value={partyForm.status} onChange={(event) => setPartyForm((prev) => ({ ...prev, status : event.target.value }))}
+                      value={partyForm.status}
+                      onChange={(event) => setPartyForm((prev) => ({ ...prev, status: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.statusActive.map((value) => (
                         <option key={value} value={value}>
@@ -871,7 +883,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                         <StatusBadge value={mapStatusToBadge(item.status)} label={item.status} />
                         <span>Tipo: {item.party_type}</span>
                         <span>Prioridad: {item.priority}</span>
-                        <span>Revisión: {formatDate(item.review_date)}</span>
+                        <span>Revision: {formatDate(item.review_date)}</span>
                       </div>
                     </div>
                     <div className="diagnostic-list-actions">
@@ -887,8 +899,9 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
               </div>
             </SectionCard>
 
-            <SectionCard title={editingPolicyId ? "Editar política de calidad" : "Política de calidad"}
-              description="Versiónado y activacion por cliente año general."
+            <SectionCard
+              title={editingPolicyId ? "Editar politica de calidad" : "Politica de calidad"}
+              description="Versionado y activacion por cliente o general."
             >
               <form className="form-grid" onSubmit={handleSavePolicy}>
                 <div className="inline-actions">
@@ -896,7 +909,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Cliente</span>
                     <select
                       className="input-select"
-                      value={policyForm.client_id} onChange={(event) => setPolicyForm((prev) => ({ ...prev, client_id : event.target.value }))}
+                      value={policyForm.client_id}
+                      onChange={(event) => setPolicyForm((prev) => ({ ...prev, client_id: event.target.value }))}
                     >
                       <option value="">General consultoria</option>
                       {clientOptions.map((client) => (
@@ -907,20 +921,22 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     </select>
                   </label>
                   <label className="field-inline">
-                    <span>Versión *</span>
+                    <span>Version *</span>
                     <input
                       className="input-text"
-                      value={policyForm.version_label} onChange={(event) => setPolicyForm((prev) => ({ ...prev, version_label : event.target.value }))}
+                      value={policyForm.version_label}
+                      onChange={(event) => setPolicyForm((prev) => ({ ...prev, version_label: event.target.value }))}
                       required
                       disabled={saving}
                     />
                   </label>
                 </div>
                 <label className="field-stack">
-                  <span>Política *</span>
-                  <RichTextarea
+                  <span>Politica *</span>
+                  <textarea
                     className="input-textarea"
-                    value={policyForm.policy_text} onChange={(event) => setPolicyForm((prev) => ({ ...prev, policy_text : event.target.value }))}
+                    value={policyForm.policy_text}
+                    onChange={(event) => setPolicyForm((prev) => ({ ...prev, policy_text: event.target.value }))}
                     required
                     disabled={saving}
                   />
@@ -928,13 +944,14 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                 <label className="field-inline">
                   <input
                     type="checkbox"
-                    checked={Boolean(policyForm.is_active)} onChange={(event) => setPolicyForm((prev) => ({ ...prev, is_active : event.target.checked }))}
+                    checked={Boolean(policyForm.is_active)}
+                    onChange={(event) => setPolicyForm((prev) => ({ ...prev, is_active: event.target.checked }))}
                   />
-                  <span>Política activa</span>
+                  <span>Politica activa</span>
                 </label>
                 <div className="form-actions">
                   <button type="submit" className="btn-primary" disabled={saving}>
-                    {editingPolicyId ? "Actualizar política" : "Crear política"}
+                    {editingPolicyId ? "Actualizar politica" : "Crear politica"}
                   </button>
                   {editingPolicyId ? (
                     <button
@@ -959,7 +976,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                       <div className="diagnostic-list-meta">
                         <StatusBadge value={item.is_active ? "completed" : "draft"} label={item.is_active ? "activa" : "inactiva"} />
                         <span>Cliente: {item.client_id || "General"}</span>
-                        <span>Revisión: {formatDate(item.review_date)}</span>
+                        <span>Revision: {formatDate(item.review_date)}</span>
                       </div>
                     </div>
                     <div className="diagnostic-list-actions">
@@ -978,26 +995,28 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
 
           <SectionCard title="Objetivos de calidad" description="Seguimiento con vinculacion opcional a KPI.">
             <div className="inline-actions">
-              <StatusBadge value="pending" label={`Total: ${objectiveSummary.total ?? 0}`} />
-              <StatusBadge value="in_progress" label={`En progreso: ${objectiveSummary.in_progress ?? 0}`} />
-              <StatusBadge value="completed" label={`Completados: ${objectiveSummary.completed ?? 0}`} />
-              <span className="soft-label">Con KPI: {objectiveSummary.linked_to_kpi ?? 0}</span>
+              <StatusBadge value="pending" label={`Total: ${objectiveSummary?.total ?? 0}`} />
+              <StatusBadge value="in_progress" label={`En progreso: ${objectiveSummary?.in_progress ?? 0}`} />
+              <StatusBadge value="completed" label={`Completados: ${objectiveSummary?.completed ?? 0}`} />
+              <span className="soft-label">Con KPI: {objectiveSummary?.linked_to_kpi ?? 0}</span>
             </div>
             <form className="form-grid" onSubmit={handleSaveObjective}>
               <label className="field-stack">
                 <span>Objetivo *</span>
                 <input
                   className="input-text"
-                  value={objectiveForm.title} onChange={(event) => setObjectiveForm((prev) => ({ ...prev, title : event.target.value }))}
+                  value={objectiveForm.title}
+                  onChange={(event) => setObjectiveForm((prev) => ({ ...prev, title: event.target.value }))}
                   required
                   disabled={saving}
                 />
               </label>
               <label className="field-stack">
                 <span>Descripcion *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
-                  value={objectiveForm.description} onChange={(event) => setObjectiveForm((prev) => ({ ...prev, description : event.target.value }))}
+                  value={objectiveForm.description}
+                  onChange={(event) => setObjectiveForm((prev) => ({ ...prev, description: event.target.value }))}
                   required
                   disabled={saving}
                 />
@@ -1007,7 +1026,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Periodo</span>
                   <input
                     className="input-text"
-                    value={objectiveForm.period_label} onChange={(event) => setObjectiveForm((prev) => ({ ...prev, period_label : event.target.value }))}
+                    value={objectiveForm.period_label}
+                    onChange={(event) => setObjectiveForm((prev) => ({ ...prev, period_label: event.target.value }))}
                     required
                     disabled={saving}
                   />
@@ -1028,7 +1048,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Estado</span>
                   <select
                     className="input-select"
-                    value={objectiveForm.status} onChange={(event) => setObjectiveForm((prev) => ({ ...prev, status : event.target.value }))}
+                    value={objectiveForm.status}
+                    onChange={(event) => setObjectiveForm((prev) => ({ ...prev, status: event.target.value }))}
                   >
                     {ISO_MANAGEMENT_OPTIONS.objectiveStatus.map((value) => (
                       <option key={value} value={value}>
@@ -1043,7 +1064,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>KPI vinculado</span>
                   <select
                     className="input-select"
-                    value={objectiveForm.linked_kpi_id} onChange={(event) => setObjectiveForm((prev) => ({ ...prev, linked_kpi_id : event.target.value }))}
+                    value={objectiveForm.linked_kpi_id}
+                    onChange={(event) => setObjectiveForm((prev) => ({ ...prev, linked_kpi_id: event.target.value }))}
                   >
                     <option value="">Sin vinculo</option>
                     {kpiOptions.map((kpi) => (
@@ -1058,15 +1080,17 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <input
                     className="input-text"
                     type="date"
-                    value={objectiveForm.target_date} onChange={(event) => setObjectiveForm((prev) => ({ ...prev, target_date : event.target.value }))}
+                    value={objectiveForm.target_date}
+                    onChange={(event) => setObjectiveForm((prev) => ({ ...prev, target_date: event.target.value }))}
                   />
                 </label>
                 <label className="field-inline">
-                  <span>Fecha revisión</span>
+                  <span>Fecha revision</span>
                   <input
                     className="input-text"
                     type="date"
-                    value={objectiveForm.review_date} onChange={(event) => setObjectiveForm((prev) => ({ ...prev, review_date : event.target.value }))}
+                    value={objectiveForm.review_date}
+                    onChange={(event) => setObjectiveForm((prev) => ({ ...prev, review_date: event.target.value }))}
                   />
                 </label>
               </div>
@@ -1097,7 +1121,7 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <div className="diagnostic-list-meta">
                       <StatusBadge value={mapStatusToBadge(item.status)} label={item.status} />
                       <span>Periodo: {item.period_label}</span>
-                      <span>Revisión: {formatDate(item.review_date)}</span>
+                      <span>Revision: {formatDate(item.review_date)}</span>
                     </div>
                   </div>
                   <div className="diagnostic-list-actions">
@@ -1119,25 +1143,28 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                 <span>Cambio *</span>
                 <input
                   className="input-text"
-                  value={changeForm.change_title} onChange={(event) => setChangeForm((prev) => ({ ...prev, change_title : event.target.value }))}
+                  value={changeForm.change_title}
+                  onChange={(event) => setChangeForm((prev) => ({ ...prev, change_title: event.target.value }))}
                   required
                   disabled={saving}
                 />
               </label>
               <label className="field-stack">
                 <span>Motivo *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
-                  value={changeForm.reason} onChange={(event) => setChangeForm((prev) => ({ ...prev, reason : event.target.value }))}
+                  value={changeForm.reason}
+                  onChange={(event) => setChangeForm((prev) => ({ ...prev, reason: event.target.value }))}
                   required
                   disabled={saving}
                 />
               </label>
               <label className="field-stack">
                 <span>Impacto *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
-                  value={changeForm.impact} onChange={(event) => setChangeForm((prev) => ({ ...prev, impact : event.target.value }))}
+                  value={changeForm.impact}
+                  onChange={(event) => setChangeForm((prev) => ({ ...prev, impact: event.target.value }))}
                   required
                   disabled={saving}
                 />
@@ -1147,7 +1174,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Responsable *</span>
                   <input
                     className="input-text"
-                    value={changeForm.responsible_name} onChange={(event) => setChangeForm((prev) => ({ ...prev, responsible_name : event.target.value }))}
+                    value={changeForm.responsible_name}
+                    onChange={(event) => setChangeForm((prev) => ({ ...prev, responsible_name: event.target.value }))}
                     required
                     disabled={saving}
                   />
@@ -1157,7 +1185,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <input
                     className="input-text"
                     type="date"
-                    value={changeForm.planned_date} onChange={(event) => setChangeForm((prev) => ({ ...prev, planned_date : event.target.value }))}
+                    value={changeForm.planned_date}
+                    onChange={(event) => setChangeForm((prev) => ({ ...prev, planned_date: event.target.value }))}
                     required
                     disabled={saving}
                   />
@@ -1166,7 +1195,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Estado</span>
                   <select
                     className="input-select"
-                    value={changeForm.status} onChange={(event) => setChangeForm((prev) => ({ ...prev, status : event.target.value }))}
+                    value={changeForm.status}
+                    onChange={(event) => setChangeForm((prev) => ({ ...prev, status: event.target.value }))}
                   >
                     {ISO_MANAGEMENT_OPTIONS.changeStatus.map((value) => (
                       <option key={value} value={value}>
@@ -1220,7 +1250,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
           </SectionCard>
 
           <div className="layout-grid two-columns">
-            <SectionCard title={editingRoleId ? "Editar rol y responsabilidad" : "Roles y responsabilidades"}
+            <SectionCard
+              title={editingRoleId ? "Editar rol y responsabilidad" : "Roles y responsabilidades"}
               description="Asignacion de responsables del sistema."
             >
               <form className="form-grid" onSubmit={handleSaveRole}>
@@ -1228,7 +1259,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Rol *</span>
                   <input
                     className="input-text"
-                    value={roleForm.role_name} onChange={(event) => setRoleForm((prev) => ({ ...prev, role_name : event.target.value }))}
+                    value={roleForm.role_name}
+                    onChange={(event) => setRoleForm((prev) => ({ ...prev, role_name: event.target.value }))}
                     required
                     disabled={saving}
                   />
@@ -1237,14 +1269,15 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Responsable *</span>
                   <input
                     className="input-text"
-                    value={roleForm.responsible_name} onChange={(event) => setRoleForm((prev) => ({ ...prev, responsible_name : event.target.value }))}
+                    value={roleForm.responsible_name}
+                    onChange={(event) => setRoleForm((prev) => ({ ...prev, responsible_name: event.target.value }))}
                     required
                     disabled={saving}
                   />
                 </label>
                 <label className="field-stack">
                   <span>Detalle de responsabilidad *</span>
-                  <RichTextarea
+                  <textarea
                     className="input-textarea"
                     value={roleForm.responsibility_details}
                     onChange={(event) =>
@@ -1259,7 +1292,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Proceso relacionado</span>
                     <input
                       className="input-text"
-                      value={roleForm.related_process} onChange={(event) => setRoleForm((prev) => ({ ...prev, related_process : event.target.value }))}
+                      value={roleForm.related_process}
+                      onChange={(event) => setRoleForm((prev) => ({ ...prev, related_process: event.target.value }))}
                       disabled={saving}
                     />
                   </label>
@@ -1267,7 +1301,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Estado</span>
                     <select
                       className="input-select"
-                      value={roleForm.status} onChange={(event) => setRoleForm((prev) => ({ ...prev, status : event.target.value }))}
+                      value={roleForm.status}
+                      onChange={(event) => setRoleForm((prev) => ({ ...prev, status: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.statusActive.map((value) => (
                         <option key={value} value={value}>
@@ -1319,7 +1354,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
               </div>
             </SectionCard>
 
-            <SectionCard title={editingProcessId ? "Editar proceso" : "Mapa de procesos"}
+            <SectionCard
+              title={editingProcessId ? "Editar proceso" : "Mapa de procesos"}
               description="Procesos estrategicos, operativos y de apoyo."
             >
               <form className="form-grid" onSubmit={handleSaveProcess}>
@@ -1327,16 +1363,18 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                   <span>Nombre del proceso *</span>
                   <input
                     className="input-text"
-                    value={processForm.name} onChange={(event) => setProcessForm((prev) => ({ ...prev, name : event.target.value }))}
+                    value={processForm.name}
+                    onChange={(event) => setProcessForm((prev) => ({ ...prev, name: event.target.value }))}
                     required
                     disabled={saving}
                   />
                 </label>
                 <label className="field-stack">
                   <span>Descripcion *</span>
-                  <RichTextarea
+                  <textarea
                     className="input-textarea"
-                    value={processForm.description} onChange={(event) => setProcessForm((prev) => ({ ...prev, description : event.target.value }))}
+                    value={processForm.description}
+                    onChange={(event) => setProcessForm((prev) => ({ ...prev, description: event.target.value }))}
                     required
                     disabled={saving}
                   />
@@ -1346,7 +1384,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Tipo</span>
                     <select
                       className="input-select"
-                      value={processForm.process_type} onChange={(event) => setProcessForm((prev) => ({ ...prev, process_type : event.target.value }))}
+                      value={processForm.process_type}
+                      onChange={(event) => setProcessForm((prev) => ({ ...prev, process_type: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.processTypes.map((value) => (
                         <option key={value} value={value}>
@@ -1375,7 +1414,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                       className="input-text"
                       type="number"
                       min="0"
-                      value={processForm.position_order} onChange={(event) => setProcessForm((prev) => ({ ...prev, position_order : event.target.value }))}
+                      value={processForm.position_order}
+                      onChange={(event) => setProcessForm((prev) => ({ ...prev, position_order: event.target.value }))}
                       disabled={saving}
                     />
                   </label>
@@ -1383,7 +1423,8 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
                     <span>Estado</span>
                     <select
                       className="input-select"
-                      value={processForm.status} onChange={(event) => setProcessForm((prev) => ({ ...prev, status : event.target.value }))}
+                      value={processForm.status}
+                      onChange={(event) => setProcessForm((prev) => ({ ...prev, status: event.target.value }))}
                     >
                       {ISO_MANAGEMENT_OPTIONS.statusActive.map((value) => (
                         <option key={value} value={value}>
@@ -1443,9 +1484,3 @@ setParties(Array.isArray(partiesData) ? partiesData : []);
 }
 
 export default IsoSystemPage;
-
-
-
-
-
-
