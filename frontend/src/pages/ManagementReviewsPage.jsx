@@ -1,7 +1,5 @@
-﻿import { useState, useEffect, useMemo, useCallback } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import RichTextarea from "../components/RichTextarea";
-import RichTextContent from "../components/RichTextContent";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -28,7 +26,7 @@ const REFERENCE_TYPE_OPTIONS = [
   { value: "non_conformity", label: "No conformidad" },
   { value: "improvement_opportunity", label: "Oportunidad de mejora" },
   { value: "risk_opportunity", label: "Riesgo u oportunidad" },
-  { value: "customer_feedback", label: "Satisfacción cliente" },
+  { value: "customer_feedback", label: "Satisfaccion cliente" },
   { value: "supplier", label: "Proveedor" },
 ];
 
@@ -98,7 +96,7 @@ function mapReferenceTypeLabel(type) {
   if (type === "non_conformity") return "No conformidad";
   if (type === "improvement_opportunity") return "Oportunidad de mejora";
   if (type === "risk_opportunity") return "Riesgo/Oportunidad";
-  if (type === "customer_feedback") return "Satisfacción cliente";
+  if (type === "customer_feedback") return "Satisfaccion cliente";
   if (type === "supplier") return "Proveedor";
   return type || "-";
 }
@@ -140,7 +138,7 @@ function ManagementReviewsPage() {
       setSummary(summaryData && typeof summaryData === "object" ? summaryData : null);
       setSelectedReviewId((prev) => {
         if (prev && safeReviews.some((item) => item.id === prev)) return prev;
-        return safeReviews[0].id || "";
+        return safeReviews[0]?.id || "";
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "No se pudieron cargar las revisiones.");
@@ -168,7 +166,7 @@ function ManagementReviewsPage() {
       const detail = await fetchManagementReviewDetail(selectedReviewId);
       setSelectedDetail(detail);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo cargar el detalle de la revisión.");
+      setError(err instanceof Error ? err.message : "No se pudo cargar el detalle de la revision.");
       setSelectedDetail(null);
     } finally {
       setLoadingDetail(false);
@@ -212,7 +210,7 @@ function ManagementReviewsPage() {
   }
 
   function startEditFromDetail() {
-    const review = selectedDetail.review;
+    const review = selectedDetail?.review;
     if (!review) return;
     setEditingId(review.id);
     setForm({
@@ -225,7 +223,7 @@ function ManagementReviewsPage() {
       responsible_name: review.responsible_name || "",
       followup_status: review.followup_status || "pending",
       followup_notes: review.followup_notes || "",
-      references: (selectedDetail.references || []).map((ref) => ({
+      references: (selectedDetail?.references || []).map((ref) => ({
         reference_type: ref.reference_type || "audit_report",
         source_id: ref.source_id || "",
         source_label: ref.source_label || "",
@@ -288,18 +286,18 @@ function ManagementReviewsPage() {
       let response;
       if (editingId) {
         response = await patchManagementReview(editingId, payload);
-        setStatusMessage("Revisión actualizada.");
+        setStatusMessage("Revision actualizada.");
       } else {
         response = await createManagementReview(payload);
-        setStatusMessage("Revisión creada.");
+        setStatusMessage("Revision creada.");
       }
 
-      const nextId = response.review.id || editingId || "";
+      const nextId = response?.review?.id || editingId || "";
       resetForm();
       await loadList();
       if (nextId) setSelectedReviewId(nextId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo guardar la revisión.");
+      setError(err instanceof Error ? err.message : "No se pudo guardar la revision.");
     } finally {
       setSaving(false);
     }
@@ -307,7 +305,7 @@ function ManagementReviewsPage() {
 
   async function handleDelete(reviewId) {
     if (!reviewId || deletingId) return;
-    const confirmed = window.confirm("Se eliminara la revisión seleccionada. Continuar");
+    const confirmed = window.confirm("Se eliminara la revision seleccionada. Continuar?");
     if (!confirmed) return;
 
     setDeletingId(reviewId);
@@ -318,10 +316,10 @@ function ManagementReviewsPage() {
       if (editingId === reviewId) {
         resetForm();
       }
-      setStatusMessage("Revisión eliminada.");
+      setStatusMessage("Revision eliminada.");
       await loadList();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo eliminar la revisión.");
+      setError(err instanceof Error ? err.message : "No se pudo eliminar la revision.");
     } finally {
       setDeletingId("");
     }
@@ -331,12 +329,12 @@ function ManagementReviewsPage() {
     <section className="page">
       <PageHeader
         eyebrow="ISO 9001"
-        title="Revisión por la Dirección"
+        title="Revision por la Direccion"
         description="Registro formal de revisiones, decisiones y seguimiento directivo."
         actions={
           <>
             <button type="button" className="btn-primary" onClick={startNewReview} disabled={saving}>
-              Nueva revisión
+              Nueva revision
             </button>
             {contextReportId ? (
               <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
@@ -351,21 +349,22 @@ function ManagementReviewsPage() {
           Modo contextual desde auditoría {contextReportId}. El formulario precarga la referencia al informe.
         </p>
       ) : null}
-{statusMessage ? <p className="status">{statusMessage}</p> : null}
-{error ? <p className="status error">{error}</p> : null}
-{loadingList ? <p className="status">Cargando revisiones...</p> : null}
+
+      {statusMessage ? <p className="status">{statusMessage}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
+      {loadingList ? <p className="status">Cargando revisiones...</p> : null}
 
       <SectionCard title="Resumen ejecutivo" description="Estado global del seguimiento de revisiones.">
         <div className="inline-actions">
-          <StatusBadge value="pending" label={`Pendientes: ${summary.pending_reviews ?? 0}`} />
-          <StatusBadge value="in_progress" label={`En progreso: ${summary.in_progress_reviews ?? 0}`} />
-          <StatusBadge value="completed" label={`Completadas: ${summary.completed_reviews ?? 0}`} />
-          <span className="soft-label">Total: {summary.total_reviews ?? 0}</span>
-          <span className="soft-label">Última: {formatDate(summary.latest_review_date)}</span>
+          <StatusBadge value="pending" label={`Pendientes: ${summary?.pending_reviews ?? 0}`} />
+          <StatusBadge value="in_progress" label={`En progreso: ${summary?.in_progress_reviews ?? 0}`} />
+          <StatusBadge value="completed" label={`Completadas: ${summary?.completed_reviews ?? 0}`} />
+          <span className="soft-label">Total: {summary?.total_reviews ?? 0}</span>
+          <span className="soft-label">Ultima: {formatDate(summary?.latest_review_date)}</span>
         </div>
       </SectionCard>
 
-      <SectionCard title="Filtros" description="Filtra el historial por estado y fecha de revisión.">
+      <SectionCard title="Filtros" description="Filtra el historial por estado y fecha de revision.">
         <div className="inline-actions">
           <label className="field-inline">
             <span>Estado</span>
@@ -415,7 +414,7 @@ function ManagementReviewsPage() {
       </SectionCard>
 
       <div className="layout-grid two-columns">
-        <SectionCard title="Listado de revisiones" description="Histórico de revisiones por la dirección.">
+        <SectionCard title="Listado de revisiones" description="Historico de revisiones por la direccion.">
           {!loadingList && reviews.length === 0 ? (
             <p className="empty-state">No hay revisiones registradas con los filtros actuales.</p>
           ) : (
@@ -433,7 +432,7 @@ function ManagementReviewsPage() {
                       <span>No conformidades: {review.linked_nonconformities_count || 0}</span>
                       <span>Mejoras: {review.linked_improvement_opportunities_count || 0}</span>
                       <span>Riesgos: {review.linked_risks_count || 0}</span>
-                      <span>Satisfacción: {review.linked_customer_feedback_count || 0}</span>
+                      <span>Satisfaccion: {review.linked_customer_feedback_count || 0}</span>
                       <span>Proveedores: {review.linked_suppliers_count || 0}</span>
                     </div>
                   </div>
@@ -462,7 +461,7 @@ function ManagementReviewsPage() {
 
         <div className="stack-list">
           <SectionCard
-            title="Detalle de revisión"
+            title="Detalle de revision"
             description="Conclusiones, decisiones y referencias integradas del registro seleccionado."
             actions={
               <button
@@ -478,7 +477,7 @@ function ManagementReviewsPage() {
             {loadingDetail ? (
               <p className="status">Cargando detalle...</p>
             ) : !selectedDetail?.review ? (
-              <p className="empty-state">Selecciona una revisión para ver su detalle.</p>
+              <p className="empty-state">Selecciona una revision para ver su detalle.</p>
             ) : (
               <div className="stack-list">
                 <div className="inline-actions">
@@ -514,7 +513,7 @@ function ManagementReviewsPage() {
                     <strong>{selectedDetail.linked_risks_count || 0}</strong>
                   </li>
                   <li>
-                    <span>Satisfacción cliente enlazada</span>
+                    <span>Satisfaccion cliente enlazada</span>
                     <strong>{selectedDetail.linked_customer_feedback_count || 0}</strong>
                   </li>
                   <li>
@@ -524,26 +523,23 @@ function ManagementReviewsPage() {
                 </ul>
                 <article className="finding-item">
                   <p className="finding-title">Resumen</p>
-                  <RichTextContent value={selectedDetail.review.summary} />
+                  <p>{selectedDetail.review.summary || "-"}</p>
                 </article>
                 <article className="finding-item">
                   <p className="finding-title">Conclusiones</p>
-                  <RichTextContent value={selectedDetail.review.conclusions} />
+                  <p>{selectedDetail.review.conclusions || "-"}</p>
                 </article>
                 <article className="finding-item">
                   <p className="finding-title">Decisiones</p>
-                  <RichTextContent value={selectedDetail.review.decisions} />
+                  <p>{selectedDetail.review.decisions || "-"}</p>
                 </article>
                 <article className="finding-item">
-                  <p className="finding-title">Acciónes derivadas</p>
-                  <RichTextContent value={selectedDetail.review.derived_actions} />
+                  <p className="finding-title">Acciones derivadas</p>
+                  <p>{selectedDetail.review.derived_actions || "-"}</p>
                 </article>
                 <article className="finding-item">
                   <p className="finding-title">Seguimiento</p>
-                  <RichTextContent
-                    value={selectedDetail.review.followup_notes}
-                    emptyLabel="Sin notas de seguimiento."
-                  />
+                  <p>{selectedDetail.review.followup_notes || "Sin notas de seguimiento."}</p>
                 </article>
 
                 <div className="stack-list">
@@ -566,11 +562,13 @@ function ManagementReviewsPage() {
             )}
           </SectionCard>
 
-          <SectionCard title={editingId ? "Editar revisión" : "Nueva revisión"}
-            description="Formulario estructurado para registro formal de revisión por la dirección."
-            actions={editingId ? (
+          <SectionCard
+            title={editingId ? "Editar revision" : "Nueva revision"}
+            description="Formulario estructurado para registro formal de revision por la direccion."
+            actions={
+              editingId ? (
                 <button type="button" className="btn-ghost" onClick={resetForm} disabled={saving}>
-                  Cancelar edición
+                  Cancelar edicion
                 </button>
               ) : null
             }
@@ -631,7 +629,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Resumen *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
                   value={form.summary}
                   onChange={(event) => setFormField("summary", event.target.value)}
@@ -642,7 +640,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Conclusiones *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
                   value={form.conclusions}
                   onChange={(event) => setFormField("conclusions", event.target.value)}
@@ -653,7 +651,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Decisiones *</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
                   value={form.decisions}
                   onChange={(event) => setFormField("decisions", event.target.value)}
@@ -663,8 +661,8 @@ function ManagementReviewsPage() {
               </label>
 
               <label className="field-stack">
-                <span>Acciónes derivadas *</span>
-                <RichTextarea
+                <span>Acciones derivadas *</span>
+                <textarea
                   className="input-textarea"
                   value={form.derived_actions}
                   onChange={(event) => setFormField("derived_actions", event.target.value)}
@@ -675,7 +673,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Notas de seguimiento</span>
-                <RichTextarea
+                <textarea
                   className="input-textarea"
                   value={form.followup_notes}
                   onChange={(event) => setFormField("followup_notes", event.target.value)}
@@ -687,7 +685,7 @@ function ManagementReviewsPage() {
                 <div className="inline-actions">
                   <span className="soft-label">Referencias vinculadas</span>
                   <button type="button" className="btn-ghost" onClick={addReference} disabled={saving}>
-                    Añadir referencia
+                    Anadir referencia
                   </button>
                 </div>
 
@@ -719,7 +717,8 @@ function ManagementReviewsPage() {
                           <span>ID origen (UUID)</span>
                           <input
                             className="input-text"
-                            value={ref.source_id} onChange={(event) => updateReference(index, { source_id : event.target.value })}
+                            value={ref.source_id}
+                            onChange={(event) => updateReference(index, { source_id: event.target.value })}
                             disabled={saving}
                           />
                         </label>
@@ -753,7 +752,7 @@ function ManagementReviewsPage() {
 
               <div className="form-actions">
                 <button type="submit" className="btn-primary" disabled={saving}>
-                  {saving ? "Guardando..." : editingId ? "Actualizar revisión" : "Crear revisión"}
+                  {saving ? "Guardando..." : editingId ? "Actualizar revision" : "Crear revision"}
                 </button>
               </div>
             </form>
@@ -762,16 +761,10 @@ function ManagementReviewsPage() {
       </div>
 
       {selectedListItem && !selectedDetail ? (
-        <p className="soft-label">No se pudo cargar el detalle de la revisión seleccionada.</p>
+        <p className="soft-label">No se pudo cargar el detalle de la revision seleccionada.</p>
       ) : null}
     </section>
   );
 }
 
 export default ManagementReviewsPage;
-
-
-
-
-
-

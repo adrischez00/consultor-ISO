@@ -94,7 +94,7 @@ function AuditsPage() {
   const years = useMemo(() => {
     const set = new Set();
     audits.forEach((item) => {
-      if (item.report_year) {
+      if (item?.report_year) {
         set.add(item.report_year);
       }
     });
@@ -108,7 +108,7 @@ function AuditsPage() {
   }
 
   function requestDeleteAudit(audit) {
-    if (!audit.id || deletingAuditId) return;
+    if (!audit?.id || deletingAuditId) return;
     if (!isAuditDeletable(audit.status)) return;
     setPendingDeleteAudit(audit);
   }
@@ -119,7 +119,7 @@ function AuditsPage() {
   }
 
   async function confirmDeleteAudit() {
-    if (!pendingDeleteAudit.id || deletingAuditId) return;
+    if (!pendingDeleteAudit?.id || deletingAuditId) return;
     setDeletingAuditId(pendingDeleteAudit.id);
     setError("");
     try {
@@ -127,7 +127,7 @@ function AuditsPage() {
       setAudits((prev) => prev.filter((item) => item.id !== pendingDeleteAudit.id));
       setPendingDeleteAudit(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo eliminar la auditoría.");
+      setError(err instanceof Error ? err.message : "No se pudo eliminar la auditoria.");
     } finally {
       setDeletingAuditId("");
     }
@@ -202,7 +202,7 @@ function AuditsPage() {
       </SectionCard>
 
       {loading ? <p className="status">Cargando auditorías...</p> : null}
-{error ? <p className="status error">{error}</p> : null}
+      {error ? <p className="status error">{error}</p> : null}
 
       {!loading && !error ? (
         <SectionCard
@@ -226,11 +226,11 @@ function AuditsPage() {
                   <div className="diagnostic-list-main">
                     <p className="diagnostic-list-id">
                       {audit.report_code || `AUD-${audit.report_year}`} -{" "}
-                      {audit.entity_name || audit.client.name || "-"}
+                      {audit.entity_name || audit.client?.name || "-"}
                     </p>
                     <div className="diagnostic-list-meta">
                       <StatusBadge value={audit.status} />
-                      <span>Cliente: {audit.client.name || "-"}</span>
+                      <span>Cliente: {audit.client?.name || "-"}</span>
                       <span>Año: {audit.report_year}</span>
                       <span>Fecha de auditoría: {formatDate(audit.audit_date)}</span>
                       <span>Creado por: {formatUserName(audit.created_by)}</span>
@@ -267,7 +267,7 @@ function AuditsPage() {
         open={Boolean(pendingDeleteAudit)}
         loading={Boolean(deletingAuditId)}
         title="Eliminar auditoría"
-        description="Se eliminará el expediente completo (cabecera, secciones, checks, entrevistados y recomendaciones). Esta acción no se puede deshacer."
+        description="Se eliminará el expediente completo (cabecera, secciones, checks, anexos, entrevistados y recomendaciones). Esta acción no se puede deshacer."
         entityLabel={pendingDeleteAudit?.report_code || pendingDeleteAudit?.id || ""}
         confirmLabel="Eliminar definitivamente"
         cancelLabel="Cancelar"
@@ -279,4 +279,3 @@ function AuditsPage() {
 }
 
 export default AuditsPage;
-
