@@ -15,9 +15,7 @@ function DiagnosticListItem({ diagnostic, clientName }) {
     diagnostic.total_score == null ? "-" : `${formatNumber(diagnostic.total_score)}%`;
   const resultPath = `/diagnosticos/${diagnostic.id}/resultado`;
   const wizardPath = `/diagnosticos/${diagnostic.id}`;
-  const clientText = diagnostic.client_id
-    ? clientName || diagnostic.client_id
-    : "Sin cliente";
+  const clientText = diagnostic.client_id ? clientName || diagnostic.client_id : "Sin cliente";
 
   return (
     <article className="diagnostic-list-item">

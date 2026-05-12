@@ -1,4 +1,4 @@
-import { requestJson } from "./httpClient";
+﻿import { requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 function toQuery(params) {
@@ -10,7 +10,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `?${raw}` : "";
+  return raw ? `${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
@@ -31,7 +31,7 @@ function normalizeInt(value, fieldName, { required = false, min = null, max = nu
     return null;
   }
   const parsed = Number.parseInt(raw, 10);
-  if (!Number.isFinite(parsed)) throw new Error(`${fieldName} invalido.`);
+  if (!Number.isFinite(parsed)) throw new Error(`${fieldName} inválido.`);
   if (min != null && parsed < min) throw new Error(`${fieldName} debe ser >= ${min}.`);
   if (max != null && parsed > max) throw new Error(`${fieldName} debe ser <= ${max}.`);
   return parsed;
@@ -50,7 +50,7 @@ function normalizeDate(value, fieldName, { required = false } = {}) {
 
 function normalizeCreatePayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload invalido.");
+    throw new Error("Payload inválido.");
   }
   return {
     name: normalizeRequiredText(payload.name, "name"),
@@ -67,7 +67,7 @@ function normalizeCreatePayload(payload) {
 
 function normalizePatchPayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload invalido.");
+    throw new Error("Payload inválido.");
   }
   const data = {};
   if (Object.prototype.hasOwnProperty.call(payload, "name")) {
@@ -137,7 +137,7 @@ export async function createRiskOpportunity(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear registro.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function patchRiskOpportunity(itemId, payload) {
@@ -151,7 +151,7 @@ export async function patchRiskOpportunity(itemId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar registro.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function deleteRiskOpportunity(itemId) {
@@ -161,3 +161,4 @@ export async function deleteRiskOpportunity(itemId) {
     fallbackMessage: "No se pudo eliminar el registro.",
   });
 }
+

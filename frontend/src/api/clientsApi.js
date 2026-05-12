@@ -16,9 +16,7 @@ function normalizeClientPayload(payload) {
   const employeeCountRaw = payload.employee_count;
 
   const employeeCount =
-    employeeCountRaw == null || employeeCountRaw === ""
-      ? null
-      : Number.parseInt(String(employeeCountRaw), 10);
+    employeeCountRaw == null || employeeCountRaw === "" ? null : Number.parseInt(String(employeeCountRaw), 10);
 
   if (employeeCount != null && (!Number.isFinite(employeeCount) || employeeCount < 0)) {
     throw new Error("employee_count inválido.");

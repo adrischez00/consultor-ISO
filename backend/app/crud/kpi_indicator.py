@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from datetime import date
 from decimal import Decimal, InvalidOperation
@@ -33,7 +33,7 @@ def _as_decimal(value: float | int | Decimal, field_name: str) -> Decimal:
     try:
         return Decimal(str(value))
     except (InvalidOperation, ValueError, TypeError) as exc:
-        raise ValueError(f"{field_name} es invalido") from exc
+        raise ValueError(f"{field_name} es inválido") from exc
 
 
 def _validate_period(
@@ -189,3 +189,5 @@ def update_kpi(
 def delete_kpi(db: Session, *, kpi: KpiIndicator) -> None:
     db.delete(kpi)
     db.flush()
+
+

@@ -58,11 +58,9 @@ function AppLayout({ children }) {
   return (
     <div className="app-shell">
       <button
-        type="button"
-        className={`sidebar-backdrop ${sidebarOpen ? "visible" : ""}`}
+        type="button" className={`sidebar-backdrop ${sidebarOpen ? "visible" : ""}`}
         onClick={() => setSidebarOpen(false)}
-        aria-hidden={!sidebarOpen}
-        tabIndex={sidebarOpen ? 0 : -1}
+        aria-hidden={!sidebarOpen} tabIndex={sidebarOpen ? 0 : -1}
       />
 
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
@@ -103,8 +101,8 @@ function AppLayout({ children }) {
         </nav>
 
         <div className="sidebar-footer">
-          <p>{consultancy?.name || "Consultoría"}</p>
-          <small>{user?.full_name || user?.email || "Usuario autenticado"}</small>
+          <p>{consultancy.name || "Consultoría"}</p>
+          <small>{user.full_name || user.email || "Usuario autenticado"}</small>
           <button type="button" className="btn-ghost sidebar-logout" onClick={logout}>
             Cerrar sesión
           </button>
@@ -129,7 +127,7 @@ function AppLayout({ children }) {
             </div>
             <div className="mobile-topbar-copy">
               <strong>Consultor-ISO9001</strong>
-              <small>{consultancy?.name || "Consultoría"}</small>
+              <small>{consultancy.name || "Consultoría"}</small>
             </div>
           </div>
         </header>

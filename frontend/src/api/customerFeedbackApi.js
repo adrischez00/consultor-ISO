@@ -1,4 +1,4 @@
-import { requestJson } from "./httpClient";
+﻿import { requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 const FEEDBACK_TYPES = new Set(["survey", "meeting", "call", "email", "complaint", "other"]);
@@ -12,7 +12,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `?${raw}` : "";
+  return raw ? `${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
@@ -52,14 +52,14 @@ function normalizeFeedbackType(value, fieldName, { required = false } = {}) {
     return null;
   }
   if (!FEEDBACK_TYPES.has(raw)) {
-    throw new Error(`${fieldName} invalido.`);
+    throw new Error(`${fieldName} inválido.`);
   }
   return raw;
 }
 
 function normalizeCreatePayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload invalido.");
+    throw new Error("Payload inválido.");
   }
   return {
     client_id: ensureUuid(payload.client_id, "client_id"),
@@ -74,7 +74,7 @@ function normalizeCreatePayload(payload) {
 
 function normalizePatchPayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload invalido.");
+    throw new Error("Payload inválido.");
   }
   const data = {};
   if (Object.prototype.hasOwnProperty.call(payload, "client_id")) {
@@ -106,7 +106,7 @@ export async function fetchCustomerFeedback(filters = {}) {
   });
   const data = await requestJson(`/customer-feedback${query}`, {
     method: "GET",
-    fallbackMessage: "No se pudo cargar la satisfaccion del cliente.",
+    fallbackMessage: "No se pudo cargar la satisfacción del cliente.",
   });
   if (!Array.isArray(data)) {
     throw new Error("Respuesta invalida al listar feedback.");
@@ -117,7 +117,7 @@ export async function fetchCustomerFeedback(filters = {}) {
 export async function fetchCustomerFeedbackSummary() {
   const data = await requestJson("/customer-feedback/summary", {
     method: "GET",
-    fallbackMessage: "No se pudo cargar el resumen de satisfaccion.",
+    fallbackMessage: "No se pudo cargar el resumen de satisfacción.",
   });
   if (!data || typeof data !== "object") {
     throw new Error("Respuesta invalida al cargar resumen.");
@@ -135,7 +135,7 @@ export async function createCustomerFeedback(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear feedback.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function patchCustomerFeedback(feedbackId, payload) {
@@ -149,7 +149,7 @@ export async function patchCustomerFeedback(feedbackId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar feedback.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function deleteCustomerFeedback(feedbackId) {
@@ -159,3 +159,4 @@ export async function deleteCustomerFeedback(feedbackId) {
     fallbackMessage: "No se pudo eliminar el feedback.",
   });
 }
+

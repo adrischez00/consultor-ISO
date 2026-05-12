@@ -6,7 +6,7 @@
 const TOKEN_LABELS = {
   manual: "manual",
   quality: "calidad",
-  revision: "revisión",
+  revisión: "revisión",
   date: "fecha",
   context: "contexto",
   document: "documento",
@@ -89,7 +89,7 @@ const TOKEN_LABELS = {
   tools: "herramientas",
   organizational: "organizacional",
   knowledge: "conocimiento",
-  managed: "gestionado",
+  managed: "gestiónado",
   job: "puestos",
   profiles: "perfiles",
   training: "formación",
@@ -237,11 +237,11 @@ const SELECT_FIELD_CODES = {
 };
 
 const REQUIRED_FIELD_CODES = new Set([
-  "manual_quality_revision",
+  "manual_quality_revisión",
   "external_issues_summary",
   "scope_current_text",
   "top_management_involvement_summary",
-  "quality_policy_revision",
+  "quality_policy_revisión",
   "objectives_reference_document",
   "employee_count",
   "resources_sufficient",
@@ -255,25 +255,25 @@ const HELP_TEXT_BY_FIELD = {
   previous_objectives: "Registra objetivos del periodo anterior (uno por linea).",
   current_objectives: "Registra objetivos vigentes del periodo actual (uno por linea).",
   performance_indicators_matrix:
-    "El estado se calcula automáticamente por fila: Cumple, No cumple o En progreso.",
+    "El estado se calcula automáticamente por fila: Cumple, No cumple año En progreso.",
   customer_satisfaction_global_score: "Escala sugerida de 0 a 10.",
   customer_satisfaction_response_rate: "Introduce porcentaje de respuesta (0-100).",
   context_document_code: "Autogenerado desde el documento P09 de contexto.",
-  context_document_revision: "Autogenerado desde el documento P09 de contexto.",
+  context_document_revisión: "Autogenerado desde el documento P09 de contexto.",
   context_document_date: "Autogenerado desde el documento P09 de contexto.",
   interested_parties_document_code: "Autogenerado desde el documento P09 de partes interesadas.",
-  interested_parties_revision: "Autogenerado desde el documento P09 de partes interesadas.",
+  interested_parties_revisión: "Autogenerado desde el documento P09 de partes interesadas.",
   interested_parties_date: "Autogenerado desde el documento P09 de partes interesadas.",
 };
 
 const LABEL_OVERRIDES = {
-  manual_quality_revision: "Revisión del manual de calidad",
+  manual_quality_revisión: "Revisión del manual de calidad",
   manual_quality_date: "Fecha del manual de calidad",
-  context_document_code: "Codigo del documento de contexto",
-  context_document_revision: "Revisión del documento de contexto",
+  context_document_code: "Código del documento de contexto",
+  context_document_revisión: "Revisión del documento de contexto",
   context_document_date: "Fecha del documento de contexto",
-  interested_parties_document_code: "Codigo documento partes interesadas",
-  interested_parties_revision: "Revisión documento partes interesadas",
+  interested_parties_document_code: "Código documento partes interesadas",
+  interested_parties_revisión: "Revisión documento partes interesadas",
   interested_parties_date: "Fecha documento partes interesadas",
   external_issues_summary: "Cuestiones externas (resumen)",
   internal_issues_summary: "Cuestiones internas (resumen)",
@@ -310,7 +310,7 @@ const LABEL_OVERRIDES = {
   supplier_nc_summary: "Resumen NC de proveedor",
   internal_nc_exists: "Existen NC internas",
   internal_nc_summary: "Resumen NC internas",
-  corrective_actions_followed: "Acciones correctivas con seguimiento",
+  corrective_actions_followed: "Acciónes correctivas con seguimiento",
   continuous_improvement_mechanism_summary: "Mecanismo de mejora continua",
   management_review_outputs_used_for_improvement: "Salidas de revisión usadas para mejorar",
 };
@@ -347,15 +347,7 @@ function createField(fieldGroup, fieldCode, index) {
   const type = inferFieldType(fieldCode);
   const selectConfig = SELECT_FIELD_CODES[fieldCode];
   const placeholder =
-    type === "textarea"
-      ? "Describe la evidencia observada..."
-      : type === "date"
-        ? "Selecciona fecha"
-        : type === "number"
-          ? "Introduce valor numérico"
-          : type === "list"
-            ? "Añade un valor"
-            : "Introduce valor";
+    type === "textarea" ? "Describe la evidencia observada..." : type === "date" ? "Selecciona fecha" : type === "number" ? "Introduce valor numérico" : type === "list" ? "Añade un valor" : "Introduce valor";
 
   return {
     field_group: fieldGroup,
@@ -365,7 +357,7 @@ function createField(fieldGroup, fieldCode, index) {
     placeholder,
     required: REQUIRED_FIELD_CODES.has(fieldCode),
     help_text: HELP_TEXT_BY_FIELD[fieldCode] || "",
-    options: selectConfig?.options || [],
+    options: selectConfig.options || [],
     repeatable: type === "list",
     field_mode: type === "list" ? "repeatable" : "simple",
     sort_order: index,
@@ -393,12 +385,12 @@ export const sectionFieldDefinitions = {
     section_title: "Contexto de la organización",
     groups: [
       buildGroup(
-        "analisis_contexto",
-        "4.1 Analisis del contexto",
+        "análisis_contexto",
+        "4.1 Análisis del contexto",
         "Completa el documento P09 de contexto y resume cuestiones externas e internas.",
         [
           "context_document_code",
-          "context_document_revision",
+          "context_document_revisión",
           "context_document_date",
           "external_issues_summary",
           "internal_issues_summary",
@@ -412,7 +404,7 @@ export const sectionFieldDefinitions = {
         "Documento P09 de partes interesadas (fuente principal de la cláusula 4.2).",
         [
           "interested_parties_document_code",
-          "interested_parties_revision",
+          "interested_parties_revisión",
           "interested_parties_date",
           "new_interested_parties_detected",
           "new_interested_parties_detail",
@@ -421,10 +413,10 @@ export const sectionFieldDefinitions = {
       ),
       buildGroup(
         "documentacion_contexto",
-        "4.3 Alcance del sistema de gestion",
+        "4.3 Alcance del sistema de gestión",
         "Registra alcance vigente, cambios aplicados y trazabilidad del manual de calidad.",
         [
-          "manual_quality_revision",
+          "manual_quality_revisión",
           "manual_quality_date",
           "scope_current_text",
           "scope_changed",
@@ -433,7 +425,7 @@ export const sectionFieldDefinitions = {
       ),
       buildGroup(
         "procesos_sgc",
-        "4.4 Sistema de gestion de calidad y procesos",
+        "4.4 Sistema de gestión de calidad y procesos",
         "Confirma actualizacion del mapa de procesos y definicion de entradas y salidas.",
         [
           "process_map_updated",
@@ -450,17 +442,17 @@ export const sectionFieldDefinitions = {
     section_title: "Liderazgo",
     groups: [
       buildGroup(
-        "liderazgo_direccion",
+        "liderazgo_dirección",
         "Liderazgo de la dirección",
         "Compromiso y evidencias de liderazgo.",
         ["top_management_involvement_summary", "leadership_evidence_summary"]
       ),
       buildGroup(
-        "politica_calidad",
+        "política_calidad",
         "Política de calidad",
         "Estado y cambios de la política.",
         [
-          "quality_policy_revision",
+          "quality_policy_revisión",
           "quality_policy_date",
           "quality_policy_updated",
           "quality_policy_includes_climate_change",
@@ -489,7 +481,7 @@ export const sectionFieldDefinitions = {
       buildGroup(
         "documento_riesgos_oportunidades",
         "6.1 Riesgos y oportunidades",
-        "Gestion centralizada mediante el documento P09 de riesgos y oportunidades.",
+        "Gestión centralizada mediante el documento P09 de riesgos y oportunidades.",
         []
       ),
       buildGroup(
@@ -572,7 +564,7 @@ export const sectionFieldDefinitions = {
           "last_meeting_date",
           "last_meeting_topics",
           "document_control_reference",
-          "document_control_revision",
+          "document_control_revisión",
           "document_control_date",
           "documents_accessible",
         ]
@@ -695,11 +687,13 @@ export function getSectionFieldDefinition(sectionCode) {
 }
 
 export function getSectionFieldGroups(sectionCode) {
-  return getSectionFieldDefinition(sectionCode)?.groups || [];
+  return getSectionFieldDefinition(sectionCode).groups || [];
 }
 
 export function getSectionFlatFields(sectionCode) {
-  return getSectionFieldDefinition(sectionCode)?.flat_fields || [];
+  return getSectionFieldDefinition(sectionCode).flat_fields || [];
 }
+
+
 
 

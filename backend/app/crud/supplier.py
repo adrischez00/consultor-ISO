@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
@@ -73,7 +73,7 @@ def _validate_email(value: str | None) -> str | None:
     if normalized is None:
         return None
     if "@" not in normalized or normalized.startswith("@") or normalized.endswith("@"):
-        raise ValueError("contact_email invalido")
+        raise ValueError("contact_email inválido")
     return normalized
 
 
@@ -97,7 +97,7 @@ def _normalize_rating(value: str | None) -> str:
     normalized = _normalize_required_text(value, "final_rating").lower()
     if normalized not in SUPPLIER_FINAL_RATING_VALUES:
         allowed = ", ".join(sorted(SUPPLIER_FINAL_RATING_VALUES))
-        raise ValueError(f"final_rating invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"final_rating inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -105,7 +105,7 @@ def _normalize_order_by(value: str | None) -> str:
     normalized = (value or ORDER_BY_EVALUATION_DATE).strip().lower()
     if normalized not in SUPPLIER_ORDER_BY_VALUES:
         allowed = ", ".join(sorted(SUPPLIER_ORDER_BY_VALUES))
-        raise ValueError(f"order_by invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"order_by inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -113,7 +113,7 @@ def _normalize_order_dir(value: str | None) -> str:
     normalized = (value or ORDER_DIR_DESC).strip().lower()
     if normalized not in SUPPLIER_ORDER_DIR_VALUES:
         allowed = ", ".join(sorted(SUPPLIER_ORDER_DIR_VALUES))
-        raise ValueError(f"order_dir invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"order_dir inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -347,3 +347,4 @@ def get_supplier_summary(db: Session, *, consultancy_id: UUID) -> SupplierSummar
         critical_count=counts[RATING_CRITICAL],
         latest_evaluation_date=latest_evaluation_date,
     )
+

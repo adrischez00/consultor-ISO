@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 import re
 from collections import defaultdict
 from contextlib import contextmanager
@@ -60,7 +60,7 @@ PRIORITY_BY_STATUS: dict[str, str] = {
     "non_compliant": "high",
 }
 TASK_RECOMMENDATION_BY_STATUS: dict[str, str] = {
-    "compliant": "Mantener la evidencia actual y programar seguimiento periodico.",
+    "compliant": "Mantener la evidencia actual y programar seguimiento periódico.",
     "partial": "Formalizar el proceso, definir responsables y dejar evidencia documentada.",
     "non_compliant": "Disenar e implementar el control requerido con evidencia verificable.",
 }
@@ -68,7 +68,7 @@ DECIMAL_ONE = Decimal("1")
 DECIMAL_TWO = Decimal("2")
 DECIMAL_HUNDRED = Decimal("100")
 DECIMAL_PRECISION = Decimal("0.01")
-CLAUSE_NUMBER_REGEX = re.compile(r"^\d+(\.\d+)?$")
+CLAUSE_NUMBER_REGEX = re.compile(r"^\d+(\.\d+)$")
 
 
 @dataclass(frozen=True)
@@ -812,3 +812,4 @@ def list_diagnostic_answers(
     except SQLAlchemyError as exc:
         logger.exception("Database error while listing answers")
         raise HTTPException(status_code=500, detail="No se pudieron cargar las respuestas") from exc
+

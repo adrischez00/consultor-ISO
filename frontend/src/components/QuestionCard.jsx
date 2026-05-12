@@ -24,8 +24,7 @@ function QuestionCard({ question, selectedValue, savingState, disabled, onSelect
             return (
               <button
                 key={`${questionId}-${optionValue}`}
-                type="button"
-                className={isSelected ? "answer-option selected" : "answer-option"}
+                type="button" className={isSelected ? "answer-option selected" : "answer-option"}
                 onClick={() => onSelectOption(questionId, optionValue)}
                 disabled={disabled || isSaving}
               >
@@ -38,7 +37,6 @@ function QuestionCard({ question, selectedValue, savingState, disabled, onSelect
       ) : (
         <p className="question-help">Esta pregunta no tiene opciones configuradas.</p>
       )}
-
       {savingState === "saving" ? <p className="save-state">Guardando respuesta...</p> : null}
       {savingState === "saved" ? <p className="save-state ok">Respuesta guardada.</p> : null}
       {savingState === "error" ? <p className="save-state error">No se pudo guardar.</p> : null}

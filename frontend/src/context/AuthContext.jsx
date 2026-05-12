@@ -78,10 +78,10 @@ export function AuthProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      accessToken: session?.access_token ?? null,
-      user: session?.user ?? null,
-      consultancy: session?.consultancy ?? null,
-      isAuthenticated: Boolean(session?.access_token),
+      accessToken: session.access_token ?? null,
+      user: session.user ?? null,
+      consultancy: session.consultancy ?? null,
+      isAuthenticated: Boolean(session.access_token),
       loading: bootstrapping,
       login,
       register,

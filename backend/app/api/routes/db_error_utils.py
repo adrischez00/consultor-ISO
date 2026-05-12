@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+﻿from fastapi import HTTPException
 from sqlalchemy.exc import OperationalError
 
 
@@ -9,7 +9,7 @@ def map_operational_error(exc: OperationalError, default_detail: str) -> HTTPExc
         return HTTPException(
             status_code=503,
             detail=(
-                "Conexion rechazada por Supabase pooler (tenant/user no encontrado). "
+                "Conexión rechazada por Supabase pooler (tenant/user no encontrado). "
                 "Verifica que DATABASE_URL sea la cadena exacta de Connect."
             ),
         )
@@ -27,9 +27,11 @@ def map_operational_error(exc: OperationalError, default_detail: str) -> HTTPExc
         return HTTPException(
             status_code=503,
             detail=(
-                "Conexion bloqueada por red o firewall hacia la base de datos. "
+                "Conexión bloqueada por red o firewall hacia la base de datos. "
                 "Revisa reglas de salida y acceso al pooler."
             ),
         )
 
     return HTTPException(status_code=503, detail=default_detail)
+
+

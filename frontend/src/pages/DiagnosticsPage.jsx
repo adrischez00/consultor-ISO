@@ -96,9 +96,7 @@ function DiagnosticsPage() {
     let nextSelectedClientId = "";
     const fromQuery = normalizeUuidOrNull(searchParams.get("client_id"));
     const fromStorage =
-      typeof window === "undefined"
-        ? null
-        : normalizeUuidOrNull(window.localStorage.getItem(LAST_SELECTED_CLIENT_STORAGE_KEY));
+      typeof window === "undefined" ? null : normalizeUuidOrNull(window.localStorage.getItem(LAST_SELECTED_CLIENT_STORAGE_KEY));
 
     if (fromQuery && clientsById[fromQuery]) {
       nextSelectedClientId = fromQuery;
@@ -158,7 +156,7 @@ function DiagnosticsPage() {
   }, [diagnostics, activeDiagnosticId]);
 
   const continueDiagnosticId =
-    activeInProgressDiagnostic?.id || inProgressDiagnostics[0]?.id || null;
+    activeInProgressDiagnostic.id || inProgressDiagnostics[0].id || null;
 
   useEffect(() => {
     if (!continueDiagnosticId || activeDiagnosticId === continueDiagnosticId) {
@@ -234,8 +232,8 @@ function DiagnosticsPage() {
       />
 
       {loading ? <p className="status">Cargando diagnósticos...</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
-      {clientsError ? <p className="status error">{clientsError}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
+{clientsError ? <p className="status error">{clientsError}</p> : null}
 
       {!loading && !error ? (
         <SectionCard title="Listado de diagnósticos" description="Ordenados por fecha de creación.">
@@ -262,7 +260,7 @@ function DiagnosticsPage() {
                 <DiagnosticListItem
                   key={diagnostic.id}
                   diagnostic={diagnostic}
-                  clientName={diagnostic.client_id ? clientsById[diagnostic.client_id]?.name : null}
+                  clientName={diagnostic.client_id ? clientsById[diagnostic.client_id]?.name ?? null : null}
                 />
               ))}
             </div>

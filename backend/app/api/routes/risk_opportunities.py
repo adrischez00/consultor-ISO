@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 from uuid import UUID
 
@@ -49,7 +49,7 @@ def _raise_if_risk_table_missing(exc: SQLAlchemyError) -> None:
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion de Riesgos y Oportunidades. "
+                "Falta migración de Riesgos y Oportunidades. "
                 "Ejecuta docs/sql/phase7_risk_opportunities.sql."
             ),
         ) from exc
@@ -63,7 +63,7 @@ def _normalize_item_type_filter(item_type: str | None) -> str | None:
         return None
     if normalized not in RISK_OPPORTUNITY_TYPE_VALUES:
         allowed = ", ".join(sorted(RISK_OPPORTUNITY_TYPE_VALUES))
-        raise HTTPException(status_code=400, detail=f"type invalido. Valores permitidos: {allowed}")
+        raise HTTPException(status_code=400, detail=f"type inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -75,7 +75,7 @@ def _normalize_status_filter(status_filter: str | None) -> str | None:
         return None
     if normalized not in RISK_OPPORTUNITY_STATUS_VALUES:
         allowed = ", ".join(sorted(RISK_OPPORTUNITY_STATUS_VALUES))
-        raise HTTPException(status_code=400, detail=f"status invalido. Valores permitidos: {allowed}")
+        raise HTTPException(status_code=400, detail=f"status inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -87,7 +87,7 @@ def _normalize_level_filter(level_filter: str | None) -> str | None:
         return None
     if normalized not in RISK_OPPORTUNITY_LEVEL_VALUES:
         allowed = ", ".join(sorted(RISK_OPPORTUNITY_LEVEL_VALUES))
-        raise HTTPException(status_code=400, detail=f"level invalido. Valores permitidos: {allowed}")
+        raise HTTPException(status_code=400, detail=f"level inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -284,3 +284,4 @@ def remove_risk_opportunity(
         _raise_if_risk_table_missing(exc)
         logger.exception("Database error while deleting risk/opportunity")
         raise HTTPException(status_code=500, detail="No se pudo eliminar el registro") from exc
+

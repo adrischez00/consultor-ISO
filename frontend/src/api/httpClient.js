@@ -31,7 +31,7 @@ export async function requestJson(
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const headers = body ? { "Content-Type": "application/json" } : {};
+    const headers = body ? { "Content-Type" : "application/json" } : {};
     const token = getAccessToken();
     if (token) {
       headers.Authorization = `Bearer ${token}`;
@@ -83,7 +83,7 @@ export async function requestBlob(
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const headers = body ? { "Content-Type": "application/json" } : {};
+    const headers = body ? { "Content-Type" : "application/json" } : {};
     const token = getAccessToken();
     if (token) {
       headers.Authorization = `Bearer ${token}`;

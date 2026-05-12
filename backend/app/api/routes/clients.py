@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 from uuid import UUID
 
@@ -68,7 +68,7 @@ def _map_client_integrity_error(exc: IntegrityError) -> HTTPException:
             status_code=409,
             detail=(
                 "No se pudo crear el cliente: clients.user_id requiere un usuario válido. "
-                "Define un valor por defecto en BD o habilita auth antes de forzar esta restriccion."
+                "Define un valor por defecto en BD año habilita auth antes de forzar esta restriccion."
             ),
         )
 
@@ -77,7 +77,7 @@ def _map_client_integrity_error(exc: IntegrityError) -> HTTPException:
             status_code=409,
             detail=(
                 "No se pudo crear el cliente: clients.user_id es NOT NULL en tu esquema actual. "
-                "Para esta fase sin auth, haz user_id nullable o agrega valor por defecto en BD."
+                "Para esta fase sin auth, haz user_id nullable año agrega valor por defecto en BD."
             ),
         )
 
@@ -213,3 +213,4 @@ def list_client_diagnostics(
             status_code=500,
             detail="No se pudieron listar los diagnósticos del cliente",
         ) from exc
+

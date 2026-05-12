@@ -103,7 +103,7 @@ function RegisterPage() {
         </form>
 
         <p className="auth-footnote">
-          ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
+          ¿Ya tienes cuenta <Link to="/login">Iniciar sesión</Link>
         </p>
       </article>
     </section>

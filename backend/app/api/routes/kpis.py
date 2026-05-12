@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 from datetime import date
 from uuid import UUID
@@ -48,7 +48,7 @@ def _normalize_status_filter(status_filter: str | None) -> str | None:
     if normalized not in VALID_KPI_STATUS:
         raise HTTPException(
             status_code=400,
-            detail="status invalido. Valores permitidos: ok, alerta, critico",
+            detail="status inválido. Valores permitidos: ok, alerta, critico",
         )
     return normalized
 
@@ -73,7 +73,7 @@ def _raise_if_kpi_table_missing(exc: SQLAlchemyError) -> None:
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion de KPIs. "
+                "Falta migración de KPIs. "
                 "Ejecuta docs/sql/phase5_kpis_indicators.sql."
             ),
         ) from exc
@@ -249,3 +249,4 @@ def remove_kpi(
         _raise_if_kpi_table_missing(exc)
         logger.exception("Database error while deleting kpi")
         raise HTTPException(status_code=500, detail="No se pudo eliminar el indicador") from exc
+

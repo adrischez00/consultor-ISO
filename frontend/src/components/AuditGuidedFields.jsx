@@ -14,102 +14,102 @@ import {
 const P09_MASTER_TEMPLATE_ROWS = [
   {
     stakeholder: "Gerencia",
-    needs: "Rentabilidad, control y margen de actuacion.",
-    expectations: "Resultados sostenidos, retorno de la inversiÃ³n y crecimiento.",
+    needs: "Rentabilidad, control y margen de actuación.",
+    expectations: "Resultados sostenidos, retorno de la inversión y crecimiento.",
     requirements: "Objetivos e indicadores alcanzables y cumplimiento de requisitos aplicables.",
-    risks: "Mala toma de decisiones, perdida de beneficios, falta de comunicacion e incumplimientos legales.",
+    risks: "Mala toma de decisiones, pérdida de beneficios, falta de comunicación e incumplimientos legales.",
     opportunities: "Crecimiento sostenible y mejora del posicionamiento.",
-    actions: "Seguimiento periodico, revision de indicadores y mejora de la comunicacion y control estrategico.",
+    actions: "Seguimiento periódico, revisión de indicadores y mejora de la comunicación y control estratégico.",
   },
   {
     stakeholder: "Trabajadores",
-    needs: "Seguridad, estabilidad, medios adecuados y formacion.",
-    expectations: "Buen ambiente, desarrollo profesional y comunicacion interna eficaz.",
-    requirements: "Cumplimiento PRL, legislacion laboral e instrucciones de trabajo claras.",
-    risks: "Accidentes, fuga de personal, bajas prolongadas y falta de comunicacion.",
-    opportunities: "Mayor productividad, especializacion y mejora del compromiso.",
-    actions: "FormaciÃ³n continua, reuniones periÃ³dicas, seguimiento del desempeÃ±o y entrega de EPIs.",
+    needs: "Seguridad, estabilidad, medios adecuados y formación.",
+    expectations: "Buen ambiente, desarrollo profesional y comunicación interna eficaz.",
+    requirements: "Cumplimiento PRL, legislación laboral e instrucciones de trabajo claras.",
+    risks: "Accidentes, fuga de personal, bajas prolongadas y falta de comunicación.",
+    opportunities: "Mayor productividad, especialización y mejora del compromiso.",
+    actions: "Formación continua, reuniones periódicas, seguimiento del desempeño y entrega de EPIs.",
   },
   {
     stakeholder: "Clientes",
     needs: "Calidad, cumplimiento, rentabilidad y servicio fiable.",
-    expectations: "Atencion adecuada, cumplimiento de plazos, confianza y buena imagen.",
+    expectations: "Atención adecuada, cumplimiento de plazos, confianza y buena imagen.",
     requirements: "Cumplimiento de especificaciones, requisitos del servicio y normativa aplicable.",
-    risks: "Retrasos, errores de ejecucion, incumplimientos e incidencias de seguridad.",
-    opportunities: "FidelizaciÃ³n, servicios personalizados, mejora reputacional y nuevas inversiones.",
+    risks: "Retrasos, errores de ejecución, incumplimientos e incidencias de seguridad.",
+    opportunities: "Fidelización, servicios personalizados, mejora reputacional y nuevas inversiones.",
     actions: "Control de calidad, seguimiento del servicio, mejora continua y cumplimiento normativo.",
   },
   {
     stakeholder: "Proveedores",
-    needs: "Relacion estable, planificacion y pagos previsibles.",
-    expectations: "Comunicacion clara y continuidad de colaboracion.",
+    needs: "Relación estable, planificación y pagos previsibles.",
+    expectations: "Comunicación clara y continuidad de colaboración.",
     requirements: "Contratos claros, criterios definidos y cumplimiento legal.",
     risks: "Incumplimientos, interrupciones de suministro y dependencia excesiva.",
-    opportunities: "Alianzas, mejora de condiciones y colaboracion a largo plazo.",
-    actions: "EvaluaciÃ³n periÃ³dica, homologaciÃ³n, solicitud de certificaciones y seguimiento.",
+    opportunities: "Alianzas, mejora de condiciones y colaboración a largo plazo.",
+    actions: "Evaluación periódica, homologación, solicitud de certificaciones y seguimiento.",
   },
   {
     stakeholder: "Competencia",
     needs: "Vigilancia del mercado y posicionamiento competitivo.",
-    expectations: "Diferenciacion y mantenimiento de cuota.",
-    requirements: "Analisis de mercado y estrategia comercial coherente.",
-    risks: "Perdida de cuota y competencia desleal.",
-    opportunities: "Mejora competitiva, diferenciacion y refuerzo de certificaciones.",
-    actions: "Analisis de mercado, revision de posicionamiento y mejora continua.",
+    expectations: "Diferenciación y mantenimiento de cuota.",
+    requirements: "Análisis de mercado y estrategia comercial coherente.",
+    risks: "Pérdida de cuota y competencia desleal.",
+    opportunities: "Mejora competitiva, diferenciación y refuerzo de certificaciones.",
+    actions: "Análisis de mercado, revisión de posicionamiento y mejora continua.",
   },
   {
-    stakeholder: "Cambio climatico",
-    needs: "Adaptacion, eficiencia y control del impacto ambiental.",
-    expectations: "Mejora de imagen sostenible, reduccion de costes y atraccion de clientes sensibilizados.",
-    requirements: "Consideracion de impactos ambientales y requisitos aplicables.",
-    risks: "Sanciones, dano reputacional y aumento de costes energeticos o de materiales.",
-    opportunities: "Eficiencia energetica, innovacion y diferenciacion sostenible.",
-    actions: "Reduccion de emisiones, mejora de consumos, impulso de cultura ambiental y uso de tecnologias mas limpias.",
+    stakeholder: "Cambio climático",
+    needs: "Adaptación, eficiencia y control del impacto ambiental.",
+    expectations: "Mejora de imagen sostenible, reducción de costes y atracción de clientes sensibilizados.",
+    requirements: "Consideración de impactos ambientales y requisitos aplicables.",
+    risks: "Sanciones, daño reputacional y aumento de costes energéticos y de materiales.",
+    opportunities: "Eficiencia energética, innovación y diferenciación sostenible.",
+    actions: "Reducción de emisiones, mejora de consumos, impulso de cultura ambiental y uso de tecnologías más limpias.",
   },
   {
     stakeholder: "Autoridades legales",
     needs: "Cumplimiento normativo.",
-    expectations: "Colaboracion, transparencia y adecuacion legal.",
+    expectations: "Colaboración, transparencia y adecuación legal.",
     requirements: "Cumplimiento legal y reglamentario aplicable.",
     risks: "Multas, sanciones e incumplimientos administrativos.",
-    opportunities: "Confianza institucional y reduccion de contingencias.",
-    actions: "AuditorÃ­as, actualizaciÃ³n legislativa y seguimiento del cumplimiento.",
+    opportunities: "Confianza institucional y reducción de contingencias.",
+    actions: "Auditorías, actualización legislativa y seguimiento del cumplimiento.",
   },
   {
     stakeholder: "Bancos y aseguradoras",
     needs: "Estabilidad financiera y cobertura adecuada.",
     expectations: "Solvencia, control y cumplimiento documental.",
-    requirements: "Obligaciones financieras y contractuales al dia.",
-    risks: "Falta de financiacion, coberturas insuficientes y desviaciones financieras.",
-    opportunities: "Mejores condiciones, digitalizacion y optimizacion de costes.",
-    actions: "Control financiero, revision de polizas, actualizacion documental y seguimiento de riesgos.",
+    requirements: "Obligaciones financieras y contractuales al día.",
+    risks: "Falta de financiación, coberturas insuficientes y desviaciones financieras.",
+    opportunities: "Mejores condiciones, digitalización y optimización de costes.",
+    actions: "Control financiero, revisión de pólizas, actualización documental y seguimiento de riesgos.",
   },
   {
     stakeholder: "Mutua accidentes",
-    needs: "Coordinacion en salud laboral y gestion de contingencias.",
-    expectations: "Prevencion, comunicacion rapida y cumplimiento.",
-    requirements: "Gestion de accidentes y obligaciones preventivas.",
+    needs: "Coordinación en salud laboral y gestión de contingencias.",
+    expectations: "Prevención, comunicación rápida y cumplimiento.",
+    requirements: "Gestión de accidentes y obligaciones preventivas.",
     risks: "Accidentes, incidencias laborales y deficiencias preventivas.",
-    opportunities: "Mejora preventiva y reduccion de siniestralidad.",
-    actions: "Protocolos, seguimiento de accidentes, coordinacion documental y acciones preventivas.",
+    opportunities: "Mejora preventiva y reducción de siniestralidad.",
+    actions: "Protocolos, seguimiento de accidentes, coordinación documental y acciones preventivas.",
   },
   {
-    stakeholder: "Servicio prevencion ajeno",
-    needs: "Integracion preventiva real y seguimiento eficaz.",
-    expectations: "ColaboraciÃ³n, evaluaciÃ³n y planificaciÃ³n preventiva.",
+    stakeholder: "Servicio prevención ajeno",
+    needs: "Integración preventiva real y seguimiento eficaz.",
+    expectations: "Colaboración, evaluación y planificación preventiva.",
     requirements: "Cumplimiento PRL, evaluaciones y medidas preventivas actualizadas.",
     risks: "Riesgos laborales no controlados, falta de seguimiento y deficiencias documentales.",
-    opportunities: "Mejora de cultura preventiva, reduccion de incidentes y mejor planificacion.",
-    actions: "Seguimiento de planificaciÃ³n preventiva, revisiones periÃ³dicas, coordinaciÃ³n y actualizaciÃ³n de evaluaciones.",
+    opportunities: "Mejora de cultura preventiva, reducción de incidentes y mejor planificación.",
+    actions: "Seguimiento de planificación preventiva, revisiones periódicas, coordinación y actualización de evaluaciones.",
   },
   {
     stakeholder: "Contratas",
-    needs: "Coordinacion, ejecucion correcta y cumplimiento documental.",
-    expectations: "Colaboracion fluida, calidad y cumplimiento.",
+    needs: "Coordinación, ejecución correcta y cumplimiento documental.",
+    expectations: "Colaboración fluida, calidad y cumplimiento.",
     requirements: "CAE, requisitos contractuales y control operativo.",
-    risks: "Errores de ejecucion, incumplimientos documentales y fallos de coordinacion.",
-    opportunities: "Sinergias, mejora de satisfacciÃ³n del cliente y refuerzo de cumplimiento.",
-    actions: "Control de coordinaciÃ³n, seguimiento documental, revisiÃ³n de trabajos y control del desempeÃ±o.",
+    risks: "Errores de ejecución, incumplimientos documentales y fallos de coordinación.",
+    opportunities: "Sinergias, mejora de satisfacción del cliente y refuerzo de cumplimiento.",
+    actions: "Control de coordinación, seguimiento documental, revisión de trabajos y control del desempeño.",
   },
 ];
 
@@ -118,105 +118,105 @@ const CONTEXT_P09_MASTER_TEMPLATE_ROWS = [
     context_group: "externo",
     environment: "Legal y normativo",
     risks: "Cambios regulatorios y sanciones por incumplimiento.",
-    opportunities: "Adaptacion temprana a normativa y mejora del cumplimiento.",
-    actions: "Seguimiento legislativo, actualizacion documental y formacion continua.",
+    opportunities: "Adaptación temprana a normativa y mejora del cumplimiento.",
+    actions: "Seguimiento legislativo, actualización documental y formación continua.",
   },
   {
     context_group: "externo",
-    environment: "Economico y financiero",
-    risks: "Inflacion, subida de costes y tension de tesoreria.",
-    opportunities: "OptimizaciÃ³n de costes y nuevas inversiones sostenibles.",
-    actions: "Control financiero periodico y diversificacion de proveedores.",
+    environment: "Económico y financiero",
+    risks: "Inflación, subida de costes y tensión de tesorería.",
+    opportunities: "Optimización de costes y nuevas inversiones sostenibles.",
+    actions: "Control financiero periódico y diversificación de proveedores.",
   },
   {
     context_group: "externo",
     environment: "Competitivo y de mercado",
-    risks: "Alta competencia y presion en precios.",
-    opportunities: "Diferenciacion en calidad y servicio.",
-    actions: "Analisis de mercado y ajuste de estrategia comercial.",
+    risks: "Alta competencia y presión en precios.",
+    opportunities: "Diferenciación en calidad y servicio.",
+    actions: "Análisis de mercado y ajuste de estrategia comercial.",
   },
   {
     context_group: "externo",
-    environment: "Tecnologico",
-    risks: "Obsolescencia tecnologica y baja capacidad de respuesta.",
-    opportunities: "Innovacion, digitalizacion y mejora operativa.",
-    actions: "InversiÃ³n en tecnologÃ­a y formaciÃ³n tÃ©cnica del equipo.",
+    environment: "Tecnológico",
+    risks: "Obsolescencia tecnológica y baja capacidad de respuesta.",
+    opportunities: "Innovación, digitalización y mejora operativa.",
+    actions: "Inversión en tecnología y formación técnica del equipo.",
   },
   {
     context_group: "externo",
     environment: "Social",
-    risks: "Cambios en la demanda o en la percepcion del servicio.",
-    opportunities: "Mejor adaptacion al cliente y mejora de la confianza.",
-    actions: "Escucha activa y adaptacion de servicios a necesidades reales.",
+    risks: "Cambios en la demanda y en la percepción del servicio.",
+    opportunities: "Mejor adaptación al cliente y mejora de la confianza.",
+    actions: "Escucha activa y adaptación de servicios a necesidades reales.",
   },
   {
     context_group: "externo",
     environment: "Medioambiental",
     risks: "Restricciones ambientales y mayores exigencias regulatorias.",
     opportunities: "Posicionamiento sostenible y eficiencia en consumos.",
-    actions: "Uso de materiales ecologicos y gestion responsable de residuos.",
+    actions: "Uso de materiales ecológicos y gestión responsable de residuos.",
   },
   {
     context_group: "interno",
-    environment: "OrganizaciÃ³n",
+    environment: "Organización",
     risks: "Falta de estructura clara y solapamiento de responsabilidades.",
-    opportunities: "Mejora de la eficiencia y de la coordinacion interna.",
-    actions: "Definicion de roles, responsabilidades y procesos clave.",
+    opportunities: "Mejora de la eficiencia y de la coordinación interna.",
+    actions: "Definición de roles, responsabilidades y procesos clave.",
   },
   {
     context_group: "interno",
     environment: "Valores",
-    risks: "Desalineacion interna y debilidad de cultura corporativa.",
+    risks: "Desalineación interna y debilidad de cultura corporativa.",
     opportunities: "Cultura corporativa fuerte y compromiso sostenido.",
-    actions: "Comunicacion de valores y refuerzo del liderazgo.",
+    actions: "Comunicación de valores y refuerzo del liderazgo.",
   },
   {
     context_group: "interno",
     environment: "Conocimientos",
-    risks: "Falta de formacion y dependencia de personas clave.",
-    opportunities: "Especializacion tecnica y transferencia de conocimiento.",
-    actions: "Plan de formacion continua y gestion del conocimiento.",
+    risks: "Falta de formación y dependencia de personas clave.",
+    opportunities: "Especialización técnica y transferencia de conocimiento.",
+    actions: "Plan de formación continua y gestión del conocimiento.",
   },
   {
     context_group: "interno",
-    environment: "Tecnologia",
+    environment: "Tecnología",
     risks: "Sistemas obsoletos y baja trazabilidad operativa.",
-    opportunities: "Automatizacion y mayor control del proceso.",
-    actions: "Actualizacion de software, equipos y herramientas digitales.",
+    opportunities: "Automatización y mayor control del proceso.",
+    actions: "Actualización de software, equipos y herramientas digitales.",
   },
   {
     context_group: "interno",
     environment: "Infraestructura",
     risks: "Instalaciones inadecuadas y fallos de mantenimiento.",
-    opportunities: "Optimizacion de recursos y mejora de seguridad.",
-    actions: "Mantenimiento planificado e inversiÃ³n en infraestructura.",
+    opportunities: "Optimización de recursos y mejora de seguridad.",
+    actions: "Mantenimiento planificado e inversión en infraestructura.",
   },
   {
     context_group: "interno",
-    environment: "Comunicacion",
-    risks: "Falta de coordinacion y errores por informacion incompleta.",
-    opportunities: "Mejor trabajo en equipo y toma de decisiones agil.",
-    actions: "Implantar canales efectivos y rutinas de comunicacion.",
+    environment: "Comunicación",
+    risks: "Falta de coordinación y errores por información incompleta.",
+    opportunities: "Mejor trabajo en equipo y toma de decisiones ágil.",
+    actions: "Implantar canales efectivos y rutinas de comunicación.",
   },
   {
     context_group: "interno",
     environment: "Factores operacionales",
-    risks: "Errores de ejecucion y variabilidad en resultados.",
-    opportunities: "Estandarizacion y mayor estabilidad del servicio.",
-    actions: "Procedimientos operativos y controles de calidad periodicos.",
+    risks: "Errores de ejecución y variabilidad en resultados.",
+    opportunities: "Estandarización y mayor estabilidad del servicio.",
+    actions: "Procedimientos operativos y controles de calidad periódicos.",
   },
 ];
 
 const RISK_OPPORTUNITY_SWOT_TEMPLATE = {
-  weakness: ["Dependencia de recursos clave en procesos criticos."],
+  weakness: ["Dependencia de recursos clave en procesos críticos."],
   threat: ["Incremento de costes y cambios regulatorios con impacto operativo."],
-  strength: ["Experiencia tecnica consolidada y capacidad de respuesta."],
-  opportunity: ["Digitalizacion y mejora de eficiencia en la prestacion del servicio."],
+  strength: ["Experiencia técnica consolidada y capacidad de respuesta."],
+  opportunity: ["Digitalización y mejora de eficiencia en la prestación del servicio."],
 };
 
 const RISK_OPPORTUNITY_SEVERITY_OPTIONS = [
   { value: "slight", label: "Ligero" },
-  { value: "harm", label: "DaÃ±o" },
+  { value: "harm", label: "Daño" },
   { value: "extreme", label: "Extremo" },
 ];
 
@@ -239,7 +239,7 @@ const RISK_OPPORTUNITY_ACTION_TYPE_OPTIONS = [
 ];
 
 const RISK_OPPORTUNITY_YES_NO_OPTIONS = [
-  { value: "yes", label: "SÃ­" },
+  { value: "yes", label: "Sí" },
   { value: "no", label: "No" },
 ];
 
@@ -324,7 +324,7 @@ function normalizeYesNoValue(value, fallback = "no") {
   const normalized = String(value || "")
     .trim()
     .toLowerCase();
-  if (["yes", "si", "sÃ­", "true", "1"].includes(normalized)) return "yes";
+  if (["yes", "si", "sí", "true", "1"].includes(normalized)) return "yes";
   if (["no", "false", "0"].includes(normalized)) return "no";
   return fallback;
 }
@@ -357,7 +357,7 @@ function getActionResultBadge(value) {
   if (normalized === "unsatisfactory") {
     return { value: normalized, label: "No satisfactorio", tone: "unsatisfactory" };
   }
-  return { value: "in_progress", label: "En progreso", tone: "in-progress" };
+return { value : "in_progress", label: "En progreso", tone: "in-progress" };
 }
 
 function mapRiskSeverityToLegacyImpact(severity) {
@@ -380,8 +380,7 @@ function mapLegacyLevelToOpportunityScore(level) {
 }
 
 function calculateRiskEvaluation(probability, severity) {
-  const riskScore =
-    (RISK_PROBABILITY_SCORE[normalizeRiskProbability(probability)] || 2) *
+  const riskScore = (RISK_PROBABILITY_SCORE[normalizeRiskProbability(probability)] || 2) *
     (RISK_SEVERITY_SCORE[normalizeRiskSeverity(severity)] || 2);
 
   if (riskScore <= 2) {
@@ -393,7 +392,7 @@ function calculateRiskEvaluation(probability, severity) {
   if (riskScore <= 6) {
     return { score: riskScore, label: "Importante", tone: "important" };
   }
-  return { score: riskScore, label: "Intolerable", tone: "intolerable" };
+return { score: riskScore, label: "Intolerable", tone: "intolerable" };
 }
 
 function calculateOpportunityEvaluation(viability, attractiveness) {
@@ -417,16 +416,14 @@ function toRiskSourcePairKey(leftPrefix, leftId, rightPrefix, rightId) {
   return `${leftPrefix}:${leftId}|${rightPrefix}:${rightId}`;
 }
 
-function buildRiskCandidatesFromSwot(swotRows) {
-  const weaknesses = (Array.isArray(swotRows) ? swotRows : []).filter(
-    (row) =>
-      String(row?.swot_category || "").trim().toLowerCase() === "weakness" &&
-      String(row?.description || "").trim()
+function buildRiskCandidatesFromSwot(swotRows) {const weaknesses = (Array.isArray(swotRows) ? swotRows : []).filter((row) =>
+      String(row.swot_category || "").trim().toLowerCase() === "weakness" &&
+      String(row.description || "").trim()
   );
   const threats = (Array.isArray(swotRows) ? swotRows : []).filter(
     (row) =>
-      String(row?.swot_category || "").trim().toLowerCase() === "threat" &&
-      String(row?.description || "").trim()
+      String(row.swot_category || "").trim().toLowerCase() === "threat" &&
+      String(row.description || "").trim()
   );
 
   const candidates = [];
@@ -464,16 +461,14 @@ function buildRiskCandidatesFromSwot(swotRows) {
   return candidates;
 }
 
-function buildOpportunityCandidatesFromSwot(swotRows) {
-  const strengths = (Array.isArray(swotRows) ? swotRows : []).filter(
-    (row) =>
-      String(row?.swot_category || "").trim().toLowerCase() === "strength" &&
-      String(row?.description || "").trim()
+function buildOpportunityCandidatesFromSwot(swotRows) {const strengths = (Array.isArray(swotRows) ? swotRows : []).filter((row) =>
+      String(row.swot_category || "").trim().toLowerCase() === "strength" &&
+      String(row.description || "").trim()
   );
   const opportunities = (Array.isArray(swotRows) ? swotRows : []).filter(
     (row) =>
-      String(row?.swot_category || "").trim().toLowerCase() === "opportunity" &&
-      String(row?.description || "").trim()
+      String(row.swot_category || "").trim().toLowerCase() === "opportunity" &&
+      String(row.description || "").trim()
   );
 
   const candidates = [];
@@ -513,13 +508,13 @@ function buildOpportunityCandidatesFromSwot(swotRows) {
 
 const INTERESTED_PARTIES_AUTOFILL_FIELD_CODES = new Set([
   "interested_parties_document_code",
-  "interested_parties_revision",
+  "interested_parties_revisión",
   "interested_parties_date",
 ]);
 
 const CONTEXT_AUTOFILL_FIELD_CODES = new Set([
   "context_document_code",
-  "context_document_revision",
+  "context_document_revisión",
   "context_document_date",
 ]);
 
@@ -530,7 +525,7 @@ const AUTOFILL_FIELD_CODES = new Set([
 
 const INTERESTED_PARTIES_HIDDEN_UI_FIELD_CODES = new Set([
   "interested_parties_document_code",
-  "interested_parties_revision",
+  "interested_parties_revisión",
   "interested_parties_date",
   "new_interested_parties_detected",
   "new_interested_parties_detail",
@@ -539,7 +534,7 @@ const INTERESTED_PARTIES_HIDDEN_UI_FIELD_CODES = new Set([
 
 const CONTEXT_HIDDEN_UI_FIELD_CODES = new Set([
   "context_document_code",
-  "context_document_revision",
+  "context_document_revisión",
   "context_document_date",
   "external_issues_summary",
   "internal_issues_summary",
@@ -565,8 +560,8 @@ const PERFORMANCE_ANNUAL_MODE_OPTIONS = [
 const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
   {
     area: "Clientes",
-    indicator: "Indice de satisfaccion",
-    description: "Nivel de satisfaccion del cliente",
+    indicator: "Índice de satisfacción",
+    description: "Nivel de satisfacción del cliente",
     formula: "(Encuestas positivas / Total encuestas) * 100",
     objective_associated: "no",
     target: "",
@@ -576,8 +571,8 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
   {
     area: "Clientes",
     indicator: "Reclamaciones",
-    description: "Numero de reclamaciones por proyecto",
-    formula: "Total reclamaciones / Numero de proyectos",
+    description: "Número de reclamaciones por proyecto",
+    formula: "Total reclamaciones / Número de proyectos",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
@@ -591,22 +586,22 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
-    responsible: "Produccion",
+    responsible: "Producción",
   },
   {
     area: "Operaciones",
-    indicator: "Desviacion de plazos",
+    indicator: "Desviación de plazos",
     description: "Diferencia entre plazo previsto y real",
-    formula: "Dias reales - Dias previstos",
+    formula: "Días reales - Días previstos",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
-    responsible: "Produccion",
+    responsible: "Producción",
   },
   {
     area: "Calidad",
     indicator: "No conformidades",
-    description: "Numero de no conformidades detectadas",
+    description: "Número de no conformidades detectadas",
     formula: "Conteo total",
     objective_associated: "no",
     target: "",
@@ -625,9 +620,9 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
   },
   {
     area: "Compras",
-    indicator: "Evaluacion de proveedores",
-    description: "Desempeno de proveedores",
-    formula: "Puntuacion media de evaluaciones",
+    indicator: "Evaluación de proveedores",
+    description: "Desempeño de proveedores",
+    formula: "Puntuación media de evaluaciones",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
@@ -666,7 +661,7 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
 ];
 
 const PERFORMANCE_DEFAULT_VALUES = [
-  { id: "yes", label: "Si", key: "yes" },
+  { id: "yes", label: "S?", key: "yes" },
   { id: "no", label: "No", key: "no" },
 ];
 
@@ -741,15 +736,15 @@ function normalizePerformanceCatalogRows(rows) {
   if (!Array.isArray(rows)) return [];
   return rows.map((entry) =>
     createEmptyPerformanceIndicatorCatalogRow({
-      id: String(entry?.id || "").trim() || nextRiskOpportunityRowId(),
-      area: String(entry?.area || ""),
-      indicator: String(entry?.indicator || ""),
-      description: String(entry?.description || ""),
-      formula: String(entry?.formula || ""),
-      objective_associated: normalizeYesNoValue(entry?.objective_associated, "no"),
-      target: String(entry?.target ?? ""),
-      frequency: String(entry?.frequency || ""),
-      responsible: String(entry?.responsible || ""),
+      id: String(entry.id || "").trim() || nextRiskOpportunityRowId(),
+      area: String(entry.area || ""),
+      indicator: String(entry.indicator || ""),
+      description: String(entry.description || ""),
+      formula: String(entry.formula || ""),
+      objective_associated: normalizeYesNoValue(entry.objective_associated, "no"),
+      target: String(entry.target ?? ""),
+      frequency: String(entry.frequency || ""),
+      responsible: String(entry.responsible || ""),
     })
   );
 }
@@ -757,12 +752,12 @@ function normalizePerformanceCatalogRows(rows) {
 function normalizePerformanceTrackingRows(rows) {
   if (!Array.isArray(rows)) return [];
   return rows.map((entry) =>
-    createEmptyPerformanceTrackingRow(entry?.indicator_id, {
-      id: String(entry?.id || "").trim() || nextRiskOpportunityRowId(),
-      indicator_id: String(entry?.indicator_id || "").trim(),
-      q1: normalizePerformanceNumber(entry?.q1),
-      q2: normalizePerformanceNumber(entry?.q2),
-      q3: normalizePerformanceNumber(entry?.q3),
+    createEmptyPerformanceTrackingRow(entry.indicator_id, {
+      id: String(entry.id || "").trim() || nextRiskOpportunityRowId(),
+      indicator_id: String(entry.indicator_id || "").trim(),
+      q1: normalizePerformanceNumber(entry.q1),
+      q2: normalizePerformanceNumber(entry.q2),
+      q3: normalizePerformanceNumber(entry.q3),
     })
   );
 }
@@ -773,9 +768,9 @@ function normalizePerformanceValues(rows) {
   }
   const normalized = rows
     .map((entry) => ({
-      id: String(entry?.id || "").trim() || nextRiskOpportunityRowId(),
-      key: String(entry?.key || "").trim().toLowerCase(),
-      label: String(entry?.label || "").trim(),
+      id: String(entry.id || "").trim() || nextRiskOpportunityRowId(),
+      key: String(entry.key || "").trim().toLowerCase(),
+      label: String(entry.label || "").trim(),
     }))
     .filter((entry) => entry.label);
   if (normalized.length === 0) {
@@ -791,11 +786,11 @@ function reconcilePerformanceTrackingRows(indicators, trackingRows) {
   return normalizePerformanceCatalogRows(indicators).map((indicatorRow) => {
     const existing = trackingMap.get(String(indicatorRow.id || ""));
     return createEmptyPerformanceTrackingRow(indicatorRow.id, {
-      id: existing?.id || nextRiskOpportunityRowId(),
+      id: existing.id || nextRiskOpportunityRowId(),
       indicator_id: String(indicatorRow.id || ""),
-      q1: normalizePerformanceNumber(existing?.q1),
-      q2: normalizePerformanceNumber(existing?.q2),
-      q3: normalizePerformanceNumber(existing?.q3),
+      q1: normalizePerformanceNumber(existing.q1),
+      q2: normalizePerformanceNumber(existing.q2),
+      q3: normalizePerformanceNumber(existing.q3),
     });
   });
 }
@@ -830,12 +825,12 @@ function migrateLegacyPerformanceIndicatorsRows(rawValue) {
   if (!Array.isArray(rawValue) || rawValue.length === 0) return null;
   const indicators = rawValue.map((row) =>
     createEmptyPerformanceIndicatorCatalogRow({
-      area: String(row?.process || ""),
-      indicator: String(row?.indicator || ""),
-      description: String(row?.observation || ""),
+      area: String(row.process || ""),
+      indicator: String(row.indicator || ""),
+      description: String(row.observation || ""),
       formula: "",
       objective_associated: "no",
-      target: row?.objective == null || row?.objective === "" ? "" : String(row.objective),
+      target: row.objective == null || row.objective === "" ? "" : String(row.objective),
       frequency: "Trimestral",
       responsible: "",
     })
@@ -843,7 +838,7 @@ function migrateLegacyPerformanceIndicatorsRows(rawValue) {
   const tracking = indicators.map((indicatorRow, index) =>
     createEmptyPerformanceTrackingRow(indicatorRow.id, {
       indicator_id: indicatorRow.id,
-      q1: normalizePerformanceNumber(rawValue[index]?.result),
+      q1: normalizePerformanceNumber(rawValue[index].result),
       q2: "",
       q3: "",
     })
@@ -909,7 +904,7 @@ function getPerformanceIndicatorStatusBadge(status) {
   if (status === "non_compliant") {
     return { label: "No cumple", tone: "non-compliant" };
   }
-  return { label: "En progreso", tone: "in-progress" };
+return { label : "En progreso", tone: "in-progress" };
 }
 
 function formatPerformanceMetric(value) {
@@ -965,31 +960,31 @@ function buildDefaultP09Rows() {
 
 function cloneP09Rows(rows) {
   return (Array.isArray(rows) ? rows : []).map((row) => ({
-    id: row?.id || nextP09RowId(),
-    interested_party: String(row?.interested_party || ""),
-    needs: String(row?.needs || ""),
-    expectations: String(row?.expectations || ""),
-    requirements: String(row?.requirements || ""),
-    risks: String(row?.risks || ""),
-    opportunities: String(row?.opportunities || ""),
-    actions: String(row?.actions || ""),
-    applies: row?.applies === "no" ? "no" : "yes",
-    observations: String(row?.observations || ""),
+    id: row.id || nextP09RowId(),
+    interested_party: String(row.interested_party || ""),
+    needs: String(row.needs || ""),
+    expectations: String(row.expectations || ""),
+    requirements: String(row.requirements || ""),
+    risks: String(row.risks || ""),
+    opportunities: String(row.opportunities || ""),
+    actions: String(row.actions || ""),
+    applies: row.applies === "no" ? "no" : "yes",
+    observations: String(row.observations || ""),
   }));
 }
 
 function mapApiRowsToP09Rows(rows) {
   return (Array.isArray(rows) ? rows : []).map((row) => ({
-    id: row?.id || nextP09RowId(),
-    interested_party: String(row?.stakeholder_name || ""),
-    needs: String(row?.needs || row?.needs_expectations || ""),
-    expectations: String(row?.expectations || ""),
-    requirements: String(row?.requirements || ""),
-    risks: String(row?.risks || ""),
-    opportunities: String(row?.opportunities || ""),
-    actions: String(row?.actions || ""),
-    applies: row?.applies ? "yes" : "no",
-    observations: String(row?.observations || ""),
+    id: row.id || nextP09RowId(),
+    interested_party: String(row.stakeholder_name || ""),
+    needs: String(row.needs || row.needs_expectations || ""),
+    expectations: String(row.expectations || ""),
+    requirements: String(row.requirements || ""),
+    risks: String(row.risks || ""),
+    opportunities: String(row.opportunities || ""),
+    actions: String(row.actions || ""),
+    applies: row.applies ? "yes" : "no",
+    observations: String(row.observations || ""),
   }));
 }
 
@@ -1062,25 +1057,25 @@ function buildDefaultContextRows() {
 
 function cloneContextRows(rows) {
   return (Array.isArray(rows) ? rows : []).map((row) => ({
-    id: row?.id || nextContextRowId(),
-    context_group: normalizeContextGroup(row?.context_group),
-    environment: String(row?.environment || ""),
-    risks: String(row?.risks || ""),
-    opportunities: String(row?.opportunities || ""),
-    actions: String(row?.actions || ""),
-    observations: String(row?.observations || ""),
+    id: row.id || nextContextRowId(),
+    context_group: normalizeContextGroup(row.context_group),
+    environment: String(row.environment || ""),
+    risks: String(row.risks || ""),
+    opportunities: String(row.opportunities || ""),
+    actions: String(row.actions || ""),
+    observations: String(row.observations || ""),
   }));
 }
 
 function mapApiRowsToContextRows(rows) {
   return (Array.isArray(rows) ? rows : []).map((row) => ({
-    id: row?.id || nextContextRowId(),
-    context_group: normalizeContextGroup(row?.context_group),
-    environment: String(row?.environment || ""),
-    risks: String(row?.risks || ""),
-    opportunities: String(row?.opportunities || ""),
-    actions: String(row?.actions || ""),
-    observations: String(row?.observations || ""),
+    id: row.id || nextContextRowId(),
+    context_group: normalizeContextGroup(row.context_group),
+    environment: String(row.environment || ""),
+    risks: String(row.risks || ""),
+    opportunities: String(row.opportunities || ""),
+    actions: String(row.actions || ""),
+    observations: String(row.observations || ""),
   }));
 }
 
@@ -1106,7 +1101,7 @@ function buildContextRowsPayload(rows) {
 }
 
 function normalizeContextRegisteredCount(rows) {
-  return (Array.isArray(rows) ? rows : []).filter((row) => String(row?.environment || "").trim()).length;
+  return (Array.isArray(rows) ? rows : []).filter((row) => String(row.environment || "").trim()).length;
 }
 
 function groupContextRows(rows) {
@@ -1115,7 +1110,7 @@ function groupContextRows(rows) {
     interno: [],
   };
   (Array.isArray(rows) ? rows : []).forEach((row) => {
-    const groupKey = normalizeContextGroup(row?.context_group);
+    const groupKey = normalizeContextGroup(row.context_group);
     grouped[groupKey].push(row);
   });
   return grouped;
@@ -1175,47 +1170,47 @@ function createEmptyFollowUpRow(overrides = {}) {
 
 function cloneRiskOpportunityDraft(value) {
   return {
-    swotRows: (Array.isArray(value?.swotRows) ? value.swotRows : []).map((row) =>
-      createEmptySwotRow(row?.swot_category, {
-        id: row?.id || nextRiskOpportunityRowId(),
-        description: String(row?.description || ""),
+    swotRows: (Array.isArray(value.swotRows) ? value.swotRows : []).map((row) =>
+      createEmptySwotRow(row.swot_category, {
+        id: row.id || nextRiskOpportunityRowId(),
+        description: String(row.description || ""),
       })
     ),
-    riskRows: (Array.isArray(value?.riskRows) ? value.riskRows : []).map((row) =>
+    riskRows: (Array.isArray(value.riskRows) ? value.riskRows : []).map((row) =>
       createEmptyRiskRow({
-        id: row?.id || nextRiskOpportunityRowId(),
-        source_key: String(row?.source_key || ""),
-        source_label: String(row?.source_label || ""),
-        is_auto_generated: row?.is_auto_generated !== false,
-        process_name: String(row?.process_name || ""),
-        description: String(row?.description || ""),
-        probability: normalizeRiskProbability(row?.probability),
-        severity: normalizeRiskSeverity(row?.severity),
+        id: row.id || nextRiskOpportunityRowId(),
+        source_key: String(row.source_key || ""),
+        source_label: String(row.source_label || ""),
+        is_auto_generated: row.is_auto_generated !== false,
+        process_name: String(row.process_name || ""),
+        description: String(row.description || ""),
+        probability: normalizeRiskProbability(row.probability),
+        severity: normalizeRiskSeverity(row.severity),
       })
     ),
-    opportunityRows: (Array.isArray(value?.opportunityRows) ? value.opportunityRows : []).map((row) =>
+    opportunityRows: (Array.isArray(value.opportunityRows) ? value.opportunityRows : []).map((row) =>
       createEmptyOpportunityRow({
-        id: row?.id || nextRiskOpportunityRowId(),
-        source_key: String(row?.source_key || ""),
-        source_label: String(row?.source_label || ""),
-        is_auto_generated: row?.is_auto_generated !== false,
-        process_name: String(row?.process_name || ""),
-        description: String(row?.description || ""),
-        viability: normalizeOpportunityScore(row?.viability),
-        attractiveness: normalizeOpportunityScore(row?.attractiveness),
+        id: row.id || nextRiskOpportunityRowId(),
+        source_key: String(row.source_key || ""),
+        source_label: String(row.source_label || ""),
+        is_auto_generated: row.is_auto_generated !== false,
+        process_name: String(row.process_name || ""),
+        description: String(row.description || ""),
+        viability: normalizeOpportunityScore(row.viability),
+        attractiveness: normalizeOpportunityScore(row.attractiveness),
       })
     ),
-    followUpRows: (Array.isArray(value?.followUpRows) ? value.followUpRows : []).map((row) =>
+    followUpRows: (Array.isArray(value.followUpRows) ? value.followUpRows : []).map((row) =>
       createEmptyFollowUpRow({
-        id: row?.id || nextRiskOpportunityRowId(),
-        reference_kind: String(row?.reference_kind || "").toLowerCase(),
-        reference_row_id: String(row?.reference_row_id || ""),
-        action: String(row?.action || ""),
-        action_type: String(row?.action_type || ""),
-        indicator: normalizeYesNoValue(row?.indicator, "no"),
-        objective_associated: normalizeYesNoValue(row?.objective_associated, "no"),
-        due_date: String(row?.due_date || ""),
-        result: normalizeActionResultValue(row?.result, "in_progress"),
+        id: row.id || nextRiskOpportunityRowId(),
+        reference_kind: String(row.reference_kind || "").toLowerCase(),
+        reference_row_id: String(row.reference_row_id || ""),
+        action: String(row.action || ""),
+        action_type: String(row.action_type || ""),
+        indicator: normalizeYesNoValue(row.indicator, "no"),
+        objective_associated: normalizeYesNoValue(row.objective_associated, "no"),
+        due_date: String(row.due_date || ""),
+        result: normalizeActionResultValue(row.result, "in_progress"),
       })
     ),
   };
@@ -1237,14 +1232,14 @@ function syncRiskOpportunityAutoRows(draftValue) {
   const nextAutoRiskRows = riskCandidates.map((candidate) => {
     const existing = existingAutoRiskBySource.get(candidate.source_key);
     return createEmptyRiskRow({
-      id: existing?.id || nextRiskOpportunityRowId(),
+      id: existing.id || nextRiskOpportunityRowId(),
       source_key: candidate.source_key,
       source_label: candidate.source_label,
       is_auto_generated: true,
-      process_name: String(existing?.process_name || ""),
-      description: String(existing?.description || candidate.description),
-      probability: normalizeRiskProbability(existing?.probability),
-      severity: normalizeRiskSeverity(existing?.severity),
+      process_name: String(existing.process_name || ""),
+      description: String(existing.description || candidate.description),
+      probability: normalizeRiskProbability(existing.probability),
+      severity: normalizeRiskSeverity(existing.severity),
     });
   });
 
@@ -1259,14 +1254,14 @@ function syncRiskOpportunityAutoRows(draftValue) {
   const nextAutoOpportunityRows = opportunityCandidates.map((candidate) => {
     const existing = existingAutoOpportunityBySource.get(candidate.source_key);
     return createEmptyOpportunityRow({
-      id: existing?.id || nextRiskOpportunityRowId(),
+      id: existing.id || nextRiskOpportunityRowId(),
       source_key: candidate.source_key,
       source_label: candidate.source_label,
       is_auto_generated: true,
-      process_name: String(existing?.process_name || ""),
-      description: String(existing?.description || candidate.description),
-      viability: normalizeOpportunityScore(existing?.viability),
-      attractiveness: normalizeOpportunityScore(existing?.attractiveness),
+      process_name: String(existing.process_name || ""),
+      description: String(existing.description || candidate.description),
+      viability: normalizeOpportunityScore(existing.viability),
+      attractiveness: normalizeOpportunityScore(existing.attractiveness),
     });
   });
 
@@ -1318,14 +1313,14 @@ function mapApiRowsToRiskOpportunityDraft(rows) {
     followUpRows: [],
   };
   (Array.isArray(rows) ? rows : []).forEach((row) => {
-    const rowType = String(row?.row_type || "").trim().toLowerCase();
+    const rowType = String(row.row_type || "").trim().toLowerCase();
     if (rowType === RISK_OPPORTUNITY_ROW_TYPES.SWOT) {
-      const swotCategory = String(row?.swot_category || "").trim().toLowerCase();
+      const swotCategory = String(row.swot_category || "").trim().toLowerCase();
       if (!RISK_OPPORTUNITY_SWOT_SECTIONS.some((item) => item.key === swotCategory)) return;
       draft.swotRows.push(
         createEmptySwotRow(swotCategory, {
-          id: row?.id || nextRiskOpportunityRowId(),
-          description: String(row?.description || ""),
+          id: row.id || nextRiskOpportunityRowId(),
+          description: String(row.description || ""),
         })
       );
       return;
@@ -1333,14 +1328,14 @@ function mapApiRowsToRiskOpportunityDraft(rows) {
     if (rowType === RISK_OPPORTUNITY_ROW_TYPES.RISK) {
       draft.riskRows.push(
         createEmptyRiskRow({
-          id: row?.id || nextRiskOpportunityRowId(),
-          source_key: String(row?.source_key || ""),
+          id: row.id || nextRiskOpportunityRowId(),
+          source_key: String(row.source_key || ""),
           source_label: "",
-          is_auto_generated: Boolean(row?.is_auto_generated),
-          process_name: String(row?.process_name || row?.responsible || ""),
-          description: String(row?.description || ""),
-          probability: normalizeRiskProbability(row?.probability),
-          severity: normalizeRiskSeverity(row?.severity || mapLegacyImpactToSeverity(row?.impact)),
+          is_auto_generated: Boolean(row.is_auto_generated),
+          process_name: String(row.process_name || row.responsible || ""),
+          description: String(row.description || ""),
+          probability: normalizeRiskProbability(row.probability),
+          severity: normalizeRiskSeverity(row.severity || mapLegacyImpactToSeverity(row.impact)),
         })
       );
       return;
@@ -1348,45 +1343,43 @@ function mapApiRowsToRiskOpportunityDraft(rows) {
     if (rowType === RISK_OPPORTUNITY_ROW_TYPES.OPPORTUNITY) {
       draft.opportunityRows.push(
         createEmptyOpportunityRow({
-          id: row?.id || nextRiskOpportunityRowId(),
-          source_key: String(row?.source_key || ""),
+          id: row.id || nextRiskOpportunityRowId(),
+          source_key: String(row.source_key || ""),
           source_label: "",
-          is_auto_generated: Boolean(row?.is_auto_generated),
-          process_name: String(row?.process_name || row?.responsible || ""),
-          description: String(row?.description || ""),
+          is_auto_generated: Boolean(row.is_auto_generated),
+          process_name: String(row.process_name || row.responsible || ""),
+          description: String(row.description || ""),
           viability: normalizeOpportunityScore(
-            row?.viability,
-            mapLegacyLevelToOpportunityScore(row?.probability)
+            row.viability,
+            mapLegacyLevelToOpportunityScore(row.probability)
           ),
           attractiveness: normalizeOpportunityScore(
-            row?.attractiveness,
-            mapLegacyLevelToOpportunityScore(row?.impact)
+            row.attractiveness,
+            mapLegacyLevelToOpportunityScore(row.impact)
           ),
         })
       );
       return;
     }
     if (rowType === RISK_OPPORTUNITY_ROW_TYPES.FOLLOW_UP || rowType === "follow_up") {
-      const followUpStatusRaw = String(row?.follow_up_status || "");
+      const followUpStatusRaw = String(row.follow_up_status || "");
       const actionTypeFallback =
-        !row?.action_type &&
+        !row.action_type &&
         followUpStatusRaw &&
-        !["yes", "no", "si", "sÃ­", "true", "false", "1", "0"].includes(
+        !["yes", "no", "si", "sí", "true", "false", "1", "0"].includes(
           followUpStatusRaw.trim().toLowerCase()
-        )
-          ? followUpStatusRaw
-          : "";
+        ) ? followUpStatusRaw : "";
       draft.followUpRows.push(
         createEmptyFollowUpRow({
-          id: row?.id || nextRiskOpportunityRowId(),
-          reference_kind: String(row?.reference_kind || "").toLowerCase(),
-          reference_row_id: String(row?.reference_row_id || ""),
-          action: String(row?.action || ""),
-          action_type: String(row?.action_type || actionTypeFallback || ""),
-          indicator: normalizeYesNoValue(row?.indicator || row?.responsible, "no"),
-          objective_associated: normalizeYesNoValue(row?.follow_up_status, "no"),
-          due_date: String(row?.due_date || row?.follow_up_date || ""),
-          result: normalizeActionResultValue(row?.action_result || row?.benefit, "in_progress"),
+          id: row.id || nextRiskOpportunityRowId(),
+          reference_kind: String(row.reference_kind || "").toLowerCase(),
+          reference_row_id: String(row.reference_row_id || ""),
+          action: String(row.action || ""),
+          action_type: String(row.action_type || actionTypeFallback || ""),
+          indicator: normalizeYesNoValue(row.indicator || row.responsible, "no"),
+          objective_associated: normalizeYesNoValue(row.follow_up_status, "no"),
+          due_date: String(row.due_date || row.follow_up_date || ""),
+          result: normalizeActionResultValue(row.action_result || row.benefit, "in_progress"),
         })
       );
     }
@@ -1502,7 +1495,7 @@ function buildRiskOpportunityRowsPayload(draft) {
       row_type: RISK_OPPORTUNITY_ROW_TYPES.FOLLOW_UP,
       swot_category: null,
       description:
-        referenceKind && referenceRowId ? `${referenceKind}:${referenceRowId}` : null,
+        referenceKind && referenceRowId ? `${referenceKind} :${referenceRowId}` : null,
       process_name: null,
       impact: null,
       probability: null,
@@ -1565,9 +1558,9 @@ function buildRiskOpportunityCounters(draft) {
 }
 
 function buildContextSummaryItem(row) {
-  const environment = String(row?.environment || "").trim() || "Entorno sin nombre";
-  const risks = String(row?.risks || "").trim();
-  const opportunities = String(row?.opportunities || "").trim();
+  const environment = String(row.environment || "").trim() || "Entorno sin nombre";
+  const risks = String(row.risks || "").trim();
+  const opportunities = String(row.opportunities || "").trim();
   if (risks && opportunities) {
     return `${environment}: Riesgos ${risks} | Oportunidades ${opportunities}`;
   }
@@ -1623,29 +1616,29 @@ function normalizeP09DateLabel(value) {
   return formatP09Date(parsed);
 }
 
-function formatP09Revision(revisionNumber) {
-  const normalized = Number.isFinite(revisionNumber) && revisionNumber >= 0 ? revisionNumber : 0;
+function formatP09Revision(revisiónNumber) {
+  const normalized = Number.isFinite(revisiónNumber) && revisiónNumber >= 0 ? revisiónNumber : 0;
   return `Rev.${String(normalized).padStart(2, "0")}`;
 }
 
 function normalizeP09RegisteredCount(rows) {
-  return (Array.isArray(rows) ? rows : []).filter((row) => String(row?.interested_party || "").trim()).length;
+  return (Array.isArray(rows) ? rows : []).filter((row) => String(row.interested_party || "").trim()).length;
 }
 
-function applyP09AutofillFields(onFieldChange, { code, revisionLabel, dateLabel }) {
+function applyP09AutofillFields(onFieldChange, { code, revisiónLabel, dateLabel }) {
   if (typeof onFieldChange !== "function") return;
   onFieldChange("interested_parties_document_code", code || "P09");
-  onFieldChange("interested_parties_revision", revisionLabel || "");
+  onFieldChange("interested_parties_revisión", revisiónLabel || "");
   onFieldChange("interested_parties_date", dateLabel || "");
 }
 
 function applyContextAutofillFields(
   onFieldChange,
-  { code, revisionLabel, dateLabel, externalIssuesSummary = "", internalIssuesSummary = "" }
+  { code, revisiónLabel, dateLabel, externalIssuesSummary = "", internalIssuesSummary = "" }
 ) {
   if (typeof onFieldChange !== "function") return;
   onFieldChange("context_document_code", code || "P09");
-  onFieldChange("context_document_revision", revisionLabel || "");
+  onFieldChange("context_document_revisión", revisiónLabel || "");
   onFieldChange("context_document_date", dateLabel || "");
   onFieldChange("external_issues_summary", externalIssuesSummary || "");
   onFieldChange("internal_issues_summary", internalIssuesSummary || "");
@@ -1713,14 +1706,14 @@ function renderListField(field, value, onChange, disabled) {
 
   return (
     <div className="guided-list-field">
-      {listValues.length === 0 ? <p className="soft-label">Sin elementos aÃ±adidos.</p> : null}
+      {listValues.length === 0 ? <p className="soft-label">Sin elementos añadidos.</p> : null}
       {listValues.map((itemValue, index) => (
         <div className="guided-list-row" key={`${field.field_code}-${index}`}>
           <input
             className="input-text"
             value={itemValue}
             disabled={disabled}
-            placeholder={field.placeholder || "AÃ±ade un valor"}
+            placeholder={field.placeholder || "Añade un valor"}
             onChange={(event) => updateListItem(index, event.target.value)}
           />
           <button
@@ -1735,7 +1728,7 @@ function renderListField(field, value, onChange, disabled) {
       ))}
 
       <button type="button" className="btn-secondary" disabled={disabled} onClick={addListItem}>
-        AÃ±adir elemento
+        Añadir elemento
       </button>
     </div>
   );
@@ -1804,8 +1797,7 @@ function renderDocumentAutofillField(field, value) {
       className="input-text audit-p09-autofill-input"
       type="text"
       value={String(value ?? "")}
-      readOnly
-      placeholder={isCodeField ? "P09" : "Autogenerado desde P09"}
+      readOnly placeholder={isCodeField ? "P09" : "Autogenerado desde P09"}
     />
   );
 }
@@ -1822,54 +1814,46 @@ function getAutofillHelpText(fieldCode) {
 }
 
 function shouldRenderContextDocumentPanel(group, fieldIndex) {
-  return group?.field_group === "analisis_contexto" && fieldIndex === 0;
+  return group.field_group === "análisis_contexto" && fieldIndex === 0;
 }
 
 function shouldRenderInterestedPartiesDocumentPanel(group, fieldIndex) {
-  return group?.field_group === "partes_interesadas" && fieldIndex === 0;
+  return group.field_group === "partes_interesadas" && fieldIndex === 0;
 }
 
 function shouldRenderPerformanceIndicatorsPanel(group, fieldIndex) {
-  return group?.field_group === PERFORMANCE_INDICATORS_GROUP_CODE && fieldIndex === 0;
+  return group.field_group === PERFORMANCE_INDICATORS_GROUP_CODE && fieldIndex === 0;
 }
 
 function shouldRenderRiskOpportunityDocumentPanel(group) {
-  return group?.field_group === "documento_riesgos_oportunidades";
+  return group.field_group === "documento_riesgos_oportunidades";
 }
 
-function hasContextDocumentPanel(groups) {
-  return (Array.isArray(groups) ? groups : []).some(
-    (group) => group?.field_group === "analisis_contexto"
+function hasContextDocumentPanel(groups) {return (Array.isArray(groups) ? groups : []).some((group) => group.field_group === "análisis_contexto"
   );
 }
 
-function hasInterestedPartiesDocumentPanel(groups) {
-  return (Array.isArray(groups) ? groups : []).some(
-    (group) => group?.field_group === "partes_interesadas"
+function hasInterestedPartiesDocumentPanel(groups) {return (Array.isArray(groups) ? groups : []).some((group) => group.field_group === "partes_interesadas"
   );
 }
 
-function hasRiskOpportunityDocumentPanel(groups) {
-  return (Array.isArray(groups) ? groups : []).some(
-    (group) => group?.field_group === "documento_riesgos_oportunidades"
+function hasRiskOpportunityDocumentPanel(groups) {return (Array.isArray(groups) ? groups : []).some((group) => group.field_group === "documento_riesgos_oportunidades"
   );
 }
 
-function hasPerformanceIndicatorsPanel(groups) {
-  return (Array.isArray(groups) ? groups : []).some(
-    (group) => group?.field_group === PERFORMANCE_INDICATORS_GROUP_CODE
+function hasPerformanceIndicatorsPanel(groups) {return (Array.isArray(groups) ? groups : []).some((group) => group.field_group === PERFORMANCE_INDICATORS_GROUP_CODE
   );
 }
 
 function shouldHideFieldInUi(group, fieldCode) {
   const normalizedFieldCode = String(fieldCode || "");
-  if (group?.field_group === "partes_interesadas") {
+  if (group.field_group === "partes_interesadas") {
     return INTERESTED_PARTIES_HIDDEN_UI_FIELD_CODES.has(normalizedFieldCode);
   }
-  if (group?.field_group === "analisis_contexto") {
+  if (group.field_group === "análisis_contexto") {
     return CONTEXT_HIDDEN_UI_FIELD_CODES.has(normalizedFieldCode);
   }
-  if (group?.field_group === PERFORMANCE_INDICATORS_GROUP_CODE) {
+  if (group.field_group === PERFORMANCE_INDICATORS_GROUP_CODE) {
     return normalizedFieldCode === PERFORMANCE_INDICATORS_FIELD_CODE;
   }
   return false;
@@ -1903,12 +1887,12 @@ function renderGroupFields(
           </div>
         </div>
         <p className="audit-p09-panel-description">
-          Documento central de planificacion para DAFO, riesgos, oportunidades y acciones.
+          Documento central de planificación para DAFO, riesgos, oportunidades y acciones.
         </p>
         {riskOpportunityUi.isCompleted ? (
           <div className="audit-p09-panel-meta">
             <p>{riskOpportunityUi.summaryLine || `${riskOpportunityUi.registeredCount} registros en el documento`}</p>
-            <p>{`${riskOpportunityUi.revisionLabel || "-"} \u00b7 ${riskOpportunityUi.dateLabel || "-"}`}</p>
+            <p>{`${riskOpportunityUi.revisiónLabel || "-"} \u00b7 ${riskOpportunityUi.dateLabel || "-"}`}</p>
           </div>
         ) : null}
         {riskOpportunityUi.loadError ? (
@@ -1921,11 +1905,7 @@ function renderGroupFields(
             onClick={riskOpportunityUi.onOpenEditor}
             disabled={disabled || riskOpportunityUi.loading}
           >
-            {riskOpportunityUi.loading
-              ? "Cargando..."
-              : riskOpportunityUi.isCompleted
-                ? "Editar documento"
-                : "Completar documento"}
+            {riskOpportunityUi.loading ? "Cargando..." : riskOpportunityUi.isCompleted ? "Editar documento" : "Completar documento"}
           </button>
           <button
             type="button"
@@ -2164,7 +2144,7 @@ function renderGroupFields(
               <div className="audit-performance-tab-block">
                 <div className="audit-performance-tab-toolbar">
                   <p className="soft-label">
-                    Seguimiento trimestral por indicador. El campo anual se calcula automÃ¡ticamente.
+                    Seguimiento trimestral por indicador. El campo anual se calcula automáticamente.
                   </p>
                   <label className="field-stack audit-performance-annual-mode">
                     <span>Anual</span>
@@ -2190,7 +2170,7 @@ function renderGroupFields(
                     <div className="audit-performance-table-head tracking">
                       <span>Indicador</span>
                       <span>1er Trimestre</span>
-                      <span>2Âº Trimestre</span>
+                      <span>2º Trimestre</span>
                       <span>3er Trimestre</span>
                       <span>Anual</span>
                     </div>
@@ -2283,12 +2263,8 @@ function renderGroupFields(
                               const numericValue = normalizePerformanceNumber(bar.value);
                               const maxValue =
                                 Number.isFinite(performanceUi.chartMaxValue) &&
-                                performanceUi.chartMaxValue > 0
-                                  ? performanceUi.chartMaxValue
-                                  : 0;
-                              const height = maxValue > 0 && Number.isFinite(numericValue)
-                                ? `${Math.max(8, (numericValue / maxValue) * 100)}%`
-                                : "0%";
+                                performanceUi.chartMaxValue > 0 ? performanceUi.chartMaxValue : 0;
+                              const height = maxValue > 0 && Number.isFinite(numericValue) ? `${Math.max(8, (numericValue / maxValue) * 100)}%` : "0%";
                               return (
                                 <div className="audit-performance-chart-bar-column" key={`${row.id}-${bar.key}`}>
                                   <span className="audit-performance-chart-bar-label">{bar.label}</span>
@@ -2346,7 +2322,7 @@ function renderGroupFields(
         >
           <div className="audit-p09-panel-header">
             <p className="audit-p09-panel-title">
-              {"Documento P09 \u2013 Contexto de la organizaciÃ³n (4.1)"}
+              {"Documento P09 \u2013 Contexto de la organización (4.1)"}
             </p>
             <div className="audit-p09-panel-status">
               <span className="soft-label">Estado</span>
@@ -2356,15 +2332,15 @@ function renderGroupFields(
             </div>
           </div>
           <p className="audit-p09-panel-description">
-            Documento maestro del contexto de la organizaciÃ³n para ISO 9001 (clÃ¡usula 4.1).
+            Documento maestro del contexto de la organización para ISO 9001 (cláusula 4.1).
           </p>
           {contextUi.isCompleted ? (
             <div className="audit-p09-panel-meta">
               <p>{`${contextUi.registeredCount} entornos registrados`}</p>
-              <p>{`${contextUi.revisionLabel || "-"} \u00b7 ${contextUi.dateLabel || "-"}`}</p>
+              <p>{`${contextUi.revisiónLabel || "-"} \u00b7 ${contextUi.dateLabel || "-"}`}</p>
             </div>
           ) : null}
-          {contextUi.loadError ? <p className="audit-p09-validation-error">{contextUi.loadError}</p> : null}
+{contextUi.loadError ? <p className="audit-p09-validation-error">{contextUi.loadError}</p> : null}
           <div className="audit-p09-panel-actions">
             <button
               type="button"
@@ -2372,11 +2348,7 @@ function renderGroupFields(
               onClick={contextUi.onOpenEditor}
               disabled={disabled || contextUi.loading}
             >
-              {contextUi.loading
-                ? "Cargando..."
-                : contextUi.isCompleted
-                  ? "Editar documento"
-                  : "Completar documento"}
+              {contextUi.loading ? "Cargando..." : contextUi.isCompleted ? "Editar documento" : "Completar documento"}
             </button>
             <button
               type="button"
@@ -2402,7 +2374,7 @@ function renderGroupFields(
           <div className="audit-context-autosummary-grid">
             <article className="audit-context-autosummary-column">
               <h6>Cuestiones externas</h6>
-              {contextUi.externalSummaryItems?.length ? (
+              {contextUi.externalSummaryItems.length ? (
                 <ul>
                   {contextUi.externalSummaryItems.map((item, index) => (
                     <li key={`external-summary-${index + 1}`}>{item}</li>
@@ -2414,7 +2386,7 @@ function renderGroupFields(
             </article>
             <article className="audit-context-autosummary-column">
               <h6>Cuestiones internas</h6>
-              {contextUi.internalSummaryItems?.length ? (
+              {contextUi.internalSummaryItems.length ? (
                 <ul>
                   {contextUi.internalSummaryItems.map((item, index) => (
                     <li key={`internal-summary-${index + 1}`}>{item}</li>
@@ -2448,12 +2420,12 @@ function renderGroupFields(
             </div>
           </div>
           <p className="audit-p09-panel-description">
-            Documento maestro de partes interesadas para ISO 9001 (clÃ¡usula 4.2).
+            Documento maestro de partes interesadas para ISO 9001 (cláusula 4.2).
           </p>
           {interestedPartiesUi.isCompleted ? (
             <div className="audit-p09-panel-meta">
               <p>{`${interestedPartiesUi.registeredCount} partes interesadas registradas`}</p>
-              <p>{`${interestedPartiesUi.revisionLabel || "-"} \u00b7 ${interestedPartiesUi.dateLabel || "-"}`}</p>
+              <p>{`${interestedPartiesUi.revisiónLabel || "-"} \u00b7 ${interestedPartiesUi.dateLabel || "-"}`}</p>
             </div>
           ) : null}
           {interestedPartiesUi.loadError ? (
@@ -2466,11 +2438,7 @@ function renderGroupFields(
               onClick={interestedPartiesUi.onOpenEditor}
               disabled={disabled || interestedPartiesUi.loading}
             >
-              {interestedPartiesUi.loading
-                ? "Cargando..."
-                : interestedPartiesUi.isCompleted
-                  ? "Editar documento"
-                  : "Completar documento"}
+              {interestedPartiesUi.loading ? "Cargando..." : interestedPartiesUi.isCompleted ? "Editar documento" : "Completar documento"}
             </button>
             <button
               type="button"
@@ -2497,17 +2465,15 @@ function renderGroupFields(
       <label key={field.field_code} className={`field-stack ${isWideField ? "audit-full-width" : ""}`}>
         <span>
           {field.label}
-          {field.required ? " *" : ""}
+{field.required ? " *" : ""}
         </span>
-        {isAutofillField
-          ? renderDocumentAutofillField(field, valuesByFieldCode?.[field.field_code])
-          : renderFieldControl(field, valuesByFieldCode?.[field.field_code], onFieldChange, disabled)}
+        {isAutofillField ? renderDocumentAutofillField(field, valuesByFieldCode[field.field_code]) : renderFieldControl(field, valuesByFieldCode[field.field_code], onFieldChange, disabled)}
         {isAutofillField ? (
           <small className="soft-label audit-p09-autofill-help">
             {getAutofillHelpText(field.field_code)}
           </small>
         ) : null}
-        {field.help_text ? <small className="soft-label">{field.help_text}</small> : null}
+{field.help_text ? <small className="soft-label">{field.help_text}</small> : null}
       </label>
     );
 
@@ -2615,9 +2581,7 @@ function AuditGuidedFields({
   const isRiskOpportunityEditMode = riskOpportunityPanelMode === "edit";
   const isRiskOpportunitySummaryMode = riskOpportunityPanelMode === "summary";
   const isRiskOpportunityPanelOpen = isRiskOpportunityEditMode || isRiskOpportunitySummaryMode;
-  const riskOpportunityModalCounters = isRiskOpportunityEditMode
-    ? riskOpportunityDraftCounters
-    : riskOpportunitySavedCounters;
+  const riskOpportunityModalCounters = isRiskOpportunityEditMode ? riskOpportunityDraftCounters : riskOpportunitySavedCounters;
   const isAnyDocumentPanelOpen = isP09PanelOpen || isContextPanelOpen || isRiskOpportunityPanelOpen;
   const riskOpportunityReferenceOptions = useMemo(() => {
     const riskOptions = riskOpportunityDraft.riskRows
@@ -2638,7 +2602,7 @@ function AuditGuidedFields({
   }, [riskOpportunityDraft.riskRows, riskOpportunityDraft.opportunityRows]);
   const [performanceActiveTab, setPerformanceActiveTab] = useState(PERFORMANCE_TAB_KEYS.INDICATORS);
   const performanceModel = useMemo(
-    () => normalizePerformanceIndicatorsModel(valuesByFieldCode?.[PERFORMANCE_INDICATORS_FIELD_CODE]),
+    () => normalizePerformanceIndicatorsModel(valuesByFieldCode[PERFORMANCE_INDICATORS_FIELD_CODE]),
     [valuesByFieldCode]
   );
   const performanceTrackingByIndicator = useMemo(
@@ -2693,7 +2657,7 @@ function AuditGuidedFields({
   function syncAutofillField(fieldCode, value) {
     if (typeof onFieldChange !== "function") return;
     const nextValue = value == null ? "" : String(value);
-    const currentValue = valuesByFieldCode?.[fieldCode];
+    const currentValue = valuesByFieldCode[fieldCode];
     if (String(currentValue ?? "") === nextValue) return;
     onFieldChange(fieldCode, nextValue);
   }
@@ -2701,7 +2665,7 @@ function AuditGuidedFields({
   useEffect(() => {
     if (!hasP09Panel || !p09HasPersistedDocument) return;
     syncAutofillField("interested_parties_document_code", "P09");
-    syncAutofillField("interested_parties_revision", p09RevisionLabel || "");
+    syncAutofillField("interested_parties_revisión", p09RevisionLabel || "");
     syncAutofillField("interested_parties_date", p09DocumentDate || "");
   }, [
     hasP09Panel,
@@ -2714,7 +2678,7 @@ function AuditGuidedFields({
   useEffect(() => {
     if (!hasContextPanel || !contextHasPersistedDocument) return;
     syncAutofillField("context_document_code", "P09");
-    syncAutofillField("context_document_revision", contextRevisionLabel || "");
+    syncAutofillField("context_document_revisión", contextRevisionLabel || "");
     syncAutofillField("context_document_date", contextDocumentDate || "");
     syncAutofillField("external_issues_summary", contextAutoSummary.externalItems.join("\n"));
     syncAutofillField("internal_issues_summary", contextAutoSummary.internalItems.join("\n"));
@@ -2736,7 +2700,7 @@ function AuditGuidedFields({
     const normalizedValue =
       fieldName === "objective_associated" ? normalizeYesNoValue(value, "no") : value;
     const nextIndicators = performanceModel.indicators.map((row) =>
-      row.id === rowId ? { ...row, [fieldName]: normalizedValue } : row
+      row.id === rowId ? { ...row, [fieldName] : normalizedValue } : row
     );
     updatePerformanceModel({
       ...performanceModel,
@@ -2794,13 +2758,11 @@ function AuditGuidedFields({
 
   useEffect(() => {
     if (!hasPerformancePanel) return;
-    const currentValue = valuesByFieldCode?.[PERFORMANCE_INDICATORS_FIELD_CODE];
+    const currentValue = valuesByFieldCode[PERFORMANCE_INDICATORS_FIELD_CODE];
     const hasStoredValue = (() => {
       if (Array.isArray(currentValue)) return currentValue.length > 0;
       if (currentValue && typeof currentValue === "object") {
-        const indicatorsLength = Array.isArray(currentValue.indicators)
-          ? currentValue.indicators.length
-          : 0;
+        const indicatorsLength = Array.isArray(currentValue.indicators) ? currentValue.indicators.length : 0;
         const trackingLength = Array.isArray(currentValue.tracking) ? currentValue.tracking.length : 0;
         return indicatorsLength > 0 || trackingLength > 0;
       }
@@ -2819,9 +2781,7 @@ function AuditGuidedFields({
     if (disabled || p09Loading) return;
     setContextPanelMode(null);
     setRiskOpportunityPanelMode(null);
-    const sourceRows = p09HasPersistedDocument
-      ? cloneP09Rows(p09SavedRows)
-      : buildDefaultP09Rows();
+    const sourceRows = p09HasPersistedDocument ? cloneP09Rows(p09SavedRows) : buildDefaultP09Rows();
     setP09DraftRows(sourceRows.length > 0 ? sourceRows : [createEmptyP09Row()]);
     setP09ExpandedRowIds(sourceRows.length > 0 ? [sourceRows[0].id] : []);
     setP09ValidationError("");
@@ -2839,7 +2799,7 @@ function AuditGuidedFields({
   function handleP09RowChange(rowId, fieldName, value) {
     setP09ValidationError("");
     setP09DraftRows((prev) =>
-      prev.map((row) => (row.id === rowId ? { ...row, [fieldName]: value } : row))
+      prev.map((row) => (row.id === rowId ? { ...row, [fieldName] : value } : row))
     );
   }
 
@@ -2873,7 +2833,7 @@ function AuditGuidedFields({
   async function handleSaveP09Edition() {
     const normalizedAuditReportId = String(auditReportId || "").trim();
     if (!normalizedAuditReportId) {
-      setP09ValidationError("No se pudo identificar la auditorÃ­a para guardar el documento.");
+      setP09ValidationError("No se pudo identificar la auditoría para guardar el documento.");
       return;
     }
 
@@ -2898,10 +2858,10 @@ function AuditGuidedFields({
       });
 
       const mappedRows = mapApiRowsToP09Rows(saved.rows);
-      const nextRevisionNumber = Number(saved.revision_number);
+      const nextRevisionNumber = Number(saved.revisión_number);
       const safeRevisionNumber = Number.isFinite(nextRevisionNumber) ? nextRevisionNumber : 0;
-      const revisionLabel =
-        String(saved.revision_label || "").trim() || formatP09Revision(safeRevisionNumber);
+      const revisiónLabel =
+        String(saved.revisión_label || "").trim() || formatP09Revision(safeRevisionNumber);
       const dateLabel = normalizeP09DateLabel(saved.document_date);
 
       setP09SavedRows(mappedRows);
@@ -2915,7 +2875,7 @@ function AuditGuidedFields({
 
       applyP09AutofillFields(onFieldChange, {
         code: String(saved.code || "P09"),
-        revisionLabel,
+        revisiónLabel,
         dateLabel,
       });
     } catch (err) {
@@ -2936,9 +2896,7 @@ function AuditGuidedFields({
     if (disabled || contextLoading) return;
     setP09PanelMode(null);
     setRiskOpportunityPanelMode(null);
-    const sourceRows = contextHasPersistedDocument
-      ? cloneContextRows(contextSavedRows)
-      : buildDefaultContextRows();
+    const sourceRows = contextHasPersistedDocument ? cloneContextRows(contextSavedRows) : buildDefaultContextRows();
     setContextDraftRows(sourceRows.length > 0 ? sourceRows : [createEmptyContextRow()]);
     setContextExpandedRowIds(sourceRows.length > 0 ? [sourceRows[0].id] : []);
     setContextDraftReviewedBy(contextReviewedBy);
@@ -2958,7 +2916,7 @@ function AuditGuidedFields({
   function handleContextRowChange(rowId, fieldName, value) {
     setContextValidationError("");
     setContextDraftRows((prev) =>
-      prev.map((row) => (row.id === rowId ? { ...row, [fieldName]: value } : row))
+      prev.map((row) => (row.id === rowId ? { ...row, [fieldName] : value } : row))
     );
   }
 
@@ -2992,7 +2950,7 @@ function AuditGuidedFields({
   async function handleSaveContextEdition() {
     const normalizedAuditReportId = String(auditReportId || "").trim();
     if (!normalizedAuditReportId) {
-      setContextValidationError("No se pudo identificar la auditorÃ­a para guardar el documento.");
+      setContextValidationError("No se pudo identificar la auditoría para guardar el documento.");
       return;
     }
 
@@ -3019,10 +2977,10 @@ function AuditGuidedFields({
       });
 
       const mappedRows = mapApiRowsToContextRows(saved.rows);
-      const nextRevisionNumber = Number(saved.revision_number);
+      const nextRevisionNumber = Number(saved.revisión_number);
       const safeRevisionNumber = Number.isFinite(nextRevisionNumber) ? nextRevisionNumber : 0;
-      const revisionLabel =
-        String(saved.revision_label || "").trim() || formatP09Revision(safeRevisionNumber);
+      const revisiónLabel =
+        String(saved.revisión_label || "").trim() || formatP09Revision(safeRevisionNumber);
       const dateLabel = normalizeP09DateLabel(saved.document_date);
       const nextContextSummary = buildContextAutoSummary(mappedRows);
       const externalIssuesSummary = nextContextSummary.externalItems.join("\n");
@@ -3041,7 +2999,7 @@ function AuditGuidedFields({
 
       applyContextAutofillFields(onFieldChange, {
         code: String(saved.code || "P09"),
-        revisionLabel,
+        revisiónLabel,
         dateLabel,
         externalIssuesSummary,
         internalIssuesSummary,
@@ -3064,9 +3022,7 @@ function AuditGuidedFields({
     if (disabled || riskOpportunityLoading) return;
     setP09PanelMode(null);
     setContextPanelMode(null);
-    const sourceDraft = riskOpportunityHasPersistedDocument
-      ? cloneRiskOpportunityDraft(riskOpportunitySavedDraft)
-      : buildDefaultRiskOpportunityDraft();
+    const sourceDraft = riskOpportunityHasPersistedDocument ? cloneRiskOpportunityDraft(riskOpportunitySavedDraft) : buildDefaultRiskOpportunityDraft();
     setRiskOpportunityDraft(syncRiskOpportunityAutoRows(sourceDraft));
     setRiskOpportunityValidationError("");
     setRiskOpportunityLoadError("");
@@ -3086,7 +3042,7 @@ function AuditGuidedFields({
       syncRiskOpportunityAutoRows({
         ...prev,
         swotRows: prev.swotRows.map((row) =>
-          row.id === rowId ? { ...row, description: value } : row
+          row.id === rowId ? { ...row, description : value } : row
         ),
       })
     );
@@ -3116,7 +3072,7 @@ function AuditGuidedFields({
     setRiskOpportunityValidationError("");
     setRiskOpportunityDraft((prev) => ({
       ...prev,
-      riskRows: prev.riskRows.map((row) => (row.id === rowId ? { ...row, [fieldName]: value } : row)),
+      riskRows: prev.riskRows.map((row) => (row.id === rowId ? { ...row, [fieldName] : value } : row)),
     }));
   }
 
@@ -3141,7 +3097,7 @@ function AuditGuidedFields({
     setRiskOpportunityDraft((prev) => ({
       ...prev,
       opportunityRows: prev.opportunityRows.map((row) =>
-        row.id === rowId ? { ...row, [fieldName]: value } : row
+        row.id === rowId ? { ...row, [fieldName] : value } : row
       ),
     }));
   }
@@ -3167,7 +3123,7 @@ function AuditGuidedFields({
     setRiskOpportunityDraft((prev) => ({
       ...prev,
       followUpRows: prev.followUpRows.map((row) =>
-        row.id === rowId ? { ...row, [fieldName]: value } : row
+        row.id === rowId ? { ...row, [fieldName] : value } : row
       ),
     }));
   }
@@ -3199,7 +3155,7 @@ function AuditGuidedFields({
     const normalizedAuditReportId = String(auditReportId || "").trim();
     if (!normalizedAuditReportId) {
       setRiskOpportunityValidationError(
-        "No se pudo identificar la auditorÃ­a para guardar el documento."
+        "No se pudo identificar la auditoría para guardar el documento."
       );
       return;
     }
@@ -3232,7 +3188,7 @@ function AuditGuidedFields({
     });
     if (hasInvalidActionReference) {
       setRiskOpportunityValidationError(
-        "Cada accion debe estar vinculada a un riesgo u oportunidad valido."
+        "Cada acción debe estar vinculada a un riesgo u oportunidad válido."
       );
       return;
     }
@@ -3240,7 +3196,7 @@ function AuditGuidedFields({
     const payloadRows = buildRiskOpportunityRowsPayload(normalizedDraft);
     if (payloadRows.length === 0) {
       setRiskOpportunityValidationError(
-        "Debes informar al menos un elemento en DAFO, riesgos, oportunidades o acciones."
+        "Debes informar al menos un elemento en DAFO, riesgos, oportunidades y acciones."
       );
       return;
     }
@@ -3256,7 +3212,7 @@ function AuditGuidedFields({
         rows: payloadRows,
       });
       const mappedDraft = mapApiRowsToRiskOpportunityDraft(saved.rows);
-      const nextRevisionNumber = Number(saved.revision_number);
+      const nextRevisionNumber = Number(saved.revisión_number);
       const safeRevisionNumber = Number.isFinite(nextRevisionNumber) ? nextRevisionNumber : 0;
       const dateLabel = normalizeP09DateLabel(saved.document_date);
       const normalizedStatus = String(saved.status || "").toLowerCase();
@@ -3271,9 +3227,7 @@ function AuditGuidedFields({
       setRiskOpportunityPanelMode(null);
     } catch (err) {
       setRiskOpportunityValidationError(
-        err instanceof Error
-          ? err.message
-          : "No se pudo guardar el documento de riesgos y oportunidades."
+        err instanceof Error ? err.message : "No se pudo guardar el documento de riesgos y oportunidades."
       );
     } finally {
       setRiskOpportunitySaving(false);
@@ -3304,10 +3258,10 @@ function AuditGuidedFields({
         }
 
         const mappedRows = mapApiRowsToP09Rows(documentData.rows);
-        const nextRevisionNumber = Number(documentData.revision_number);
+        const nextRevisionNumber = Number(documentData.revisión_number);
         const safeRevisionNumber = Number.isFinite(nextRevisionNumber) ? nextRevisionNumber : 0;
-        const revisionLabel =
-          String(documentData.revision_label || "").trim() || formatP09Revision(safeRevisionNumber);
+        const revisiónLabel =
+          String(documentData.revisión_label || "").trim() || formatP09Revision(safeRevisionNumber);
         const dateLabel = normalizeP09DateLabel(documentData.document_date);
         const normalizedStatus = String(documentData.status || "").toLowerCase();
         const hasContentRows = mappedRows.length > 0;
@@ -3321,7 +3275,7 @@ function AuditGuidedFields({
 
         applyP09AutofillFields(onFieldChange, {
           code: String(documentData.code || "P09"),
-          revisionLabel,
+          revisiónLabel,
           dateLabel,
         });
       })
@@ -3367,10 +3321,10 @@ function AuditGuidedFields({
         }
 
         const mappedRows = mapApiRowsToContextRows(documentData.rows);
-        const nextRevisionNumber = Number(documentData.revision_number);
+        const nextRevisionNumber = Number(documentData.revisión_number);
         const safeRevisionNumber = Number.isFinite(nextRevisionNumber) ? nextRevisionNumber : 0;
-        const revisionLabel =
-          String(documentData.revision_label || "").trim() || formatP09Revision(safeRevisionNumber);
+        const revisiónLabel =
+          String(documentData.revisión_label || "").trim() || formatP09Revision(safeRevisionNumber);
         const dateLabel = normalizeP09DateLabel(documentData.document_date);
         const normalizedStatus = String(documentData.status || "").toLowerCase();
         const nextContextSummary = buildContextAutoSummary(mappedRows);
@@ -3389,7 +3343,7 @@ function AuditGuidedFields({
 
         applyContextAutofillFields(onFieldChange, {
           code: String(documentData.code || "P09"),
-          revisionLabel,
+          revisiónLabel,
           dateLabel,
           externalIssuesSummary,
           internalIssuesSummary,
@@ -3437,7 +3391,7 @@ function AuditGuidedFields({
         }
 
         const mappedDraft = mapApiRowsToRiskOpportunityDraft(documentData.rows);
-        const nextRevisionNumber = Number(documentData.revision_number);
+        const nextRevisionNumber = Number(documentData.revisión_number);
         const safeRevisionNumber = Number.isFinite(nextRevisionNumber) ? nextRevisionNumber : 0;
         const dateLabel = normalizeP09DateLabel(documentData.document_date);
         const normalizedStatus = String(documentData.status || "").toLowerCase();
@@ -3453,9 +3407,7 @@ function AuditGuidedFields({
       .catch((err) => {
         if (!isCurrent) return;
         setRiskOpportunityLoadError(
-          err instanceof Error
-            ? err.message
-            : "No se pudo cargar el documento de riesgos y oportunidades."
+          err instanceof Error ? err.message : "No se pudo cargar el documento de riesgos y oportunidades."
         );
       })
       .finally(() => {
@@ -3536,7 +3488,7 @@ function AuditGuidedFields({
                 onOpenEditor: openP09Editor,
                 onOpenSummary: openP09Summary,
                 registeredCount: p09RegisteredCount,
-                revisionLabel: p09RevisionLabel,
+                revisiónLabel: p09RevisionLabel,
                 dateLabel: p09DocumentDate,
                 loading: p09Loading,
                 loadError: p09LoadError,
@@ -3546,7 +3498,7 @@ function AuditGuidedFields({
                 onOpenEditor: openContextEditor,
                 onOpenSummary: openContextSummary,
                 registeredCount: contextRegisteredCount,
-                revisionLabel: contextRevisionLabel,
+                revisiónLabel: contextRevisionLabel,
                 dateLabel: contextDocumentDate,
                 loading: contextLoading,
                 loadError: contextLoadError,
@@ -3558,8 +3510,8 @@ function AuditGuidedFields({
                 onOpenEditor: openRiskOpportunityEditor,
                 onOpenSummary: openRiskOpportunitySummary,
                 registeredCount: riskOpportunityRegisteredCount,
-                summaryLine: `${riskOpportunitySavedCounters.riskCount} riesgos Â· ${riskOpportunitySavedCounters.generatedOpportunityCount} oportunidades Â· ${riskOpportunitySavedCounters.actionCount} acciones`,
-                revisionLabel: riskOpportunityRevisionLabel,
+                summaryLine: `${riskOpportunitySavedCounters.riskCount} riesgos · ${riskOpportunitySavedCounters.generatedOpportunityCount} oportunidades · ${riskOpportunitySavedCounters.actionCount} acciones`,
+                revisiónLabel: riskOpportunityRevisionLabel,
                 dateLabel: riskOpportunityDocumentDate,
                 loading: riskOpportunityLoading,
                 loadError: riskOpportunityLoadError,
@@ -3586,17 +3538,17 @@ function AuditGuidedFields({
         <div className="audit-p09-drawer-overlay" role="presentation" onClick={closeP09Panel}>
           <aside
             className="audit-p09-drawer"
-            role="dialog"
+            role="díalog"
             aria-modal="true"
             aria-label="P09 - Partes interesadas"
             onClick={(event) => event.stopPropagation()}
           >
             <header className="audit-p09-drawer-header">
               <div className="audit-p09-drawer-headings">
-                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÃUSULA 4.2</p>
+                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÁUSULA 4.2</p>
                 <h4>{"P09 \u2013 Partes interesadas"}</h4>
                 <p>
-                  Define las partes interesadas y sus necesidades/expectativas para esta auditorÃ­a.
+                  Define las partes interesadas y sus necesidades/expectativas para esta auditoría.
                 </p>
               </div>
               <div className="audit-p09-drawer-right">
@@ -3605,9 +3557,7 @@ function AuditGuidedFields({
                     {p09Completed ? "Completado" : "Pendiente"}
                   </span>
                   <p className="audit-p09-drawer-meta-line">
-                    {p09Completed
-                      ? `${p09RevisionLabel || "-"} | ${p09DocumentDate || "-"}`
-                      : "Sin versiÃ³n guardada"}
+                    {p09Completed ? `${p09RevisionLabel || "-"} | ${p09DocumentDate || "-"}` : "Sin versión guardada"}
                   </p>
                 </div>
                 <button
@@ -3634,7 +3584,7 @@ function AuditGuidedFields({
                 <>
                   <div className="audit-p09-editor-toolbar">
                     <p className="soft-label audit-p09-editor-helper">
-                      Completa el documento en bloques para facilitar la lectura y ediciÃ³n.
+                      Completa el documento en bloques para facilitar la lectura y edición.
                     </p>
                     <button
                       type="button"
@@ -3642,17 +3592,16 @@ function AuditGuidedFields({
                       onClick={handleAddP09Row}
                       disabled={p09Saving}
                     >
-                      + AÃ±adir parte interesada
+                      + Añadir parte interesada
                     </button>
                   </div>
 
                   {p09DraftRows.length === 0 ? (
-                    <p className="empty-state">No hay filas. AÃ±ade una para empezar.</p>
+                    <p className="empty-state">No hay filas. Añade una para empezar.</p>
                   ) : (
                     <div className="audit-p09-editor-list">
                       {p09DraftRows.map((row, index) => (
-                        <article
-                          className={`audit-p09-editor-card ${p09ExpandedRowIds.includes(row.id) ? "" : "collapsed"}`}
+                        <article className={`audit-p09-editor-card ${p09ExpandedRowIds.includes(row.id) ? "" : "collapsed"}`}
                           key={row.id}
                         >
                           <header className="audit-p09-editor-card-header">
@@ -3713,7 +3662,7 @@ function AuditGuidedFields({
                                       handleP09RowChange(row.id, "applies", event.target.value)
                                     }
                                   >
-                                    <option value="yes">SÃ­</option>
+                                    <option value="yes">Sí</option>
                                     <option value="no">No</option>
                                   </select>
                                 </label>
@@ -3817,7 +3766,7 @@ function AuditGuidedFields({
                       ))}
                     </div>
                   )}
-                  {p09ValidationError ? <p className="audit-p09-validation-error">{p09ValidationError}</p> : null}
+{p09ValidationError ? <p className="audit-p09-validation-error">{p09ValidationError}</p> : null}
                 </>
               ) : (
                 <>
@@ -3900,18 +3849,18 @@ function AuditGuidedFields({
         <div className="audit-p09-drawer-overlay" role="presentation" onClick={closeContextPanel}>
           <aside
             className="audit-p09-drawer"
-            role="dialog"
+            role="díalog"
             aria-modal="true"
-            aria-label="P09 - Contexto de la organizaciÃ³n"
+            aria-label="P09 - Contexto de la organización"
             onClick={(event) => event.stopPropagation()}
           >
             <header className="audit-p09-drawer-header">
               <div className="audit-p09-drawer-headings">
-                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÃUSULA 4.1</p>
-                <h4>{"P09 - Contexto de la organizaciÃ³n"}</h4>
+                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÁUSULA 4.1</p>
+                <h4>{"P09 - Contexto de la organización"}</h4>
                 <p>
                   Define el contexto interno y externo, incorporando riesgos, oportunidades y
-                  acciones para la auditorÃ­a.
+                  acciones para la auditoría.
                 </p>
               </div>
               <div className="audit-p09-drawer-right">
@@ -3920,9 +3869,7 @@ function AuditGuidedFields({
                     {contextCompleted ? "Completado" : "Pendiente"}
                   </span>
                   <p className="audit-p09-drawer-meta-line">
-                    {contextCompleted
-                      ? `${contextRevisionLabel || "-"} | ${contextDocumentDate || "-"}`
-                      : "Sin versiÃ³n guardada"}
+                    {contextCompleted ? `${contextRevisionLabel || "-"} | ${contextDocumentDate || "-"}` : "Sin versión guardada"}
                   </p>
                 </div>
                 <button
@@ -3940,7 +3887,7 @@ function AuditGuidedFields({
               <article className="audit-p09-info-box">
                 <p className="audit-p09-info-title">Contexto del documento</p>
                 <p>
-                  Documento de contexto de la organizaciÃ³n segÃºn ISO 9001 (4.1), con estructura por
+                  Documento de contexto de la organización según ISO 9001 (4.1), con estructura por
                   entorno externo e interno.
                 </p>
               </article>
@@ -3980,12 +3927,12 @@ function AuditGuidedFields({
                       onClick={handleAddContextRow}
                       disabled={contextSaving}
                     >
-                      + AÃ±adir entorno
+                      + Añadir entorno
                     </button>
                   </div>
 
                   {contextDraftRows.length === 0 ? (
-                    <p className="empty-state">No hay filas. AÃ±ade una para empezar.</p>
+                    <p className="empty-state">No hay filas. Añade una para empezar.</p>
                   ) : (
                     <>
                       {CONTEXT_GROUP_ORDER.map((groupKey) => {
@@ -4033,9 +3980,7 @@ function AuditGuidedFields({
                                               {CONTEXT_GROUP_LABELS[normalizeContextGroup(row.context_group)]}
                                             </span>
                                             <span className="audit-p09-editor-toggle-hint">
-                                              {contextExpandedRowIds.includes(row.id)
-                                                ? "Ocultar detalle"
-                                                : "Ver detalle"}
+                                              {contextExpandedRowIds.includes(row.id) ? "Ocultar detalle" : "Ver detalle"}
                                             </span>
                                           </div>
                                         </button>
@@ -4277,16 +4222,16 @@ function AuditGuidedFields({
         >
           <aside
             className="audit-p09-drawer"
-            role="dialog"
+            role="díalog"
             aria-modal="true"
             aria-label="P09 - Riesgos y oportunidades"
             onClick={(event) => event.stopPropagation()}
           >
             <header className="audit-p09-drawer-header">
               <div className="audit-p09-drawer-headings">
-                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÃUSULA 6.1</p>
+                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÁUSULA 6.1</p>
                 <h4>{"P09 - Riesgos y oportunidades"}</h4>
-                <p>Gestion centralizada de DAFO, riesgos, oportunidades y acciones.</p>
+                <p>Gestión centralizada de DAFO, riesgos, oportunidades y acciones.</p>
               </div>
               <div className="audit-p09-drawer-right">
                 <div className="audit-p09-drawer-meta">
@@ -4294,9 +4239,7 @@ function AuditGuidedFields({
                     {riskOpportunityCompleted ? "Completado" : "Pendiente"}
                   </span>
                   <p className="audit-p09-drawer-meta-line">
-                    {riskOpportunityCompleted
-                      ? `${riskOpportunityRevisionLabel || "-"} | ${riskOpportunityDocumentDate || "-"}`
-                      : "Sin versiÃ³n guardada"}
+                    {riskOpportunityCompleted ? `${riskOpportunityRevisionLabel || "-"} | ${riskOpportunityDocumentDate || "-"}` : "Sin versión guardada"}
                   </p>
                 </div>
                 <button
@@ -4361,9 +4304,7 @@ function AuditGuidedFields({
                       oportunidades.
                     </p>
                     <div className="audit-risk-swot-grid">
-                      {RISK_OPPORTUNITY_SWOT_SECTIONS.map((section) => {
-                        const rows = riskOpportunityDraft.swotRows.filter(
-                          (row) => row.swot_category === section.key
+                      {RISK_OPPORTUNITY_SWOT_SECTIONS.map((section) => {const rows = riskOpportunityDraft.swotRows.filter((row) => row.swot_category === section.key
                         );
                         return (
                           <article
@@ -4380,7 +4321,7 @@ function AuditGuidedFields({
                                   onClick={() => handleAddSwotRow(section.key)}
                                   disabled={riskOpportunitySaving}
                                 >
-                                  + AÃ±adir elemento
+                                  + Añadir elemento
                                 </button>
                               </div>
                             </header>
@@ -4426,7 +4367,7 @@ function AuditGuidedFields({
                         onClick={handleAddRiskRow}
                         disabled={riskOpportunitySaving}
                       >
-                        + AÃ±adir riesgo
+                        + Añadir riesgo
                       </button>
                     </header>
                     {riskOpportunityDraft.riskRows.length === 0 ? (
@@ -4439,7 +4380,7 @@ function AuditGuidedFields({
                           <span>Riesgo</span>
                           <span>Probabilidad</span>
                           <span>Severidad</span>
-                          <span>EvaluaciÃ³n</span>
+                          <span>Evaluación</span>
                         </div>
                         {riskOpportunityDraft.riskRows.map((row, index) => {
                           const evaluation = calculateRiskEvaluation(row.probability, row.severity);
@@ -4532,7 +4473,7 @@ function AuditGuidedFields({
                                   </select>
                                 </label>
                                 <div className="audit-risk-calculation">
-                                  <span className="soft-label">EvaluaciÃ³n</span>
+                                  <span className="soft-label">Evaluación</span>
                                   <p className={`audit-risk-evaluation-pill ${evaluation.tone}`}>
                                     {`${evaluation.label} (${evaluation.score})`}
                                   </p>
@@ -4555,7 +4496,7 @@ function AuditGuidedFields({
                             <tr>
                               <th>Probabilidad \ Severidad</th>
                               <th>Ligero</th>
-                              <th>DaÃ±o</th>
+                              <th>Daño</th>
                               <th>Extremo</th>
                             </tr>
                           </thead>
@@ -4563,11 +4504,7 @@ function AuditGuidedFields({
                             {["high", "medium", "low"].map((probability) => (
                               <tr key={`matrix-${probability}`}>
                                 <th>
-                                  {probability === "high"
-                                    ? "Alta"
-                                    : probability === "medium"
-                                      ? "Media"
-                                      : "Baja"}
+                                  {probability === "high" ? "Alta" : probability === "medium" ? "Medía" : "Baja"}
                                 </th>
                                 {["slight", "harm", "extreme"].map((severity) => {
                                   const evaluation = calculateRiskEvaluation(probability, severity);
@@ -4587,7 +4524,7 @@ function AuditGuidedFields({
                       </div>
                     </aside>
 
-                    <div className="audit-risk-legend-strip" aria-label="Leyenda de evaluaciÃ³n">
+                    <div className="audit-risk-legend-strip" aria-label="Leyenda de evaluación">
                       <span className="audit-risk-evaluation-pill trivial">Trivial</span>
                       <span className="audit-risk-evaluation-pill tolerable">Tolerable</span>
                       <span className="audit-risk-evaluation-pill moderate">Moderado</span>
@@ -4605,7 +4542,7 @@ function AuditGuidedFields({
                         onClick={handleAddOpportunityRow}
                         disabled={riskOpportunitySaving}
                       >
-                        + AÃ±adir oportunidad
+                        + Añadir oportunidad
                       </button>
                     </header>
                     {riskOpportunityDraft.opportunityRows.length === 0 ? (
@@ -4746,7 +4683,7 @@ function AuditGuidedFields({
                       <p className="soft-label">Equivalencia de escalas</p>
                       <div className="audit-risk-legend-grid">
                         <span>Baja = 1</span>
-                        <span>Media = 3</span>
+                        <span>Medía = 3</span>
                         <span>Alta = 5</span>
                         <span>Nada atractiva = 1</span>
                         <span>Atractiva = 3</span>
@@ -4764,7 +4701,7 @@ function AuditGuidedFields({
                         onClick={handleAddFollowUpRow}
                         disabled={riskOpportunitySaving}
                       >
-                        + AÃ±adir acciÃ³n
+                        + Añadir acción
                       </button>
                     </header>
                     {riskOpportunityDraft.followUpRows.length === 0 ? (
@@ -4774,15 +4711,13 @@ function AuditGuidedFields({
                         <div className="audit-risk-table-head actions">
                           <span>Referencia</span>
                           <span>Tipo</span>
-                          <span>Accion</span>
+                          <span>Acción</span>
                           <span>Indicador</span>
                           <span>Plazo previsto</span>
                           <span>Objetivo asociado</span>
                           <span>Resultado</span>
                         </div>
-                        {riskOpportunityDraft.followUpRows.map((row, index) => {
-                          const availableReferences = riskOpportunityReferenceOptions.filter(
-                            (option) =>
+                        {riskOpportunityDraft.followUpRows.map((row, index) => {const availableReferences = riskOpportunityReferenceOptions.filter((option) =>
                               !row.reference_kind || option.kind === String(row.reference_kind || "")
                           );
                           const resultBadge = getActionResultBadge(row.result);
@@ -4793,7 +4728,7 @@ function AuditGuidedFields({
                           return (
                             <article className="audit-risk-doc-card audit-risk-table-row" key={row.id}>
                               <header className="audit-risk-doc-card-header">
-                                <h6>{`Accion ${index + 1}`}</h6>
+                                <h6>{`Acción ${index + 1}`}</h6>
                                 <button
                                   type="button"
                                   className="btn-ghost"
@@ -4849,7 +4784,7 @@ function AuditGuidedFields({
                                   </select>
                                 </label>
                                 <label className="field-stack audit-full-width">
-                                  <span>Accion</span>
+                                  <span>Acción</span>
                                   <RichTextarea
                                     className="input-textarea"
                                     value={row.action}
@@ -4857,7 +4792,7 @@ function AuditGuidedFields({
                                     onChange={(event) =>
                                       handleFollowUpRowChange(row.id, "action", event.target.value)
                                     }
-                                    placeholder="Describe la accion definida"
+                                    placeholder="Describe la acción definida"
                                   />
                                 </label>
                                 <label className="field-stack">
@@ -4955,7 +4890,7 @@ function AuditGuidedFields({
                               </div>
                               {hasIncompleteReference ? (
                                 <p className="audit-p09-validation-error">
-                                  Selecciona referencia de riesgo u oportunidad para esta accion.
+                                  Selecciona referencia de riesgo u oportunidad para esta acción.
                                 </p>
                               ) : null}
                             </article>
@@ -4963,8 +4898,8 @@ function AuditGuidedFields({
                         })}
                       </div>
                     )}
-                    <div className="audit-risk-legend-block" aria-label="Leyenda de tipos de accion">
-                      <p className="soft-label">Tipos de accion</p>
+                    <div className="audit-risk-legend-block" aria-label="Leyenda de tipos de acción">
+                      <p className="soft-label">Tipos de acción</p>
                       <div className="audit-risk-action-types">
                         {["OBJ", "COS", "GES", "FOR", "INF", "AC", "INV", "CAM", "OTRA"].map((typeCode) => (
                           <span key={`action-type-${typeCode}`}>{typeCode}</span>
@@ -4988,9 +4923,7 @@ function AuditGuidedFields({
                           <h5>BLOQUE 1 - DAFO</h5>
                         </header>
                         <div className="audit-risk-doc-summary-grid">
-                          {RISK_OPPORTUNITY_SWOT_SECTIONS.map((section) => {
-                            const rows = riskOpportunitySavedDraft.swotRows.filter(
-                              (row) =>
+                          {RISK_OPPORTUNITY_SWOT_SECTIONS.map((section) => {const rows = riskOpportunitySavedDraft.swotRows.filter((row) =>
                                 row.swot_category === section.key &&
                                 String(row.description || "").trim()
                             );
@@ -5078,16 +5011,14 @@ function AuditGuidedFields({
                                 const referenceId = String(row.reference_row_id || "").trim();
                                 const referenceKind = String(row.reference_kind || "").trim().toLowerCase();
                                 if (!referenceId || !referenceKind) return "-";
-                                if (referenceKind === RISK_OPPORTUNITY_REFERENCE_TYPES.RISK) {
-                                  const target = riskOpportunitySavedDraft.riskRows.find(
-                                    (item) => String(item.id) === referenceId
+                                if (referenceKind === RISK_OPPORTUNITY_REFERENCE_TYPES.RISK) {const target = riskOpportunitySavedDraft.riskRows.find((item) => String(item.id) === referenceId
                                   );
-                                  return target?.description || "-";
+                                  return target.description || "-";
                                 }
                                 const target = riskOpportunitySavedDraft.opportunityRows.find(
                                   (item) => String(item.id) === referenceId
                                 );
-                                return target?.description || "-";
+                                return target.description || "-";
                               })();
                               const resultBadge = getActionResultBadge(row.result);
                               return (
@@ -5098,8 +5029,8 @@ function AuditGuidedFields({
                                   <p className="soft-label">{`Referencia: ${referenceLabel}`}</p>
                                   <RichTextContent value={row.action} />
                                   <p className="soft-label">{`Tipo: ${row.action_type || "-"}`}</p>
-                                  <p className="soft-label">{`Indicador: ${normalizeYesNoValue(row.indicator) === "yes" ? "SÃ­" : "No"}`}</p>
-                                  <p className="soft-label">{`Objetivo asociado: ${normalizeYesNoValue(row.objective_associated) === "yes" ? "SÃ­" : "No"}`}</p>
+                                  <p className="soft-label">{`Indicador: ${normalizeYesNoValue(row.indicator) === "yes" ? "Sí" : "No"}`}</p>
+                                  <p className="soft-label">{`Objetivo asociado: ${normalizeYesNoValue(row.objective_associated) === "yes" ? "Sí" : "No"}`}</p>
                                   <p className="soft-label">{`Plazo: ${normalizeP09DateLabel(row.due_date) || "-"}`}</p>
                                 </article>
                               );
@@ -5155,6 +5086,10 @@ function AuditGuidedFields({
 }
 
 export default AuditGuidedFields;
+
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 from datetime import date
 from uuid import UUID
@@ -140,7 +140,7 @@ def _raise_if_iso_management_tables_missing(exc: SQLAlchemyError) -> None:
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion de Gestion ISO (fase 11). "
+                "Falta migración de Gestión ISO (fase 11). "
                 "Ejecuta docs/sql/phase11_iso_core_completion.sql."
             ),
         ) from exc
@@ -156,7 +156,7 @@ def _normalize_enum_filter(value: str | None, *, field_name: str, valid_values: 
         allowed = ", ".join(sorted(valid_values))
         raise HTTPException(
             status_code=400,
-            detail=f"{field_name} invalido. Valores permitidos: {allowed}",
+            detail=f"{field_name} inválido. Valores permitidos: {allowed}",
         )
     return normalized
 
@@ -182,7 +182,7 @@ def _get_interested_party_or_404(db: Session, *, consultancy_id: UUID, party_id:
 def _get_policy_or_404(db: Session, *, consultancy_id: UUID, policy_id: UUID) -> QualityPolicy:
     policy = get_quality_policy_or_none(db, consultancy_id=consultancy_id, policy_id=policy_id)
     if policy is None:
-        raise HTTPException(status_code=404, detail="Politica de calidad no encontrada")
+        raise HTTPException(status_code=404, detail="Política de calidad no encontrada")
     return policy
 
 
@@ -467,12 +467,12 @@ def get_quality_policies(
         logger.exception("Database connectivity error while listing quality policies")
         raise map_operational_error(
             exc,
-            default_detail="No se pudo conectar a la base de datos para listar politicas de calidad.",
+            default_detail="No se pudo conectar a la base de datos para listar políticas de calidad.",
         ) from exc
     except SQLAlchemyError as exc:
         _raise_if_iso_management_tables_missing(exc)
         logger.exception("Database error while listing quality policies")
-        raise HTTPException(status_code=500, detail="No se pudieron listar las politicas de calidad") from exc
+        raise HTTPException(status_code=500, detail="No se pudieron listar las políticas de calidad") from exc
 
 
 @router.post("/quality-policies", response_model=QualityPolicyRead, status_code=status.HTTP_201_CREATED)
@@ -503,12 +503,12 @@ def post_quality_policy(
         logger.exception("Database connectivity error while creating quality policy")
         raise map_operational_error(
             exc,
-            default_detail="No se pudo conectar a la base de datos para crear la politica de calidad.",
+            default_detail="No se pudo conectar a la base de datos para crear la política de calidad.",
         ) from exc
     except SQLAlchemyError as exc:
         _raise_if_iso_management_tables_missing(exc)
         logger.exception("Database error while creating quality policy")
-        raise HTTPException(status_code=500, detail="No se pudo crear la politica de calidad") from exc
+        raise HTTPException(status_code=500, detail="No se pudo crear la política de calidad") from exc
 
 
 @router.get("/quality-policies/{policy_id}", response_model=QualityPolicyRead)
@@ -525,12 +525,12 @@ def get_quality_policy(
         logger.exception("Database connectivity error while loading quality policy")
         raise map_operational_error(
             exc,
-            default_detail="No se pudo conectar a la base de datos para cargar la politica de calidad.",
+            default_detail="No se pudo conectar a la base de datos para cargar la política de calidad.",
         ) from exc
     except SQLAlchemyError as exc:
         _raise_if_iso_management_tables_missing(exc)
         logger.exception("Database error while loading quality policy")
-        raise HTTPException(status_code=500, detail="No se pudo cargar la politica de calidad") from exc
+        raise HTTPException(status_code=500, detail="No se pudo cargar la política de calidad") from exc
 
 
 @router.patch("/quality-policies/{policy_id}", response_model=QualityPolicyRead)
@@ -556,12 +556,12 @@ def patch_quality_policy(
         logger.exception("Database connectivity error while updating quality policy")
         raise map_operational_error(
             exc,
-            default_detail="No se pudo conectar a la base de datos para actualizar la politica de calidad.",
+            default_detail="No se pudo conectar a la base de datos para actualizar la política de calidad.",
         ) from exc
     except SQLAlchemyError as exc:
         _raise_if_iso_management_tables_missing(exc)
         logger.exception("Database error while updating quality policy")
-        raise HTTPException(status_code=500, detail="No se pudo actualizar la politica de calidad") from exc
+        raise HTTPException(status_code=500, detail="No se pudo actualizar la política de calidad") from exc
 
 
 @router.delete("/quality-policies/{policy_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -581,12 +581,12 @@ def remove_quality_policy(
         logger.exception("Database connectivity error while deleting quality policy")
         raise map_operational_error(
             exc,
-            default_detail="No se pudo conectar a la base de datos para eliminar la politica de calidad.",
+            default_detail="No se pudo conectar a la base de datos para eliminar la política de calidad.",
         ) from exc
     except SQLAlchemyError as exc:
         _raise_if_iso_management_tables_missing(exc)
         logger.exception("Database error while deleting quality policy")
-        raise HTTPException(status_code=500, detail="No se pudo eliminar la politica de calidad") from exc
+        raise HTTPException(status_code=500, detail="No se pudo eliminar la política de calidad") from exc
 
 
 @router.get("/iso-role-assignments", response_model=list[IsoRoleAssignmentRead])
@@ -1642,3 +1642,5 @@ def remove_iso_improvement(
         _raise_if_iso_management_tables_missing(exc)
         logger.exception("Database error while deleting improvement")
         raise HTTPException(status_code=500, detail="No se pudo eliminar la mejora") from exc
+
+

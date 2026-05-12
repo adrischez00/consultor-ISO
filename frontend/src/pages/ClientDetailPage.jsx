@@ -63,18 +63,18 @@ function ClientDetailPage() {
     };
   }, [clientId]);
 
-  const client = clientDetail?.client;
-  const diagnostics = Array.isArray(clientDetail?.diagnostics) ? clientDetail.diagnostics : [];
+  const client = clientDetail.client;
+  const diagnostics = Array.isArray(clientDetail.diagnostics) ? clientDetail.diagnostics : [];
 
   return (
     <section className="page">
       <PageHeader
         eyebrow="Cliente"
-        title={client?.name || "Detalle de cliente"}
+        title={client.name || "Detalle de cliente"}
         description="Contexto de empresa e histórico de auditorías P03 y diagnósticos legacy."
         actions={
           <div className="inline-actions">
-            <Link className="btn-primary link-btn" to={`/auditorias/nueva?client_id=${clientId || ""}`}>
+            <Link className="btn-primary link-btn" to={`/auditorias/nuevaclient_id=${clientId || ""}`}>
               Nueva auditoría
             </Link>
             <Link className="btn-secondary link-btn" to="/clientes">
@@ -85,7 +85,7 @@ function ClientDetailPage() {
       />
 
       {loading ? <p className="status">Cargando cliente...</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
 
       {!loading && !error && client ? (
         <>
@@ -165,9 +165,7 @@ function ClientDetailPage() {
                         <span>Completado: {formatDate(diagnostic.completed_at)}</span>
                         <span>
                           Score:{" "}
-                          {diagnostic.total_score == null
-                            ? "-"
-                            : `${formatNumber(diagnostic.total_score)}%`}
+                          {diagnostic.total_score == null ? "-" : `${formatNumber(diagnostic.total_score)}%`}
                         </span>
                       </div>
                     </div>
@@ -193,4 +191,5 @@ function ClientDetailPage() {
   );
 }
 
-export default ClientDetailPage;
+export default ClientDetailPage;
+

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
@@ -93,7 +93,7 @@ def _normalize_choice(value: str | None, field_name: str, valid_values: set[str]
     normalized = _normalize_required_text(value, field_name).lower()
     if normalized not in valid_values:
         allowed = ", ".join(sorted(valid_values))
-        raise ValueError(f"{field_name} invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"{field_name} inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -191,7 +191,7 @@ def _validate_nonconformity_lifecycle(nc: IsoNonconformity) -> None:
         if _normalize_optional_text(nc.corrective_action) is None:
             raise ValueError("No puedes cerrar la no conformidad sin accion correctiva")
         if _normalize_optional_text(nc.effectiveness_verification) is None:
-            raise ValueError("No puedes cerrar la no conformidad sin verificacion de eficacia")
+            raise ValueError("No puedes cerrar la no conformidad sin verificación de eficacia")
         if nc.verification_date is None:
             raise ValueError("No puedes cerrar la no conformidad sin verification_date")
         if nc.closed_at is None:
@@ -630,7 +630,7 @@ def create_iso_process_map_item(
     status: str,
 ) -> IsoProcessMapItem:
     if position_order < 0:
-        raise ValueError("position_order debe ser mayor o igual a 0")
+        raise ValueError("position_order debe ser mayor año igual a 0")
     item = IsoProcessMapItem(
         consultancy_id=consultancy_id,
         created_by_user_id=created_by_user_id,
@@ -671,7 +671,7 @@ def update_iso_process_map_item(
     if "position_order" in data:
         position_order = int(data["position_order"])
         if position_order < 0:
-            raise ValueError("position_order debe ser mayor o igual a 0")
+            raise ValueError("position_order debe ser mayor año igual a 0")
         process.position_order = position_order
     if "status" in data:
         process.status = _normalize_choice(data["status"], "status", ACTIVE_STATUS_VALUES)
@@ -1347,3 +1347,5 @@ def get_iso_improvement_summary(db: Session, *, consultancy_id: UUID) -> IsoImpr
         validated=counts["validated"],
         closed=counts["closed"],
     )
+
+

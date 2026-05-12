@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
@@ -55,7 +55,7 @@ def _normalize_feedback_type(value: str | None) -> str:
     normalized = _normalize_required_text(value, "feedback_type").lower()
     if normalized not in CUSTOMER_FEEDBACK_TYPE_VALUES:
         allowed = ", ".join(sorted(CUSTOMER_FEEDBACK_TYPE_VALUES))
-        raise ValueError(f"feedback_type invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"feedback_type inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -206,3 +206,4 @@ def get_customer_feedback_summary(db: Session, *, consultancy_id: UUID) -> Custo
         score_1_count=counts[1],
         latest_feedback_date=latest_feedback_date,
     )
+

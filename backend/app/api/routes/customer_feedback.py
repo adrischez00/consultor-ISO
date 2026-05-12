@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 from datetime import date
 from uuid import UUID
@@ -54,7 +54,7 @@ def _normalize_feedback_type_filter(feedback_type_filter: str | None) -> str | N
         return None
     if normalized not in CUSTOMER_FEEDBACK_TYPE_VALUES:
         allowed = ", ".join(sorted(CUSTOMER_FEEDBACK_TYPE_VALUES))
-        raise HTTPException(status_code=400, detail=f"type invalido. Valores permitidos: {allowed}")
+        raise HTTPException(status_code=400, detail=f"type inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -90,7 +90,7 @@ def _raise_if_customer_feedback_table_missing(exc: SQLAlchemyError) -> None:
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion de Satisfaccion del Cliente. "
+                "Falta migración de Satisfacción del Cliente. "
                 "Ejecuta docs/sql/phase8_customer_satisfaction.sql."
             ),
         ) from exc
@@ -124,7 +124,7 @@ def _get_feedback_or_404(
         feedback_id=feedback_id,
     )
     if feedback is None:
-        raise HTTPException(status_code=404, detail="Registro de satisfaccion no encontrado")
+        raise HTTPException(status_code=404, detail="Registro de satisfacción no encontrado")
     return feedback
 
 
@@ -349,3 +349,4 @@ def remove_customer_feedback(
         _raise_if_customer_feedback_table_missing(exc)
         logger.exception("Database error while deleting customer feedback")
         raise HTTPException(status_code=500, detail="No se pudo eliminar el registro") from exc
+

@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 from datetime import date
 from uuid import UUID
@@ -59,7 +59,7 @@ def _normalize_followup_status_filter(status_filter: str | None) -> str | None:
         allowed = ", ".join(sorted(MANAGEMENT_REVIEW_STATUS_VALUES))
         raise HTTPException(
             status_code=400,
-            detail=f"status invalido. Valores permitidos: {allowed}",
+            detail=f"status inválido. Valores permitidos: {allowed}",
         )
     return normalized
 
@@ -86,7 +86,7 @@ def _raise_if_management_review_tables_missing(exc: SQLAlchemyError) -> None:
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion de Revisión por la Dirección. "
+                "Falta migración de Revisión por la Dirección. "
                 "Ejecuta docs/sql/phase6_management_reviews.sql."
             ),
         ) from exc
@@ -106,7 +106,7 @@ def _raise_if_management_review_tables_missing(exc: SQLAlchemyError) -> None:
 def _get_review_or_404(db: Session, *, consultancy_id: UUID, review_id: UUID) -> ManagementReview:
     review = get_management_review_or_none(db, consultancy_id=consultancy_id, review_id=review_id)
     if review is None:
-        raise HTTPException(status_code=404, detail="Revision por la direccion no encontrada")
+        raise HTTPException(status_code=404, detail="Revision por la dirección no encontrada")
     return review
 
 
@@ -481,3 +481,5 @@ def remove_management_review(
         _raise_if_management_review_tables_missing(exc)
         logger.exception("Database error while deleting management review")
         raise HTTPException(status_code=500, detail="No se pudo eliminar la revision") from exc
+
+

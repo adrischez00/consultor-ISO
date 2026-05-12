@@ -1,4 +1,4 @@
-import { requestBlob, requestJson } from "./httpClient";
+﻿import { requestBlob, requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 function toQuery(params) {
@@ -10,7 +10,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `?${raw}` : "";
+  return raw ? `${raw}` : "";
 }
 
 function normalizeNullableText(value) {
@@ -39,22 +39,22 @@ export async function fetchAuditReports(filters = {}) {
 
 export async function createAuditReport(payload) {
   const safePayload = {
-    client_id: ensureUuid(payload?.client_id, "client_id"),
-    report_year: Number(payload?.report_year),
-    template_code: String(payload?.template_code || "P03"),
-    entity_name: normalizeNullableText(payload?.entity_name),
-    auditor_organization: normalizeNullableText(payload?.auditor_organization),
-    audited_area: normalizeNullableText(payload?.audited_area),
-    audit_date: normalizeNullableText(payload?.audit_date),
-    tipo_auditoria: normalizeNullableText(payload?.tipo_auditoria),
-    modalidad: normalizeNullableText(payload?.modalidad),
-    audited_facilities: normalizeNullableText(payload?.audited_facilities),
-    quality_responsible_name: normalizeNullableText(payload?.quality_responsible_name),
-    manager_name: normalizeNullableText(payload?.manager_name),
-    reference_standard_revision: normalizeNullableText(payload?.reference_standard_revision),
-    audit_budget_code: normalizeNullableText(payload?.audit_budget_code),
-    system_scope: normalizeNullableText(payload?.system_scope),
-    audit_description: normalizeNullableText(payload?.audit_description),
+    client_id: ensureUuid(payload.client_id, "client_id"),
+    report_year: Number(payload.report_year),
+    template_code: String(payload.template_code || "P03"),
+    entity_name: normalizeNullableText(payload.entity_name),
+    auditor_organization: normalizeNullableText(payload.auditor_organization),
+    audited_area: normalizeNullableText(payload.audited_area),
+    audit_date: normalizeNullableText(payload.audit_date),
+    tipo_auditoria: normalizeNullableText(payload.tipo_auditoria),
+    modalidad: normalizeNullableText(payload.modalidad),
+    audited_facilities: normalizeNullableText(payload.audited_facilities),
+    quality_responsible_name: normalizeNullableText(payload.quality_responsible_name),
+    manager_name: normalizeNullableText(payload.manager_name),
+    reference_standard_revision: normalizeNullableText(payload.reference_standard_revision),
+    audit_budget_code: normalizeNullableText(payload.audit_budget_code),
+    system_scope: normalizeNullableText(payload.system_scope),
+    audit_description: normalizeNullableText(payload.audit_description),
   };
   if (!Number.isFinite(safePayload.report_year)) {
     throw new Error("report_year inválido.");
@@ -97,7 +97,7 @@ export async function fetchAuditCompliance(reportId) {
   const normalizedReportId = ensureUuid(reportId, "report_id");
   const data = await requestJson(`/audit-reports/${normalizedReportId}/compliance`, {
     method: "GET",
-    fallbackMessage: "No se pudo cargar el compliance de la auditoria.",
+    fallbackMessage: "No se pudo cargar el compliance de la auditoría.",
   });
   if (!data || typeof data !== "object" || !Array.isArray(data.blocks)) {
     throw new Error("Respuesta invalida al cargar compliance.");
@@ -109,10 +109,10 @@ export async function fetchAuditIsoWorkbench(reportId) {
   const normalizedReportId = ensureUuid(reportId, "report_id");
   const data = await requestJson(`/audit-reports/${normalizedReportId}/iso-workbench`, {
     method: "GET",
-    fallbackMessage: "No se pudo cargar el flujo ISO de la auditoria.",
+    fallbackMessage: "No se pudo cargar el flujo ISO de la auditoría.",
   });
   if (!data || typeof data !== "object") {
-    throw new Error("Respuesta invalida al cargar flujo ISO de auditoria.");
+    throw new Error("Respuesta invalida al cargar flujo ISO de auditoría.");
   }
   return data;
 }
@@ -478,3 +478,4 @@ export async function exportAuditReportDocx(reportId) {
     window.URL.revokeObjectURL(objectUrl);
   }
 }
+

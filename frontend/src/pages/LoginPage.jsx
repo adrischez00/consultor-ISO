@@ -81,7 +81,7 @@ function LoginPage() {
     setError("");
     try {
       await login({ email, password }, { persistent: rememberSession });
-      const redirectPath = location.state?.from || "/dashboard";
+      const redirectPath = location.state.from || "/dashboard";
       navigate(redirectPath, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "No se pudo iniciar sesión.");
@@ -118,8 +118,7 @@ function LoginPage() {
             <span>Password</span>
             <div className="password-input-wrap">
               <input
-                className="input-text password-input"
-                type={showPassword ? "text" : "password"}
+                className="input-text password-input" type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
@@ -127,8 +126,7 @@ function LoginPage() {
               />
               <button
                 type="button"
-                className="password-toggle-btn"
-                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                className="password-toggle-btn" aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                 aria-pressed={showPassword}
                 onClick={() => setShowPassword((prev) => !prev)}
               >
@@ -154,7 +152,7 @@ function LoginPage() {
         </form>
 
         <p className="auth-footnote">
-          ¿No tienes cuenta? <Link to="/register">Crear consultoría</Link>
+          ¿No tienes cuenta <Link to="/register">Crear consultoría</Link>
         </p>
       </article>
     </section>

@@ -1,4 +1,4 @@
-import { requestJson } from "./httpClient";
+﻿import { requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 const RATING_VALUES = new Set(["excellent", "approved", "conditional", "critical"]);
@@ -20,7 +20,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `?${raw}` : "";
+  return raw ? `${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
@@ -38,7 +38,7 @@ function normalizeOptionalEmail(value, fieldName) {
   const normalized = normalizeOptionalText(value);
   if (!normalized) return null;
   if (!normalized.includes("@") || normalized.startsWith("@") || normalized.endsWith("@")) {
-    throw new Error(`${fieldName} invalido.`);
+    throw new Error(`${fieldName} inválido.`);
   }
   return normalized;
 }
@@ -61,7 +61,7 @@ function normalizeInt(value, fieldName, { required = false, min = null, max = nu
     return null;
   }
   const parsed = Number.parseInt(raw, 10);
-  if (!Number.isFinite(parsed)) throw new Error(`${fieldName} invalido.`);
+  if (!Number.isFinite(parsed)) throw new Error(`${fieldName} inválido.`);
   if (min != null && parsed < min) throw new Error(`${fieldName} debe ser >= ${min}.`);
   if (max != null && parsed > max) throw new Error(`${fieldName} debe ser <= ${max}.`);
   return parsed;
@@ -71,7 +71,7 @@ function normalizeFloat(value, fieldName, { min = null, max = null } = {}) {
   const raw = String(value ?? "").trim();
   if (!raw) return null;
   const parsed = Number(raw);
-  if (!Number.isFinite(parsed)) throw new Error(`${fieldName} invalido.`);
+  if (!Number.isFinite(parsed)) throw new Error(`${fieldName} inválido.`);
   if (min != null && parsed < min) throw new Error(`${fieldName} debe ser >= ${min}.`);
   if (max != null && parsed > max) throw new Error(`${fieldName} debe ser <= ${max}.`);
   return parsed;
@@ -80,27 +80,27 @@ function normalizeFloat(value, fieldName, { min = null, max = null } = {}) {
 function normalizeRating(value, fieldName) {
   const normalized = String(value ?? "").trim().toLowerCase();
   if (!normalized) return null;
-  if (!RATING_VALUES.has(normalized)) throw new Error(`${fieldName} invalido.`);
+  if (!RATING_VALUES.has(normalized)) throw new Error(`${fieldName} inválido.`);
   return normalized;
 }
 
 function normalizeOrderBy(value) {
   const normalized = String(value ?? "").trim().toLowerCase();
   if (!normalized) return null;
-  if (!ORDER_BY_VALUES.has(normalized)) throw new Error("order_by invalido.");
+  if (!ORDER_BY_VALUES.has(normalized)) throw new Error("order_by inválido.");
   return normalized;
 }
 
 function normalizeOrderDir(value) {
   const normalized = String(value ?? "").trim().toLowerCase();
   if (!normalized) return null;
-  if (!ORDER_DIR_VALUES.has(normalized)) throw new Error("order_dir invalido.");
+  if (!ORDER_DIR_VALUES.has(normalized)) throw new Error("order_dir inválido.");
   return normalized;
 }
 
 function normalizeCreatePayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload invalido.");
+    throw new Error("Payload inválido.");
   }
   return {
     name: normalizeRequiredText(payload.name, "name"),
@@ -128,7 +128,7 @@ function normalizeCreatePayload(payload) {
 
 function normalizePatchPayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload invalido.");
+    throw new Error("Payload inválido.");
   }
   const data = {};
   if (Object.prototype.hasOwnProperty.call(payload, "name")) {
@@ -227,7 +227,7 @@ export async function createSupplier(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear proveedor.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function patchSupplier(supplierId, payload) {
@@ -241,7 +241,7 @@ export async function patchSupplier(supplierId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar proveedor.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function deleteSupplier(supplierId) {
@@ -251,3 +251,4 @@ export async function deleteSupplier(supplierId) {
     fallbackMessage: "No se pudo eliminar el proveedor.",
   });
 }
+

@@ -24,9 +24,9 @@ const INITIAL_PLANNING = {
 
 const TIPO_AUDITORIA_OPTIONS = [
   { value: "inicial", label: "Inicial" },
-  { value: "revision_1", label: "RevisiÃ³n I" },
-  { value: "revision_2", label: "RevisiÃ³n II" },
-  { value: "recertificacion", label: "RecertificaciÃ³n" },
+  { value: "revision_1", label: "Revisión I" },
+  { value: "revision_2", label: "Revisión II" },
+  { value: "recertificacion", label: "Recertificación" },
 ];
 
 const MODALIDAD_OPTIONS = [
@@ -66,7 +66,7 @@ function AuditCreatePage() {
         const fromQuery = normalizeUuidOrNull(searchParams.get("client_id"));
         if (fromQuery && safeClients.some((item) => item.id === fromQuery)) {
           setClientId(fromQuery);
-        } else if (safeClients[0]?.id) {
+        } else if (safeClients[0].id) {
           setClientId(safeClients[0].id);
         }
       } catch (err) {
@@ -113,7 +113,7 @@ function AuditCreatePage() {
         client_id: clientId,
         report_year: yearValue,
         template_code: "P03",
-        entity_name: selectedClient?.name || null,
+        entity_name: selectedClient.name || null,
         auditor_organization: planning.auditor_organization,
         audited_area: planning.audited_area,
         audit_date: planning.audit_date,
@@ -128,7 +128,7 @@ function AuditCreatePage() {
       });
       navigate(`/auditorias/${created.id}/editar`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo crear la auditorÃ­a.");
+      setError(err instanceof Error ? err.message : "No se pudo crear la auditoría.");
     } finally {
       setSaving(false);
     }
@@ -138,24 +138,24 @@ function AuditCreatePage() {
     <section className="page audit-create-page">
       <PageHeader
         eyebrow="P03"
-        title="Nueva auditorÃ­a"
-        description="Abre un expediente de auditorÃ­a ISO 9001 con los datos mÃ­nimos para empezar y continuar el trabajo en el editor."
+        title="Nueva auditoría"
+        description="Abre un expediente de auditoría ISO 9001 con los datos mínimos para empezar y continuar el trabajo en el editor."
         actions={
           <Link className="btn-ghost link-btn" to="/auditorias">
-            Volver a auditorÃ­as
+            Volver a auditorías
           </Link>
         }
       />
 
       {loading ? <p className="status">Cargando clientes...</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
 
       {!loading ? (
         <form className="form-grid audit-create-form" onSubmit={handleSubmit}>
           <SectionCard
             className="audit-create-step-card"
             title="1. Apertura del expediente"
-            description="Define la entidad y el aÃ±o para crear el expediente y activar su centro de trabajo."
+            description="Define la entidad y el año para crear el expediente y activar su centro de trabajo."
           >
             <div className="audit-form-grid">
               <label className="field-stack">
@@ -176,7 +176,7 @@ function AuditCreatePage() {
               </label>
 
               <label className="field-stack">
-                <span>AÃ±o del informe *</span>
+                <span>Año del informe *</span>
                 <input
                   className="input-text"
                   type="number"
@@ -192,18 +192,18 @@ function AuditCreatePage() {
 
           <SectionCard
             className="audit-create-step-card"
-            title="2. PlanificaciÃ³n inicial (recomendada)"
-            description="AÃ±ade contexto operativo para entrar al editor con una base clara y consistente."
+            title="2. Planificación inicial (recomendada)"
+            description="Añade contexto operativo para entrar al editor con una base clara y consistente."
           >
             <div className="audit-create-groups">
               <section className="audit-create-group">
                 <header className="audit-create-group-head">
-                  <h4>A. IdentificaciÃ³n</h4>
+                  <h4>A. Identificación</h4>
                   <p>Datos de referencia inicial para abrir correctamente el expediente.</p>
                 </header>
                 <div className="audit-form-grid audit-create-group-grid">
                   <label className="field-stack">
-                    <span>Auditor / OrganizaciÃ³n</span>
+                    <span>Auditor / Organización</span>
                     <input
                       className="input-text"
                       value={planning.auditor_organization}
@@ -211,7 +211,7 @@ function AuditCreatePage() {
                     />
                   </label>
                   <label className="field-stack">
-                    <span>Fecha de auditorÃ­a</span>
+                    <span>Fecha de auditoría</span>
                     <input
                       className="input-text"
                       type="date"
@@ -220,7 +220,7 @@ function AuditCreatePage() {
                     />
                   </label>
                   <label className="field-stack">
-                    <span>Ãrea auditada</span>
+                    <span>Área auditada</span>
                     <input
                       className="input-text"
                       value={planning.audited_area}
@@ -232,12 +232,12 @@ function AuditCreatePage() {
 
               <section className="audit-create-group">
                 <header className="audit-create-group-head">
-                  <h4>B. ConfiguraciÃ³n de auditorÃ­a</h4>
-                  <p>ParÃ¡metros que determinan el enfoque de revisiÃ³n desde el inicio.</p>
+                  <h4>B. Configuración de auditoría</h4>
+                  <p>Parámetros que determinan el enfoque de revisión desde el inicio.</p>
                 </header>
                 <div className="audit-form-grid audit-create-group-grid">
                   <label className="field-stack">
-                    <span>Tipo de auditorÃ­a</span>
+                    <span>Tipo de auditoría</span>
                     <select
                       className="input-select"
                       value={planning.tipo_auditoria}
@@ -265,7 +265,7 @@ function AuditCreatePage() {
                     </select>
                   </label>
                   <label className="field-stack">
-                    <span>RevisiÃ³n de norma</span>
+                    <span>Revisión de norma</span>
                     <input
                       className="input-text"
                       value={planning.reference_standard_revision}
@@ -278,7 +278,7 @@ function AuditCreatePage() {
               <section className="audit-create-group">
                 <header className="audit-create-group-head">
                   <h4>C. Contexto operativo inicial</h4>
-                  <p>InformaciÃ³n Ãºtil para arrancar el trabajo de ediciÃ³n con contexto real.</p>
+                  <p>Información útil para arrancar el trabajo de edición con contexto real.</p>
                 </header>
                 <div className="audit-form-grid audit-create-group-grid">
                   <label className="field-stack">
@@ -298,7 +298,7 @@ function AuditCreatePage() {
                     />
                   </label>
                   <label className="field-stack">
-                    <span>CÃ³digo de presupuesto</span>
+                    <span>Código de presupuesto</span>
                     <input
                       className="input-text"
                       value={planning.audit_budget_code}
@@ -325,7 +325,7 @@ function AuditCreatePage() {
               </section>
             </div>
             <p className="soft-label audit-create-helper">
-              Las notas adicionales para la introducciÃ³n del informe se completan en el editor del expediente.
+              Las notas adicionales para la introducción del informe se completan en el editor del expediente.
             </p>
           </SectionCard>
 
@@ -341,6 +341,8 @@ function AuditCreatePage() {
 }
 
 export default AuditCreatePage;
+
+
 
 
 

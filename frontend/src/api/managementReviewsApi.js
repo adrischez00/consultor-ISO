@@ -1,4 +1,4 @@
-import { requestJson } from "./httpClient";
+﻿import { requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 function toQuery(params) {
@@ -10,7 +10,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `?${raw}` : "";
+  return raw ? `${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
@@ -60,7 +60,7 @@ function normalizeReferences(references, { required = false } = {}) {
 
 function normalizeCreatePayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de revision invalido.");
+    throw new Error("Payload de revision inválido.");
   }
   return {
     review_date: normalizeDate(payload.review_date, "review_date", { required: true }),
@@ -78,7 +78,7 @@ function normalizeCreatePayload(payload) {
 
 function normalizePatchPayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de revision invalido.");
+    throw new Error("Payload de revision inválido.");
   }
   const safePayload = {};
   if (Object.prototype.hasOwnProperty.call(payload, "review_date")) {
@@ -125,7 +125,7 @@ export async function fetchManagementReviews(filters = {}) {
   });
   const data = await requestJson(`/management-reviews${query}`, {
     method: "GET",
-    fallbackMessage: "No se pudieron cargar las revisiones por la direccion.",
+    fallbackMessage: "No se pudieron cargar las revisiones por la dirección.",
   });
   if (!Array.isArray(data)) {
     throw new Error("Respuesta invalida al listar revisiones.");
@@ -148,7 +148,7 @@ export async function fetchManagementReviewDetail(reviewId) {
   const normalizedReviewId = ensureUuid(reviewId, "review_id");
   const data = await requestJson(`/management-reviews/${normalizedReviewId}`, {
     method: "GET",
-    fallbackMessage: "No se pudo cargar la revision por la direccion.",
+    fallbackMessage: "No se pudo cargar la revision por la dirección.",
   });
   if (!data || typeof data !== "object" || typeof data.review !== "object") {
     throw new Error("Respuesta invalida al cargar detalle de revision.");
@@ -161,7 +161,7 @@ export async function createManagementReview(payload) {
   const data = await requestJson("/management-reviews", {
     method: "POST",
     body: JSON.stringify(safePayload),
-    fallbackMessage: "No se pudo crear la revision por la direccion.",
+    fallbackMessage: "No se pudo crear la revision por la dirección.",
   });
   if (!data || typeof data !== "object" || typeof data.review !== "object") {
     throw new Error("Respuesta invalida al crear revision.");
@@ -175,7 +175,7 @@ export async function patchManagementReview(reviewId, payload) {
   const data = await requestJson(`/management-reviews/${normalizedReviewId}`, {
     method: "PATCH",
     body: JSON.stringify(safePayload),
-    fallbackMessage: "No se pudo actualizar la revision por la direccion.",
+    fallbackMessage: "No se pudo actualizar la revision por la dirección.",
   });
   if (!data || typeof data !== "object" || typeof data.review !== "object") {
     throw new Error("Respuesta invalida al actualizar revision.");
@@ -187,6 +187,8 @@ export async function deleteManagementReview(reviewId) {
   const normalizedReviewId = ensureUuid(reviewId, "review_id");
   await requestJson(`/management-reviews/${normalizedReviewId}`, {
     method: "DELETE",
-    fallbackMessage: "No se pudo eliminar la revision por la direccion.",
+    fallbackMessage: "No se pudo eliminar la revision por la dirección.",
   });
 }
+
+

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from uuid import UUID
@@ -45,7 +45,7 @@ class ReportComplianceResult:
 YELLOW_BLOCK_RULES: tuple[BlockRule, ...] = (
     BlockRule(
         block_code="contexto_organizacion",
-        block_title="Contexto de la organizacion",
+        block_title="Contexto de la organización",
         section_code="4",
         required_fields=(
             "context_document_completed",
@@ -64,8 +64,8 @@ YELLOW_BLOCK_RULES: tuple[BlockRule, ...] = (
         ),
     ),
     BlockRule(
-        block_code="politica_calidad",
-        block_title="Politica de calidad",
+        block_code="política_calidad",
+        block_title="Política de calidad",
         section_code="5",
         required_fields=(
             "quality_policy_revision",
@@ -131,7 +131,7 @@ YELLOW_BLOCK_RULES: tuple[BlockRule, ...] = (
     ),
     BlockRule(
         block_code="comunicacion_info_documentada",
-        block_title="Comunicacion e informacion documentada",
+        block_title="Comunicacion e información documentada",
         section_code="7",
         required_fields=(
             "external_communication_channels",
@@ -398,3 +398,5 @@ def get_pending_blocks_for_report_close(
     compliance: ReportComplianceResult,
 ) -> list[BlockComplianceResult]:
     return [block for block in compliance.blocks if block.status != "green"]
+
+

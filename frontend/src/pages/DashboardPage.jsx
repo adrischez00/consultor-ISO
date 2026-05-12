@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
@@ -62,7 +62,7 @@ function DashboardPage() {
   const approvedAuditsCount = audits.filter((item) => item.status === "approved").length;
 
   function requestDeleteRecentAudit(audit) {
-    if (!audit?.id || deletingAuditId) return;
+    if (!audit.id || deletingAuditId) return;
     if (!isRecentAuditDeletable(audit.status)) return;
     setPendingDeleteAudit(audit);
   }
@@ -73,7 +73,7 @@ function DashboardPage() {
   }
 
   async function confirmDeleteRecentAudit() {
-    if (!pendingDeleteAudit?.id || deletingAuditId) return;
+    if (!pendingDeleteAudit.id || deletingAuditId) return;
     setDeletingAuditId(pendingDeleteAudit.id);
     setError("");
     try {
@@ -81,7 +81,7 @@ function DashboardPage() {
       setAudits((prev) => prev.filter((item) => item.id !== pendingDeleteAudit.id));
       setPendingDeleteAudit(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo eliminar la auditoria.");
+      setError(err instanceof Error ? err.message : "No se pudo eliminar la auditoría.");
     } finally {
       setDeletingAuditId("");
     }
@@ -91,8 +91,7 @@ function DashboardPage() {
     <section className="page dashboard-page">
       <PageHeader
         eyebrow="Panel Ejecutivo"
-        title="Dashboard"
-        description="Entrada principal del producto: clientes, auditorías y seguimiento de expedientes."
+        title="Dashboard" description="Entrada principal del producto : clientes, auditorías y seguimiento de expedientes."
         actions={
           <>
             <Link className="btn-primary link-btn" to="/clientes">
@@ -106,7 +105,7 @@ function DashboardPage() {
       />
 
       {loading ? <p className="status">Cargando dashboard...</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
 
       {!loading && !error ? (
         <>
@@ -190,7 +189,7 @@ function DashboardPage() {
         loading={Boolean(deletingAuditId)}
         title="Eliminar auditoría"
         description="Se eliminará por completo el expediente de auditoría. Esta acción no se puede deshacer."
-        entityLabel={pendingDeleteAudit?.report_code || pendingDeleteAudit?.id || ""}
+        entityLabel={pendingDeleteAudit.report_code || pendingDeleteAudit.id || ""}
         confirmLabel="Eliminar definitivamente"
         cancelLabel="Cancelar"
         onClose={closeDeleteModal}
@@ -201,3 +200,4 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
+

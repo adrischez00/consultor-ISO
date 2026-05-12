@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 import logging
@@ -23,11 +23,11 @@ from app.models.client import Client
 logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = (
-    "Actua como auditor interno ISO 9001 redactando un informe en espanol tecnico y profesional. "
+    "Actua como auditor interno ISO 9001 redactando un informe en espanol técnico y profesional. "
     "Reglas obligatorias: no inventar hechos, no inventar codigos/documentos/fechas/personas, "
     "no emitir asesoramiento legal ni afirmar certificacion de cumplimiento automatico. "
-    "Usa solo la evidencia recibida. Si la evidencia es insuficiente, indicalo explicitamente "
-    "con lenguaje de auditoria (por ejemplo: 'No se evidencia ...'). "
+    "Usa solo la evidencia recibida. S? la evidencia es insuficiente, indicalo explicitamente "
+    "con lenguaje de auditoría (por ejemplo: 'No se evidencia ...'). "
     "Redacta en tercera persona, sin saludos, y respetando el formato estructurado solicitado."
 )
 
@@ -51,7 +51,7 @@ FIXED_FINAL_DISPOSITIONS_LINES = [
     ),
     (
         "5.- Las No Conformidades se refieren a incumplimientos de los requisitos de la norma de referencia "
-        "aplicables, de los documentos del Sistema de Gestión, o incumplimientos en los procesos auditados."
+        "aplicables, de los documentos del Sistema de Gestión, año incumplimientos en los procesos auditados."
     ),
 ]
 
@@ -85,7 +85,7 @@ DEFAULT_SECTION_POINTS: dict[str, list[tuple[str, str]]] = {
         ("7.5", "Información documentada"),
     ],
     "8": [
-        ("8.1", "Planificación operacional"),
+        ("8.1", "Planificación operaciónal"),
         ("8.2", "Requisitos servicio"),
         ("8.4", "Control proveedores"),
         ("8.5", "Producción/provisión"),
@@ -127,7 +127,7 @@ ALLOWED_AUDIT_MODALITIES = {"presencialmente", "de forma remota", "de forma mixt
 _NARRATIVE_SECTION_KEYS = ("evidence", "gaps", "conclusion", "risk", "action")
 _NARRATIVE_SECTION_HEADINGS = {
     "evidence": "Evidencias observadas",
-    "gaps": "Desviaciones o carencias",
+    "gaps": "Desviaciones año carencias",
     "conclusion": "Conclusion de cumplimiento",
     "risk": "Riesgo para el sistema",
     "action": "Accion recomendada",
@@ -135,7 +135,7 @@ _NARRATIVE_SECTION_HEADINGS = {
 _NARRATIVE_HEADING_ALIASES = {
     "evidence": ("evidencias observadas",),
     "gaps": (
-        "desviaciones o carencias",
+        "desviaciones año carencias",
         "desviaciones/carencias",
         "desviaciones y carencias",
     ),
@@ -152,7 +152,7 @@ _GENERIC_NARRATIVE_MARKERS = (
     "como modelo de lenguaje",
     "no dispongo de",
     "no puedo verificar",
-    "sin informacion adicional",
+    "sin información adicional",
     "se recomienda seguir mejorando",
     "cumple en terminos generales",
 )
@@ -167,16 +167,16 @@ def _strip_rich_text(value: Any) -> str:
     if "<" not in raw or ">" not in raw:
         return raw
 
-    normalized_breaks = re.sub(r"(?i)<br\\s*/?>", "\n", raw)
+    normalized_breaks = re.sub(r"(i)<br\\s*/>", "\n", raw)
     normalized_breaks = re.sub(
-        r"(?i)</(p|div|h1|h2|h3|h4|h5|h6|li|tr|blockquote)>",
+        r"(i)</(p|div|h1|h2|h3|h4|h5|h6|li|tr|blockquote)>",
         "\n",
         normalized_breaks,
     )
     stripped = re.sub(r"<[^>]+>", "", normalized_breaks)
     unescaped = unescape(stripped)
     compacted = re.sub(r"[\\t\\f\\v]+", " ", unescaped)
-    compacted = re.sub(r"\\r\\n?|\\n{3,}", "\n\n", compacted)
+    compacted = re.sub(r"\\r\\n|\\n{3,}", "\n\n", compacted)
     return compacted.strip()
 
 
@@ -410,9 +410,9 @@ def _build_section_prompt(
     climate_hint = ""
     if root == "4":
         climate_hint = (
-            "En seccion 4, verificar explicitamente si hay evidencia sobre cambio climatico "
+            "En seccion 4, verificar explicitamente s? hay evidencia sobre cambio climatico "
             "(relevancia en 4.1 y requisitos de partes interesadas en 4.2). "
-            "Si no hay evidencia, indicarlo sin inferencias.\n"
+            "S? no hay evidencia, indicarlo sin inferencias.\n"
         )
     return (
         f"Empresa: {company_name}\n"
@@ -427,13 +427,13 @@ def _build_section_prompt(
         f"{climate_hint}"
         "Devuelve SOLO estos 5 bloques y en este orden exacto (sin markdown ni texto adicional):\n"
         "Evidencias observadas: ...\n"
-        "Desviaciones o carencias: ...\n"
+        "Desviaciones año carencias: ...\n"
         "Conclusion de cumplimiento: ...\n"
         "Riesgo para el sistema: ...\n"
         "Accion recomendada: ...\n"
-        "Cada bloque debe contener 1-3 frases tecnicas, concretas y auditables, apoyadas en la evidencia recibida. "
+        "Cada bloque debe contener 1-3 frases técnicas, concretas y auditables, apoyadas en la evidencia recibida. "
         "No inventes datos no presentes en el contexto. "
-        "Si citas codigos o referencias, usa solo las referencias permitidas."
+        "S? citas codigos año referencias, usa solo las referencias permitidas."
     )
 
 
@@ -546,7 +546,7 @@ def _build_structured_narrative_from_evidence(
         if len(applicable_checks) == 0:
             gaps_text = (
                 "No se evidencian checks aplicables marcados en esta seccion; "
-                "la evaluacion de desviaciones queda incompleta."
+                "la evaluación de desviaciones queda incompleta."
             )
 
     if len(applicable_checks) == 0:
@@ -557,7 +557,7 @@ def _build_structured_narrative_from_evidence(
     elif noncompliant:
         conclusion_text = (
             "Cumplimiento no conforme para la seccion revisada por existencia de hallazgos abiertos. "
-            "No procede declarar conformidad hasta cierre y verificacion de acciones."
+            "No procede declarar conformidad hasta cierre y verificación de acciones."
         )
     elif partial:
         conclusion_text = (
@@ -569,12 +569,12 @@ def _build_structured_narrative_from_evidence(
     if noncompliant or len(evidenced_items) == 0:
         risk_text = (
             "Riesgo medio/alto de incumplimiento efectivo y de debilidad de trazabilidad "
-            "si no se completa evidencia y cierre de hallazgos."
+            "s? no se completa evidencia y cierre de hallazgos."
         )
     elif partial:
         risk_text = (
             "Riesgo moderado por desviaciones parciales que pueden afectar consistencia operativa "
-            "si no se consolidan controles."
+            "s? no se consolidan controles."
         )
     else:
         risk_text = (
@@ -631,19 +631,17 @@ def build_document_integrity_notes(
     if not _has_text(report.entity_name):
         notes.append("Falta entidad auditada en cabecera.")
     if report.audit_date is None:
-        notes.append("Falta fecha de realizacion de auditoria.")
+        notes.append("Falta fecha de realizacion de auditoría.")
     if not _has_text(report.system_scope):
         notes.append("Falta alcance del sistema.")
     if not _has_text(report.tipo_auditoria):
-        notes.append("Falta tipo de auditoria en cabecera.")
+        notes.append("Falta tipo de auditoría en cabecera.")
     if not _has_text(report.modalidad):
-        notes.append("Falta modalidad de auditoria en cabecera.")
+        notes.append("Falta modalidad de auditoría en cabecera.")
     if not _has_text(report.quality_responsible_name):
         notes.append("Falta responsable del sistema en cabecera.")
     if len(interviewees) == 0:
         notes.append("No hay personal entrevistado registrado.")
-    if len(annexes) == 0:
-        notes.append("No hay anexos/evidencias documentales cargados.")
     if len(recommendations) == 0:
         notes.append("No hay recomendaciones/hallazgos registrados en resultados.")
 
@@ -680,13 +678,12 @@ def build_document_integrity_notes(
 def extract_critical_integrity_notes(notes: Sequence[str]) -> list[str]:
     critical_prefixes = (
         "Falta entidad auditada en cabecera.",
-        "Falta fecha de realizacion de auditoria.",
+        "Falta fecha de realizacion de auditoría.",
         "Falta alcance del sistema.",
-        "Falta tipo de auditoria en cabecera.",
-        "Falta modalidad de auditoria en cabecera.",
+        "Falta tipo de auditoría en cabecera.",
+        "Falta modalidad de auditoría en cabecera.",
         "Falta responsable del sistema en cabecera.",
         "No hay personal entrevistado registrado.",
-        "No hay anexos/evidencias documentales cargados.",
     )
     critical: list[str] = []
     for note in notes:
@@ -778,7 +775,7 @@ def generate_section_narratives(
                 narratives[section.section_code] = ai_narrative
             else:
                 logger.warning(
-                    "Narrativa IA no valida para seccion %s; se usa fallback estructurado.",
+                    "Narrativa IA no válida para seccion %s; se usa fallback estructurado.",
                     section.section_code,
                 )
                 narratives[section.section_code] = _build_fallback_section_narrative(
@@ -1052,8 +1049,8 @@ def build_audit_report_docx(
             document.add_paragraph(paragraph)
 
     document.add_heading("RESULTADOS", level=2)
-    document.add_heading("Anexos", level=3)
     if annexes:
+        document.add_heading("Anexos documentales", level=3)
         ordered_annexes = sorted(annexes, key=lambda row: (row.sort_order or 0, row.created_at))
         for annex in ordered_annexes:
             annex_prefix = f"{annex.annex_code}: " if _has_text(annex.annex_code) else ""
@@ -1061,8 +1058,6 @@ def build_audit_report_docx(
             if _has_text(annex.notes):
                 annex_line = f"{annex_line}. {_to_display(annex.notes)}"
             document.add_paragraph(annex_line, style="List Bullet")
-    else:
-        document.add_paragraph("No hay anexos documentales registrados para esta auditoría.")
 
     document.add_heading("Recomendaciones de esta auditoría", level=3)
     if recommendations:
@@ -1121,12 +1116,12 @@ def build_audit_report_docx(
             document.add_paragraph(note, style="List Bullet")
     else:
         document.add_paragraph(
-            "No se detectan ausencias criticas de informacion para la redaccion del informe."
+            "No se detectan ausencias criticas de información para la redaccion del informe."
         )
     if is_final_export and critical_integrity_notes:
         document.add_heading("Advertencia de integridad para version final", level=3)
         document.add_paragraph(
-            "La auditoria esta en estado final, pero se mantienen faltantes criticos que pueden "
+            "La auditoría esta en estado final, pero se mantienen faltantes criticos que pueden "
             "afectar la suficiencia documental del expediente."
         )
         for note in critical_integrity_notes:
@@ -1145,3 +1140,5 @@ def build_audit_report_docx(
     document.save(output)
     output.seek(0)
     return output
+
+

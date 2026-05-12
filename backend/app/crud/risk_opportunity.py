@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
@@ -58,7 +58,7 @@ def _normalize_item_type(value: str | None) -> str:
     normalized = _normalize_required_text(value, "item_type").lower()
     if normalized not in RISK_OPPORTUNITY_TYPE_VALUES:
         allowed = ", ".join(sorted(RISK_OPPORTUNITY_TYPE_VALUES))
-        raise ValueError(f"item_type invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"item_type inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -66,7 +66,7 @@ def _normalize_status(value: str | None) -> str:
     normalized = _normalize_required_text(value, "status").lower()
     if normalized not in RISK_OPPORTUNITY_STATUS_VALUES:
         allowed = ", ".join(sorted(RISK_OPPORTUNITY_STATUS_VALUES))
-        raise ValueError(f"status invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"status inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -265,3 +265,4 @@ def get_risk_opportunity_summary(db: Session, *, consultancy_id: UUID) -> RiskOp
         critical_count=int(critical_count),
         high_count=int(high_count),
     )
+

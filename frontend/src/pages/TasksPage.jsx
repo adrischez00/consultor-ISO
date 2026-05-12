@@ -54,7 +54,7 @@ function TasksPage() {
       />
 
       {loading ? <p className="status">Cargando tareas...</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
 
       {!loading && !error ? (
         <SectionCard title="Lista de tareas" description="Ordenadas por prioridad y fecha.">

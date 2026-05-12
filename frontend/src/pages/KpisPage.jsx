@@ -54,7 +54,7 @@ function mapStatusToBadge(status) {
 function statusLabel(status) {
   if (status === "ok") return "OK";
   if (status === "alerta") return "ALERTA";
-  if (status === "critico") return "CRITICO";
+  if (status === "critico") return "CRÍTICO";
   return String(status || "-").toUpperCase();
 }
 
@@ -79,9 +79,9 @@ function KpisPage() {
   const summary = useMemo(() => {
     const counts = { ok: 0, alerta: 0, critico: 0 };
     kpis.forEach((item) => {
-      if (item?.status === "ok") counts.ok += 1;
-      else if (item?.status === "alerta") counts.alerta += 1;
-      else if (item?.status === "critico") counts.critico += 1;
+      if (item.status === "ok") counts.ok += 1;
+      else if (item.status === "alerta") counts.alerta += 1;
+      else if (item.status === "critico") counts.critico += 1;
     });
     return counts;
   }, [kpis]);
@@ -172,7 +172,7 @@ function KpisPage() {
 
   async function handleDelete(kpiId) {
     if (deletingId) return;
-    const confirmed = window.confirm("Se eliminara el indicador seleccionado. Continuar?");
+    const confirmed = window.confirm("Se eliminara el indicador seleccionado. Continuar");
     if (!confirmed) return;
 
     setDeletingId(kpiId);
@@ -197,30 +197,28 @@ function KpisPage() {
       <PageHeader
         eyebrow="Seguimiento"
         title="Indicadores KPI"
-        description="Gestion de indicadores con estado calculado automaticamente para seguimiento del sistema."
-        actions={
-          contextReportId ? (
+        description="Gestión de indicadores con estado calculado automáticamente para seguimiento del sistema."
+        actions={contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-              Volver a auditorÃ­a
+              Volver a auditoría
             </Link>
           ) : null
         }
       />
       {contextReportId ? (
         <p className="status">
-          Vista contextual desde auditorÃ­a {contextReportId}. Usa este bloque como evidencia de desempeÃ±o y objetivos.
+          Vista contextual desde auditoría {contextReportId}. Usa este bloque como evidencia de desempeño y objetivos.
         </p>
       ) : null}
-
-      {statusMessage ? <p className="status">{statusMessage}</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
-      {loading ? <p className="status">Cargando indicadores...</p> : null}
+{statusMessage ? <p className="status">{statusMessage}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
+{loading ? <p className="status">Cargando indicadores...</p> : null}
 
       <SectionCard title="Resumen KPI" description="Preparado para dashboard con estado global de indicadores.">
         <div className="inline-actions">
           <StatusBadge value="compliant" label={`OK: ${summary.ok}`} />
           <StatusBadge value="partial" label={`ALERTA: ${summary.alerta}`} />
-          <StatusBadge value="non_compliant" label={`CRITICO: ${summary.critico}`} />
+          <StatusBadge value="non_compliant" label={`CRÍTICO: ${summary.critico}`} />
           <span className="soft-label">Total: {kpis.length}</span>
         </div>
       </SectionCard>
@@ -237,7 +235,7 @@ function KpisPage() {
               <option value="">Todos</option>
               <option value="ok">OK</option>
               <option value="alerta">ALERTA</option>
-              <option value="critico">CRITICO</option>
+              <option value="critico">CRÍTICO</option>
             </select>
           </label>
 
@@ -293,13 +291,11 @@ function KpisPage() {
       </SectionCard>
 
       <div className="layout-grid two-columns">
-        <SectionCard
-          title={editingId ? "Editar indicador" : "Nuevo indicador"}
-          description="Alta y edicion de indicadores con calculo automatico de estado."
-          actions={
-            editingId ? (
+        <SectionCard title={editingId ? "Editar indicador" : "Nuevo indicador"}
+          description="Alta y edición de indicadores con cálculo automatico de estado."
+          actions={editingId ? (
               <button type="button" className="btn-ghost" onClick={resetForm} disabled={saving}>
-                Cancelar edicion
+                Cancelar edición
               </button>
             ) : null
           }
@@ -430,9 +426,7 @@ function KpisPage() {
                 const targetValue = Number(kpi.target_value);
                 const currentValue = Number(kpi.current_value);
                 const achievement =
-                  Number.isFinite(targetValue) && targetValue > 0 && Number.isFinite(currentValue)
-                    ? (currentValue / targetValue) * 100
-                    : 0;
+                  Number.isFinite(targetValue) && targetValue > 0 && Number.isFinite(currentValue) ? (currentValue / targetValue) * 100 : 0;
                 return (
                   <article className="diagnostic-list-item" key={kpi.id}>
                     <div className="diagnostic-list-main">
@@ -485,6 +479,8 @@ function KpisPage() {
 }
 
 export default KpisPage;
+
+
 
 
 

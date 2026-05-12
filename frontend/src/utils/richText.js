@@ -40,7 +40,7 @@ export function richTextToEditorValue(value) {
   if (HTML_DETECTION_PATTERN.test(raw)) {
     return sanitizeRichText(raw);
   }
-  const escaped = escapeHtml(raw).replace(/\r?\n/g, "<br>");
+  const escaped = escapeHtml(raw).replace(/\r\n/g, "<br>");
   return `<p>${escaped}</p>`;
 }
 

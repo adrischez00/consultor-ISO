@@ -29,7 +29,7 @@ const LEVEL_OPTIONS = [
   { value: "low", label: "Bajo" },
   { value: "medium", label: "Medio" },
   { value: "high", label: "Alto" },
-  { value: "critical", label: "CrÃ­tico" },
+  { value: "critical", label: "Crítico" },
 ];
 
 const INITIAL_FILTERS = {
@@ -83,7 +83,7 @@ function mapLevelLabel(level) {
   if (level === "low") return "Bajo";
   if (level === "medium") return "Medio";
   if (level === "high") return "Alto";
-  if (level === "critical") return "CrÃ­tico";
+  if (level === "critical") return "Crítico";
   return "-";
 }
 
@@ -204,7 +204,7 @@ function RiskOpportunitiesPage() {
 
   async function handleDelete(itemId) {
     if (deletingId) return;
-    const confirmed = window.confirm("Se eliminara el registro seleccionado. Continuar?");
+    const confirmed = window.confirm("Se eliminara el registro seleccionado. Continuar");
     if (!confirmed) return;
     setDeletingId(itemId);
     setError("");
@@ -228,38 +228,36 @@ function RiskOpportunitiesPage() {
       <PageHeader
         eyebrow="ISO 9001"
         title="Riesgos y Oportunidades"
-        description="GestiÃ³n estructurada de riesgos y oportunidades con nivel calculado automÃ¡ticamente."
-        actions={
-          contextReportId ? (
+        description="Gestión estructurada de riesgos y oportunidades con nivel calculado automáticamente."
+        actions={contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-              Volver a auditorÃ­a
+              Volver a auditoría
             </Link>
           ) : null
         }
       />
       {contextReportId ? (
         <p className="status">
-          Vista contextual desde auditorÃ­a {contextReportId}. Revisa aquÃ­ riesgos abiertos y oportunidades ligadas al
+          Vista contextual desde auditoría {contextReportId}. Revisa aquí riesgos abiertos y oportunidades ligadas al
           informe.
         </p>
       ) : null}
-
-      {statusMessage ? <p className="status">{statusMessage}</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
-      {loading ? <p className="status">Cargando riesgos y oportunidades...</p> : null}
+{statusMessage ? <p className="status">{statusMessage}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
+{loading ? <p className="status">Cargando riesgos y oportunidades...</p> : null}
 
       <SectionCard
         title="Resumen"
-        description="Preparado para seguimiento del sistema y futuras revisiones por la direcciÃ³n."
+        description="Preparado para seguimiento del sistema y futuras revisiones por la dirección."
       >
         <div className="inline-actions">
-          <StatusBadge value="non_compliant" label={`CrÃ­ticos: ${summary?.critical_count ?? 0}`} />
-          <StatusBadge value="high" label={`Altos: ${summary?.high_count ?? 0}`} />
-          <StatusBadge value="pending" label={`Abiertos: ${summary?.open_items ?? 0}`} />
-          <StatusBadge value="completed" label={`Completados: ${summary?.completed_items ?? 0}`} />
-          <span className="soft-label">Riesgos: {summary?.risks_count ?? 0}</span>
-          <span className="soft-label">Oportunidades: {summary?.opportunities_count ?? 0}</span>
-          <span className="soft-label">Total: {summary?.total_items ?? 0}</span>
+          <StatusBadge value="non_compliant" label={`Críticos: ${summary.critical_count ?? 0}`} />
+          <StatusBadge value="high" label={`Altos: ${summary.high_count ?? 0}`} />
+          <StatusBadge value="pending" label={`Abiertos: ${summary.open_items ?? 0}`} />
+          <StatusBadge value="completed" label={`Completados: ${summary.completed_items ?? 0}`} />
+          <span className="soft-label">Riesgos: {summary.risks_count ?? 0}</span>
+          <span className="soft-label">Oportunidades: {summary.opportunities_count ?? 0}</span>
+          <span className="soft-label">Total: {summary.total_items ?? 0}</span>
         </div>
       </SectionCard>
 
@@ -325,13 +323,11 @@ function RiskOpportunitiesPage() {
       </SectionCard>
 
       <div className="layout-grid two-columns">
-        <SectionCard
-          title={editingId ? "Editar registro" : "Nuevo registro"}
-          description="Formulario de alta/ediciÃ³n con cÃ¡lculo automÃ¡tico del nivel."
-          actions={
-            editingId ? (
+        <SectionCard title={editingId ? "Editar registro" : "Nuevo registro"}
+          description="Formulario de alta/edición con cálculo automático del nivel."
+          actions={editingId ? (
               <button type="button" className="btn-ghost" onClick={resetForm} disabled={saving}>
-                Cancelar ediciÃ³n
+                Cancelar edición
               </button>
             ) : null
           }
@@ -349,7 +345,7 @@ function RiskOpportunitiesPage() {
             </label>
 
             <label className="field-stack">
-              <span>DescripciÃ³n</span>
+              <span>Descripción</span>
               <RichTextarea
                 className="input-textarea"
                 value={form.description}
@@ -424,7 +420,7 @@ function RiskOpportunitiesPage() {
               </label>
 
               <label className="field-inline">
-                <span>Fecha revisiÃ³n *</span>
+                <span>Fecha revisión *</span>
                 <input
                   className="input-text"
                   type="date"
@@ -437,7 +433,7 @@ function RiskOpportunitiesPage() {
             </div>
 
             <label className="field-stack">
-              <span>AcciÃ³n *</span>
+              <span>Acción *</span>
               <RichTextarea
                 className="input-textarea"
                 value={form.action_plan}
@@ -482,10 +478,10 @@ function RiskOpportunitiesPage() {
                     </div>
                   </div>
                   <p className="finding-meta">
-                    Probabilidad: {item.probability} Â· Impacto: {item.impact} Â· Nivel: {item.level_score}
+                    Probabilidad: {item.probability} · Impacto: {item.impact} · Nivel: {item.level_score}
                   </p>
                   <p className="finding-meta">
-                    Responsable: {item.responsible_name || "-"} Â· RevisiÃ³n: {formatDate(item.review_date)}
+                    Responsable: {item.responsible_name || "-"} · Revisión: {formatDate(item.review_date)}
                   </p>
                   <div className="inline-actions">
                     <button
@@ -516,6 +512,7 @@ function RiskOpportunitiesPage() {
 }
 
 export default RiskOpportunitiesPage;
+
 
 
 

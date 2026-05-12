@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 import re
 from contextlib import contextmanager
 from datetime import date, datetime, timezone
@@ -186,7 +186,7 @@ def _raise_if_interested_parties_document_tables_missing(exc: SQLAlchemyError) -
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion del documento de partes interesadas (fase 13). "
+                "Falta migración del documento de partes interesadas (fase 13). "
                 "Ejecuta docs/sql/phase13_audit_interested_parties_document.sql."
             ),
         ) from exc
@@ -196,7 +196,7 @@ def _raise_if_interested_parties_document_tables_missing(exc: SQLAlchemyError) -
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion de columnas extendidas del documento P09 (fase 14). "
+                "Falta migración de columnas extendidas del documento P09 (fase 14). "
                 "Ejecuta docs/sql/phase14_audit_interested_parties_document_rows_extension.sql."
             ),
         ) from exc
@@ -210,7 +210,7 @@ def _raise_if_context_document_tables_missing(exc: SQLAlchemyError) -> None:
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion del documento de contexto (fase 15). "
+                "Falta migración del documento de contexto (fase 15). "
                 "Ejecuta docs/sql/phase15_audit_context_document.sql."
             ),
         ) from exc
@@ -224,7 +224,7 @@ def _raise_if_risk_opportunity_document_tables_missing(exc: SQLAlchemyError) -> 
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion del documento de riesgos y oportunidades (fase 16). "
+                "Falta migración del documento de riesgos y oportunidades (fase 16). "
                 "Ejecuta docs/sql/phase16_audit_risk_opportunity_document.sql."
             ),
         ) from exc
@@ -234,7 +234,7 @@ def _raise_if_risk_opportunity_document_tables_missing(exc: SQLAlchemyError) -> 
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion extendida del documento de riesgos y oportunidades (fase 17). "
+                "Falta migración extendida del documento de riesgos y oportunidades (fase 17). "
                 "Ejecuta docs/sql/phase17_audit_risk_opportunity_document_rows_v2.sql."
             ),
         ) from exc
@@ -493,7 +493,7 @@ def _short_text(value: str | None, *, max_len: int = 180) -> str:
 
 def _normalize_yes_no_text(value: object) -> str:
     normalized = str(value or "").strip().lower()
-    if normalized in {"yes", "si", "sÃ­", "true", "1"}:
+    if normalized in {"yes", "si", "sí", "true", "1"}:
         return "yes"
     if normalized in {"no", "false", "0"}:
         return "no"
@@ -608,7 +608,7 @@ def _build_export_context_by_section(
                 f"Muestra: {context_sample or '-'}."
             )
         else:
-            context["4"].append("Documento P09 de contexto no registrado para esta auditoria.")
+            context["4"].append("Documento P09 de contexto no registrado para esta auditoría.")
     else:
         context["4"].append("Tablas del documento P09 de contexto no disponibles en BD.")
 
@@ -689,7 +689,7 @@ def _build_export_context_by_section(
                 f"Muestra: {parties_sample or '-'}."
             )
         else:
-            context["4"].append("Documento P09 de partes interesadas no registrado para esta auditoria.")
+            context["4"].append("Documento P09 de partes interesadas no registrado para esta auditoría.")
     else:
         context["4"].append("Tablas del documento P09 de partes interesadas no disponibles en BD.")
 
@@ -709,14 +709,14 @@ def _build_export_context_by_section(
         )
         if policy is not None:
             context["5"].append(
-                f"Politica de calidad version {policy.version_label} "
+                f"Política de calidad version {policy.version_label} "
                 f"(activa: {'si' if policy.is_active else 'no'}). "
                 f"Texto: {_short_text(policy.policy_text)}."
             )
         else:
-            context["5"].append("No hay politica de calidad registrada para este contexto.")
+            context["5"].append("No hay política de calidad registrada para este contexto.")
     else:
-        context["5"].append("Tabla de politica de calidad no disponible en BD.")
+        context["5"].append("Tabla de política de calidad no disponible en BD.")
 
     if "iso_role_assignments" in tables:
         roles = db.scalars(
@@ -892,7 +892,7 @@ def _build_export_context_by_section(
                 f"acciones={'; '.join(action_sample_labels) or '-'}."
             )
         else:
-            context["6"].append("Documento P09 de riesgos y oportunidades no registrado para esta auditoria.")
+            context["6"].append("Documento P09 de riesgos y oportunidades no registrado para esta auditoría.")
     else:
         context["6"].append("Tablas del documento P09 de riesgos y oportunidades no disponibles en BD.")
 
@@ -946,7 +946,7 @@ def _build_export_context_by_section(
                 "Matriz P09 de indicadores sin estructura valida en value_json; revisar guardado en seccion 9."
             )
     else:
-        context["9"].append("Matriz P09 de indicadores no registrada para esta auditoria.")
+        context["9"].append("Matriz P09 de indicadores no registrada para esta auditoría.")
 
     if "customer_feedback" in tables:
         feedback_total = int(
@@ -969,7 +969,7 @@ def _build_export_context_by_section(
             f"Feedback cliente para entidad auditada: total={feedback_total}, media={avg_label}."
         )
     else:
-        context["9"].append("Tabla de satisfaccion del cliente no disponible en BD.")
+        context["9"].append("Tabla de satisfacción del cliente no disponible en BD.")
 
     recommendation_ids_subquery = select(AuditReportRecommendation.id).where(
         AuditReportRecommendation.audit_report_id == report.id
@@ -982,7 +982,7 @@ def _build_export_context_by_section(
         )
         or 0
     )
-    context["10"].append(f"Recomendaciones registradas en esta auditoria: {recommendations_total}.")
+    context["10"].append(f"Recomendaciones registradas en esta auditoría: {recommendations_total}.")
 
     if "iso_nonconformities" in tables:
         nc_total = int(
@@ -1005,7 +1005,7 @@ def _build_export_context_by_section(
             or 0
         )
         context["10"].append(
-            f"No conformidades vinculadas a esta auditoria: {nc_total}. Abiertas: {nc_open}."
+            f"No conformidades vinculadas a esta auditoría: {nc_total}. Abiertas: {nc_open}."
         )
         context["8"].append(
             f"Control de salidas no conformes: NC vinculadas={nc_total}, abiertas={nc_open}."
@@ -1026,7 +1026,7 @@ def _build_export_context_by_section(
             )
             or 0
         )
-        context["10"].append(f"Mejoras vinculadas a NC de esta auditoria: {improvements_total}.")
+        context["10"].append(f"Mejoras vinculadas a NC de esta auditoría: {improvements_total}.")
     elif "iso_improvements" not in tables:
         context["10"].append("Tabla de mejora continua no disponible en BD.")
 
@@ -1049,11 +1049,11 @@ def _build_export_context_by_section(
             reviews_text = "; ".join(
                 f"{item.review_date} ({item.followup_status})" for item in linked_reviews
             )
-            context["9"].append(f"Revisiones por la direccion vinculadas: {reviews_text}.")
+            context["9"].append(f"Revisiones por la dirección vinculadas: {reviews_text}.")
         else:
-            context["9"].append("No hay revisiones por la direccion vinculadas a esta auditoria.")
+            context["9"].append("No hay revisiones por la dirección vinculadas a esta auditoría.")
     else:
-        context["9"].append("Tabla de revision por la direccion no disponible en BD.")
+        context["9"].append("Tabla de revision por la dirección no disponible en BD.")
 
     return {
         section: " ".join(chunk.strip() for chunk in chunks if chunk and chunk.strip())
@@ -1389,7 +1389,7 @@ def get_audit_report_compliance(
         ) from exc
     except SQLAlchemyError as exc:
         logger.exception("Database error while loading audit compliance")
-        raise HTTPException(status_code=500, detail="No se pudo cargar compliance de auditoria") from exc
+        raise HTTPException(status_code=500, detail="No se pudo cargar compliance de auditoría") from exc
 
 
 @router.get(
@@ -1683,11 +1683,11 @@ def get_audit_report_iso_workbench(
         logger.exception("Database connectivity error while loading audit iso workbench")
         raise map_operational_error(
             exc,
-            default_detail="No se pudo conectar a la base de datos para cargar el flujo ISO de auditoria.",
+            default_detail="No se pudo conectar a la base de datos para cargar el flujo ISO de auditoría.",
         ) from exc
     except SQLAlchemyError as exc:
         logger.exception("Database error while loading audit iso workbench")
-        raise HTTPException(status_code=500, detail="No se pudo cargar el flujo ISO de auditoria") from exc
+        raise HTTPException(status_code=500, detail="No se pudo cargar el flujo ISO de auditoría") from exc
 
 
 @router.patch("/audit-reports/{report_id}", response_model=AuditReportRead)
@@ -1717,7 +1717,7 @@ def patch_audit_report(
                     raise HTTPException(
                         status_code=409,
                         detail=(
-                            "No se puede cerrar la auditoria: bloques ISO incompletos -> "
+                            "No se puede cerrar la auditoría: bloques ISO incompletos -> "
                             f"{pending_labels}"
                         ),
                     )
@@ -1917,7 +1917,7 @@ def _normalize_interested_parties_document_status(value: str | None) -> str:
     if normalized not in {"draft", "completed"}:
         raise HTTPException(
             status_code=400,
-            detail="status invalido. Valores permitidos: draft, completed.",
+            detail="status inválido. Valores permitidos: draft, completed.",
         )
     return normalized
 
@@ -2051,7 +2051,7 @@ def _normalize_context_document_status(value: str | None) -> str:
     if normalized not in {"draft", "completed"}:
         raise HTTPException(
             status_code=400,
-            detail="status invalido. Valores permitidos: draft, completed.",
+            detail="status inválido. Valores permitidos: draft, completed.",
         )
     return normalized
 
@@ -2061,7 +2061,7 @@ def _normalize_context_group(value: str | None) -> str:
     if normalized not in _CONTEXT_DOCUMENT_GROUP_VALUES:
         raise HTTPException(
             status_code=400,
-            detail="context_group invalido. Valores permitidos: externo, interno.",
+            detail="context_group inválido. Valores permitidos: externo, interno.",
         )
     return normalized
 
@@ -2164,7 +2164,7 @@ def _normalize_risk_opportunity_document_status(value: str | None) -> str:
     if normalized not in {"draft", "completed"}:
         raise HTTPException(
             status_code=400,
-            detail="status invalido. Valores permitidos: draft, completed.",
+            detail="status inválido. Valores permitidos: draft, completed.",
         )
     return normalized
 
@@ -2174,7 +2174,7 @@ def _normalize_risk_opportunity_row_type(value: str | None) -> str:
     if normalized not in _RISK_OPPORTUNITY_ROW_TYPES:
         raise HTTPException(
             status_code=400,
-            detail="row_type invalido. Valores permitidos: swot, risk, opportunity, action.",
+            detail="row_type inválido. Valores permitidos: swot, risk, opportunity, action.",
         )
     return normalized
 
@@ -2185,7 +2185,7 @@ def _normalize_risk_opportunity_swot_category(value: str | None) -> str:
         raise HTTPException(
             status_code=400,
             detail=(
-                "swot_category invalido. Valores permitidos: "
+                "swot_category inválido. Valores permitidos: "
                 "weakness, threat, strength, opportunity."
             ),
         )
@@ -2200,7 +2200,7 @@ def _normalize_risk_opportunity_impact(value: str | None) -> str | None:
     if lowered not in _RISK_OPPORTUNITY_IMPACT_VALUES:
         raise HTTPException(
             status_code=400,
-            detail="impact invalido. Valores permitidos: low, medium, high.",
+            detail="impact inválido. Valores permitidos: low, medium, high.",
         )
     return lowered
 
@@ -2213,7 +2213,7 @@ def _normalize_risk_opportunity_probability(value: str | None) -> str | None:
     if lowered not in _RISK_OPPORTUNITY_PROBABILITY_VALUES:
         raise HTTPException(
             status_code=400,
-            detail="probability invalido. Valores permitidos: low, medium, high.",
+            detail="probability inválido. Valores permitidos: low, medium, high.",
         )
     return lowered
 
@@ -2226,7 +2226,7 @@ def _normalize_risk_opportunity_severity(value: str | None) -> str | None:
     if lowered not in _RISK_OPPORTUNITY_SEVERITY_VALUES:
         raise HTTPException(
             status_code=400,
-            detail="severity invalido. Valores permitidos: slight, harm, extreme.",
+            detail="severity inválido. Valores permitidos: slight, harm, extreme.",
         )
     return lowered
 
@@ -2238,7 +2238,7 @@ def _normalize_risk_opportunity_viability(value: int | None, field_name: str) ->
     if normalized not in _RISK_OPPORTUNITY_VIABILITY_VALUES:
         raise HTTPException(
             status_code=400,
-            detail=f"{field_name} invalido. Valores permitidos: 1, 3, 5.",
+            detail=f"{field_name} inválido. Valores permitidos: 1, 3, 5.",
         )
     return normalized
 
@@ -2251,7 +2251,7 @@ def _normalize_risk_opportunity_reference_kind(value: str | None) -> str | None:
     if lowered not in _RISK_OPPORTUNITY_REFERENCE_KINDS:
         raise HTTPException(
             status_code=400,
-            detail="reference_kind invalido. Valores permitidos: risk, opportunity.",
+            detail="reference_kind inválido. Valores permitidos: risk, opportunity.",
         )
     return lowered
 
@@ -3606,7 +3606,7 @@ def export_audit_report_docx(
             raise HTTPException(
                 status_code=409,
                 detail=(
-                    "No se puede exportar la auditoria en estado final porque faltan "
+                    "No se puede exportar la auditoría en estado final porque faltan "
                     "elementos criticos de integridad documental. "
                     f"Pendientes: {pending_notes}"
                 ),
@@ -3716,3 +3716,6 @@ def list_audit_report_recommendation_history(
     except SQLAlchemyError as exc:
         logger.exception("Database error while listing recommendation history")
         raise HTTPException(status_code=500, detail="No se pudo cargar el histórico") from exc
+
+
+

@@ -1,4 +1,4 @@
-import { requestJson } from "./httpClient";
+﻿import { requestJson } from "./httpClient";
 import { ensureUuid, normalizeUuidOrNull } from "../utils/uuid";
 
 const STATUS_ACTIVE_VALUES = ["active", "inactive"];
@@ -27,7 +27,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `?${raw}` : "";
+  return raw ? `${raw}` : "";
 }
 
 function normalizeRequiredText(value, fieldName) {
@@ -62,7 +62,7 @@ function normalizeOptionalUuid(value, fieldName) {
   if (value == null || value === "") return null;
   const normalized = normalizeUuidOrNull(value);
   if (!normalized) {
-    throw new Error(`${fieldName} invalido: debe ser UUID.`);
+    throw new Error(`${fieldName} inválido: debe ser UUID.`);
   }
   return normalized;
 }
@@ -74,7 +74,7 @@ function normalizeEnum(value, fieldName, allowedValues, { required = true, fallb
     throw new Error(`${fieldName} es obligatorio.`);
   }
   if (!allowedValues.includes(normalized)) {
-    throw new Error(`${fieldName} invalido.`);
+    throw new Error(`${fieldName} inválido.`);
   }
   return normalized;
 }
@@ -99,9 +99,9 @@ function withId(data) {
 
 function normalizeContextPayload(payload) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de contexto invalido.");
+    throw new Error("Payload de contexto inválido.");
   }
-  const reviewDate = normalizeDate(payload.review_date, "review_date", { required: true });
+const reviewDate = normalizeDate(payload.review_date, "review_date", { required : true });
   const nextReviewDate = normalizeDate(payload.next_review_date, "next_review_date");
   if (reviewDate && nextReviewDate && nextReviewDate < reviewDate) {
     throw new Error("next_review_date no puede ser menor que review_date.");
@@ -137,7 +137,7 @@ export async function upsertIsoContextProfile(payload) {
 
 function normalizeInterestedPartyPayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de parte interesada invalido.");
+    throw new Error("Payload de parte interesada inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "name")) {
@@ -206,7 +206,7 @@ export async function deleteInterestedParty(partyId) {
 
 function normalizeQualityPolicyPayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de politica de calidad invalido.");
+    throw new Error("Payload de política de calidad inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "client_id")) {
@@ -240,18 +240,18 @@ export async function fetchQualityPolicies(filters = {}) {
   });
   const data = await requestJson(`/quality-policies${query}`, {
     method: "GET",
-    fallbackMessage: "No se pudieron cargar las politicas de calidad.",
+    fallbackMessage: "No se pudieron cargar las políticas de calidad.",
   });
-  return ensureArrayResponse(data, "Respuesta invalida al listar politicas de calidad.");
+  return ensureArrayResponse(data, "Respuesta invalida al listar políticas de calidad.");
 }
 
 export async function createQualityPolicy(payload) {
   const data = await requestJson("/quality-policies", {
     method: "POST",
     body: JSON.stringify(normalizeQualityPolicyPayload(payload)),
-    fallbackMessage: "No se pudo crear la politica de calidad.",
+    fallbackMessage: "No se pudo crear la política de calidad.",
   });
-  return withId(ensureObjectResponse(data, "Respuesta invalida al crear politica de calidad."));
+  return withId(ensureObjectResponse(data, "Respuesta invalida al crear política de calidad."));
 }
 
 export async function patchQualityPolicy(policyId, payload) {
@@ -259,22 +259,22 @@ export async function patchQualityPolicy(policyId, payload) {
   const data = await requestJson(`/quality-policies/${normalizedId}`, {
     method: "PATCH",
     body: JSON.stringify(normalizeQualityPolicyPayload(payload, { partial: true })),
-    fallbackMessage: "No se pudo actualizar la politica de calidad.",
+    fallbackMessage: "No se pudo actualizar la política de calidad.",
   });
-  return withId(ensureObjectResponse(data, "Respuesta invalida al actualizar politica de calidad."));
+  return withId(ensureObjectResponse(data, "Respuesta invalida al actualizar política de calidad."));
 }
 
 export async function deleteQualityPolicy(policyId) {
   const normalizedId = ensureUuid(policyId, "policy_id");
   await requestJson(`/quality-policies/${normalizedId}`, {
     method: "DELETE",
-    fallbackMessage: "No se pudo eliminar la politica de calidad.",
+    fallbackMessage: "No se pudo eliminar la política de calidad.",
   });
 }
 
 function normalizeRolePayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de rol invalido.");
+    throw new Error("Payload de rol inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "role_name")) {
@@ -336,7 +336,7 @@ export async function deleteRoleAssignment(roleId) {
 
 function normalizeProcessPayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de proceso invalido.");
+    throw new Error("Payload de proceso inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "name")) {
@@ -360,7 +360,7 @@ function normalizeProcessPayload(payload, { partial = false } = {}) {
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "position_order")) {
     const parsed = Number.parseInt(String(payload.position_order ?? "0"), 10);
     if (!Number.isFinite(parsed) || parsed < 0) {
-      throw new Error("position_order invalido.");
+      throw new Error("position_order inválido.");
     }
     safePayload.position_order = parsed;
   }
@@ -411,7 +411,7 @@ export async function deleteProcessMapItem(processId) {
 
 function normalizeObjectivePayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de objetivo invalido.");
+    throw new Error("Payload de objetivo inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "linked_kpi_id")) {
@@ -494,7 +494,7 @@ export async function deleteQualityObjective(objectiveId) {
 
 function normalizeChangePlanPayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de cambio planificado invalido.");
+    throw new Error("Payload de cambio planificado inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "change_title")) {
@@ -566,7 +566,7 @@ export async function deleteChangePlan(changeId) {
 
 function normalizeNonconformityPayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de no conformidad invalido.");
+    throw new Error("Payload de no conformidad inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "client_id")) {
@@ -672,7 +672,7 @@ export async function deleteNonconformity(nonconformityId) {
 
 function normalizeImprovementPayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de mejora invalido.");
+    throw new Error("Payload de mejora inválido.");
   }
   const safePayload = {};
   if (!partial || Object.prototype.hasOwnProperty.call(payload, "linked_nonconformity_id")) {
@@ -778,3 +778,5 @@ export const ISO_MANAGEMENT_OPTIONS = {
   improvementStatus: IMPROVEMENT_STATUS_VALUES,
   improvementSource: IMPROVEMENT_SOURCE_VALUES,
 };
+
+

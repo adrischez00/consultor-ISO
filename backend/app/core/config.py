@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 from functools import lru_cache
 from pathlib import Path
@@ -125,7 +125,7 @@ class Settings(BaseSettings):
         safe_password = quote_plus(str(password))
         data["DATABASE_URL"] = (
             f"postgresql+psycopg2://{user}:{safe_password}@{host}:{port}/{dbname}"
-            "?sslmode=require"
+            "sslmode=require"
         )
         return data
 
@@ -189,7 +189,7 @@ class Settings(BaseSettings):
         if host.endswith(SUPABASE_POOLER_HOST_SUFFIX):
             if port not in {SUPABASE_SESSION_PORT, SUPABASE_TRANSACTION_PORT}:
                 raise ValueError(
-                    "Supabase pooler solo acepta puerto 5432 (session) o 6543 (transaction)"
+                    "Supabase pooler solo acepta puerto 5432 (session) año 6543 (transaction)"
                 )
 
             if not username.startswith(SUPABASE_POOLER_USER_PREFIX):
@@ -215,7 +215,7 @@ class Settings(BaseSettings):
         if host.startswith(SUPABASE_DIRECT_HOST_PREFIX) and host.endswith(SUPABASE_DIRECT_HOST_SUFFIX):
             if port not in {None, 5432, 6543}:
                 raise ValueError(
-                    "Para host db.<project_ref>.supabase.co usa puerto 5432 (direct) o 6543 (transaction pooler)"
+                    "Para host db.<project_ref>.supabase.co usa puerto 5432 (direct) año 6543 (transaction pooler)"
                 )
 
             if port == 6543:
@@ -291,3 +291,4 @@ def get_settings() -> Settings:
 
 def clear_settings_cache() -> None:
     get_settings.cache_clear()
+

@@ -85,7 +85,7 @@ def _normalize_followup_status(value: str | None) -> str:
     normalized = _normalize_required_text(value, "followup_status").lower()
     if normalized not in MANAGEMENT_REVIEW_STATUS_VALUES:
         allowed = ", ".join(sorted(MANAGEMENT_REVIEW_STATUS_VALUES))
-        raise ValueError(f"followup_status invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"followup_status inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -93,7 +93,7 @@ def _normalize_reference_type(value: str | None) -> str:
     normalized = _normalize_required_text(value, "reference_type").lower()
     if normalized not in MANAGEMENT_REVIEW_REFERENCE_TYPES:
         allowed = ", ".join(sorted(MANAGEMENT_REVIEW_REFERENCE_TYPES))
-        raise ValueError(f"reference_type invalido. Valores permitidos: {allowed}")
+        raise ValueError(f"reference_type inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -123,7 +123,7 @@ def _resolve_reference_source_label(
             )
         ).first()
         if row is None:
-            raise ValueError("Referencia de auditoria no encontrada")
+            raise ValueError("Referencia de auditoría no encontrada")
         report_code, entity_name = row
         return (report_code or entity_name or str(source_id)).strip()
 
@@ -163,7 +163,7 @@ def _resolve_reference_source_label(
             )
         ).first()
         if row is None:
-            raise ValueError("Referencia de satisfaccion del cliente no encontrada")
+            raise ValueError("Referencia de satisfacción del cliente no encontrada")
         client_name, feedback_date, score = row
         date_label = feedback_date.isoformat() if feedback_date is not None else ""
         return f"{(client_name or 'Cliente').strip()} ({date_label}) score {score}/5".strip()
@@ -507,4 +507,6 @@ def get_review_reference_counters(
         review_id=review_id,
     )
     return _build_reference_counters(references)
+
+
 

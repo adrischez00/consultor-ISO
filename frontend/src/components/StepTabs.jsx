@@ -16,8 +16,7 @@ function StepTabs({
         return (
           <button
             key={item.key}
-            type="button"
-            className={isActive ? "step-tab active" : "step-tab"}
+            type="button" className={isActive ? "step-tab active" : "step-tab"}
             onClick={() => onChange(index)}
             role="tab"
             aria-selected={isActive}

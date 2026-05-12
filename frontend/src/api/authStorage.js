@@ -45,22 +45,21 @@ function loadFromSessionStorage() {
 }
 
 export function loadAuthSession(options = {}) {
-  const withMeta = Boolean(options?.withMeta);
+  const withMeta = Boolean(options.withMeta);
   if (typeof window === "undefined") {
-    return withMeta ? { session: null, persistent: true } : null;
+    return withMeta ? { session : null, persistent: true } : null;
   }
 
   const fromSession = loadFromSessionStorage();
   if (fromSession) {
-    return withMeta ? { session: fromSession, persistent: false } : fromSession;
+    return withMeta ? { session : fromSession, persistent: false } : fromSession;
   }
 
   const fromLocal = loadFromLocalStorage();
   if (fromLocal) {
-    return withMeta ? { session: fromLocal, persistent: true } : fromLocal;
+    return withMeta ? { session : fromLocal, persistent: true } : fromLocal;
   }
-
-  return withMeta ? { session: null, persistent: true } : null;
+return withMeta ? { session : null, persistent: true } : null;
 }
 
 export function saveAuthSession(session, options = {}) {
@@ -69,7 +68,7 @@ export function saveAuthSession(session, options = {}) {
   }
 
   const normalized = normalizeSession(session);
-  const persistent = options?.persistent ?? true;
+  const persistent = options.persistent ?? true;
   if (!normalized) {
     window.localStorage.removeItem(AUTH_STORAGE_KEY_PERSISTENT);
     window.sessionStorage.removeItem(AUTH_STORAGE_KEY_SESSION);
@@ -96,5 +95,5 @@ export function clearAuthSession() {
 }
 
 export function getAccessToken() {
-  return loadAuthSession()?.access_token ?? null;
+  return loadAuthSession().access_token ?? null;
 }

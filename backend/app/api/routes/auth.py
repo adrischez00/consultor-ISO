@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -78,7 +78,7 @@ def _map_auth_integrity_error(exc: IntegrityError) -> HTTPException:
     message = str(exc.orig).lower()
     if "users_email_key" in message or "unique" in message and "email" in message:
         return HTTPException(status_code=409, detail="Ya existe un usuario con ese email")
-    return HTTPException(status_code=400, detail="No se pudo completar la operacion de auth")
+    return HTTPException(status_code=400, detail="No se pudo completar la operación de auth")
 
 
 @router.post("/register", response_model=AuthTokenResponse)
@@ -193,9 +193,10 @@ def me(
         if user is None or consultancy is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Sesion no valida. Inicia sesion nuevamente.",
+                detail="Sesión no válida. Inicia sesión nuevamente.",
             )
     return AuthMeResponse(
         user=AuthUserRead.model_validate(user),
         consultancy=AuthConsultancyRead.model_validate(consultancy),
     )
+

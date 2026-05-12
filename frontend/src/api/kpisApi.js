@@ -1,4 +1,4 @@
-import { requestJson } from "./httpClient";
+﻿import { requestJson } from "./httpClient";
 import { ensureUuid } from "../utils/uuid";
 
 function toQuery(params) {
@@ -10,7 +10,7 @@ function toQuery(params) {
     qp.set(key, normalized);
   });
   const raw = qp.toString();
-  return raw ? `?${raw}` : "";
+  return raw ? `${raw}` : "";
 }
 
 function normalizeNullableText(value) {
@@ -34,7 +34,7 @@ function normalizeNumber(value, fieldName, { required = false, positive = false 
   }
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) {
-    throw new Error(`${fieldName} invalido.`);
+    throw new Error(`${fieldName} inválido.`);
   }
   if (positive && parsed <= 0) {
     throw new Error(`${fieldName} debe ser mayor que 0.`);
@@ -66,7 +66,7 @@ function validatePeriod({ startDate, endDate, periodLabel }) {
 
 function normalizeKpiPayload(payload, { partial = false } = {}) {
   if (!payload || typeof payload !== "object") {
-    throw new Error("Payload de indicador invalido.");
+    throw new Error("Payload de indicador inválido.");
   }
 
   const result = {};
@@ -105,15 +105,9 @@ function normalizeKpiPayload(payload, { partial = false } = {}) {
     result.responsible_name = normalizeRequiredText(payload.responsible_name, "responsible_name");
   }
 
-  const effectiveStartDate = Object.prototype.hasOwnProperty.call(result, "start_date")
-    ? result.start_date
-    : null;
-  const effectiveEndDate = Object.prototype.hasOwnProperty.call(result, "end_date")
-    ? result.end_date
-    : null;
-  const effectivePeriodLabel = Object.prototype.hasOwnProperty.call(result, "period_label")
-    ? result.period_label
-    : null;
+  const effectiveStartDate = Object.prototype.hasOwnProperty.call(result, "start_date") ? result.start_date : null;
+  const effectiveEndDate = Object.prototype.hasOwnProperty.call(result, "end_date") ? result.end_date : null;
+  const effectivePeriodLabel = Object.prototype.hasOwnProperty.call(result, "period_label") ? result.period_label : null;
 
   if (!partial) {
     validatePeriod({
@@ -166,7 +160,7 @@ export async function createKpi(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear indicador.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function patchKpi(kpiId, payload) {
@@ -180,7 +174,7 @@ export async function patchKpi(kpiId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar indicador.");
   }
-  return { ...data, id: ensureUuid(data.id, "id") };
+return { ...data, id : ensureUuid(data.id, "id") };
 }
 
 export async function deleteKpi(kpiId) {
@@ -190,3 +184,5 @@ export async function deleteKpi(kpiId) {
     fallbackMessage: "No se pudo eliminar el indicador.",
   });
 }
+
+

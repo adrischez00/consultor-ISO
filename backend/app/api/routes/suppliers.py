@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from contextlib import contextmanager
 from datetime import date
 from uuid import UUID
@@ -54,7 +54,7 @@ def _normalize_rating_filter(rating_filter: str | None) -> str | None:
         return None
     if normalized not in SUPPLIER_FINAL_RATING_VALUES:
         allowed = ", ".join(sorted(SUPPLIER_FINAL_RATING_VALUES))
-        raise HTTPException(status_code=400, detail=f"rating invalido. Valores permitidos: {allowed}")
+        raise HTTPException(status_code=400, detail=f"rating inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -66,7 +66,7 @@ def _normalize_order_by(order_by_filter: str | None) -> str | None:
         return None
     if normalized not in SUPPLIER_ORDER_BY_VALUES:
         allowed = ", ".join(sorted(SUPPLIER_ORDER_BY_VALUES))
-        raise HTTPException(status_code=400, detail=f"order_by invalido. Valores permitidos: {allowed}")
+        raise HTTPException(status_code=400, detail=f"order_by inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -78,7 +78,7 @@ def _normalize_order_dir(order_dir_filter: str | None) -> str | None:
         return None
     if normalized not in SUPPLIER_ORDER_DIR_VALUES:
         allowed = ", ".join(sorted(SUPPLIER_ORDER_DIR_VALUES))
-        raise HTTPException(status_code=400, detail=f"order_dir invalido. Valores permitidos: {allowed}")
+        raise HTTPException(status_code=400, detail=f"order_dir inválido. Valores permitidos: {allowed}")
     return normalized
 
 
@@ -114,7 +114,7 @@ def _raise_if_suppliers_table_missing(exc: SQLAlchemyError) -> None:
         raise HTTPException(
             status_code=503,
             detail=(
-                "Falta migracion de Proveedores y Evaluacion. "
+                "Falta migración de Proveedores y Evaluación. "
                 "Ejecuta docs/sql/phase9_suppliers_evaluations.sql."
             ),
         ) from exc
@@ -332,3 +332,4 @@ def remove_supplier(
         _raise_if_suppliers_table_missing(exc)
         logger.exception("Database error while deleting supplier")
         raise HTTPException(status_code=500, detail="No se pudo eliminar el proveedor") from exc
+

@@ -60,7 +60,7 @@ function RichTextarea({
 
   function emitBlur(_range, _source, editor) {
     if (typeof onBlur !== "function") return;
-    const normalized = normalizeRichText(editor?.getHTML?.() || editorValue);
+    const normalized = normalizeRichText(editor.getHTML?.() || editorValue);
     onBlur({ target: { value: normalized } });
   }
 

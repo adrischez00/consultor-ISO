@@ -33,7 +33,7 @@ export function normalizeOptions(options) {
 }
 
 function clauseSortValue(clause) {
-  const match = String(clause).match(/\d+(\.\d+)?/);
+  const match = String(clause).match(/\d+(\.\d+)/);
   return match ? Number.parseFloat(match[0]) : Number.POSITIVE_INFINITY;
 }
 

@@ -3,10 +3,8 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import RichTextarea from "../components/RichTextarea";
 
 import {
-  createAuditAnnex,
   createAuditInterviewee,
   createAuditRecommendation,
-  deleteAuditAnnex,
   deleteAuditInterviewee,
   deleteAuditRecommendation,
   exportAuditReportDocx,
@@ -14,7 +12,6 @@ import {
   fetchAuditIsoWorkbench,
   fetchAuditRecommendationHistory,
   fetchAuditReportDetail,
-  patchAuditAnnex,
   patchAuditRecommendation,
   patchAuditReport,
   patchAuditSection,
@@ -53,8 +50,8 @@ const REPORT_STATUS_OPTIONS = [
 
 const TIPO_AUDITORIA_OPTIONS = [
   { value: "inicial", label: "Inicial" },
-  { value: "revision_1", label: "Revisión I" },
-  { value: "revision_2", label: "Revisión II" },
+  { value: "revisión_1", label: "Revisión I" },
+  { value: "revisión_2", label: "Revisión II" },
   { value: "recertificacion", label: "Recertificación" },
 ];
 
@@ -215,7 +212,7 @@ function createEmptyHeaderForm() {
     quality_responsible_name: "",
     manager_name: "",
     reference_standard: "ISO 9001",
-    reference_standard_revision: "",
+    reference_standard_revisión: "",
     audit_budget_code: "",
     system_scope: "",
     audit_description: "",
@@ -244,14 +241,6 @@ function createEmptyRecommendationForm() {
   };
 }
 
-function createEmptyAnnexForm() {
-  return {
-    annex_code: "",
-    title: "",
-    file_url: "",
-    notes: "",
-  };
-}
 
 function toComplianceBadgeValue(status) {
   if (status === "green") return "compliant";
@@ -282,14 +271,14 @@ function buildQueryPath(pathname, query) {
     search.set(key, normalized);
   });
   const raw = search.toString();
-  return raw ? `${pathname}?${raw}` : pathname;
+  return raw ? `${pathname}${raw}` : pathname;
 }
 
 function sortByOrderAndCode(list, codeField = "item_code") {
   return [...(Array.isArray(list) ? list : [])].sort((a, b) => {
-    const orderDiff = (a?.sort_order || 0) - (b?.sort_order || 0);
+    const orderDiff = (a.sort_order || 0) - (b.sort_order || 0);
     if (orderDiff !== 0) return orderDiff;
-    return String(a?.[codeField] || "").localeCompare(String(b?.[codeField] || ""), "es");
+    return String(a[codeField] || "").localeCompare(String(b[codeField] || ""), "es");
   });
 }
 
@@ -388,9 +377,6 @@ function AuditDetailPage() {
   const [recommendations, setRecommendations] = useState([]);
   const [historyRecommendations, setHistoryRecommendations] = useState([]);
   const [newRecommendationForm, setNewRecommendationForm] = useState(createEmptyRecommendationForm);
-  const [annexes, setAnnexes] = useState([]);
-  const [annexForm, setAnnexForm] = useState(createEmptyAnnexForm);
-  const [annexBusy, setAnnexBusy] = useState(false);
   const [compliance, setCompliance] = useState(null);
   const [isoWorkbench, setIsoWorkbench] = useState(null);
   const [isoWorkbenchError, setIsoWorkbenchError] = useState("");
@@ -404,9 +390,9 @@ function AuditDetailPage() {
   }, [sectionDraftByCode]);
 
   const hydrate = useCallback((detail, history, nextCompliance) => {
-    const nextReport = detail?.report || null;
-    const nextClient = detail?.client || null;
-    const nextSections = sortByOrderAndCode(detail?.sections || [], "section_code");
+    const nextReport = detail.report || null;
+    const nextClient = detail.client || null;
+    const nextSections = sortByOrderAndCode(detail.sections || [], "section_code");
 
     const header = createEmptyHeaderForm();
     if (nextReport) {
@@ -420,7 +406,7 @@ function AuditDetailPage() {
       header.quality_responsible_name = nextReport.quality_responsible_name || "";
       header.manager_name = nextReport.manager_name || "";
       header.reference_standard = nextReport.reference_standard || "ISO 9001";
-      header.reference_standard_revision = nextReport.reference_standard_revision || "";
+      header.reference_standard_revisión = nextReport.reference_standard_revisión || "";
       header.audit_budget_code = nextReport.audit_budget_code || "";
       header.system_scope = nextReport.system_scope || "";
       header.audit_description = nextReport.audit_description || "";
@@ -439,7 +425,7 @@ function AuditDetailPage() {
     });
 
     const itemsByCode = {};
-    Object.entries(mapBySection(detail?.items || {})).forEach(([code, list]) => {
+    Object.entries(mapBySection(detail.items || {})).forEach(([code, list]) => {
       itemsByCode[code] = normalizeSectionItems(list);
     });
 
@@ -453,7 +439,7 @@ function AuditDetailPage() {
     });
 
     const checksByCode = {};
-    Object.entries(mapBySection(detail?.clause_checks || {})).forEach(([code, list]) => {
+    Object.entries(mapBySection(detail.clause_checks || {})).forEach(([code, list]) => {
       checksByCode[code] = sortByOrderAndCode(list, "clause_code").map((entry) => ({
         id: entry.id,
         clause_code: entry.clause_code || "",
@@ -474,13 +460,12 @@ function AuditDetailPage() {
     setSectionItemsByCode(itemsByCode);
     setGuidedValuesBySection(nextGuidedValuesBySection);
     setClauseChecksByCode(checksByCode);
-    setInterviewees(Array.isArray(detail?.interviewees) ? detail.interviewees : []);
-    setRecommendations(Array.isArray(detail?.recommendations) ? detail.recommendations : []);
+    setInterviewees(Array.isArray(detail.interviewees) ? detail.interviewees : []);
+    setRecommendations(Array.isArray(detail.recommendations) ? detail.recommendations : []);
     setHistoryRecommendations(Array.isArray(history) ? history : []);
-    setAnnexes(sortByOrderAndCode(Array.isArray(detail?.annexes) ? detail.annexes : [], "annex_code"));
     setCompliance(nextCompliance && typeof nextCompliance === "object" ? nextCompliance : null);
 
-    const firstSection = nextSections[0]?.section_code;
+    const firstSection = nextSections[0].section_code;
     setActiveTabKey((current) => {
       if (current === RESULTS_TAB_KEY) return RESULTS_TAB_KEY;
       if (current && firstSection && sectionDrafts[current]) return current;
@@ -525,9 +510,7 @@ function AuditDetailPage() {
       } else {
         setIsoWorkbench(null);
         setIsoWorkbenchError(
-          workbenchResult.reason instanceof Error
-            ? workbenchResult.reason.message
-            : "No se pudo cargar el flujo ISO contextual."
+          workbenchResult.reason instanceof Error ? workbenchResult.reason.message : "No se pudo cargar el flujo ISO contextual."
         );
       }
     } catch (err) {
@@ -556,9 +539,7 @@ function AuditDetailPage() {
       setIsoWorkbenchError("");
     } else {
       setIsoWorkbenchError(
-        workbenchResult.reason instanceof Error
-          ? workbenchResult.reason.message
-          : "No se pudo refrescar el flujo ISO contextual."
+        workbenchResult.reason instanceof Error ? workbenchResult.reason.message : "No se pudo refrescar el flujo ISO contextual."
       );
     }
   }, [reportId]);
@@ -606,7 +587,7 @@ function AuditDetailPage() {
       sections.map((section) => ({
         ...section,
         status: normalizeSectionStatus(
-          sectionDraftByCode[section.section_code]?.status || section.status || "not_started"
+          sectionDraftByCode[section.section_code].status || section.status || "not_started"
         ),
       })),
     [sectionDraftByCode, sections]
@@ -622,7 +603,7 @@ function AuditDetailPage() {
   }, [headerForm, interviewees, recommendations, sectionsWithDraftStatus]);
 
   const complianceBlocks = useMemo(
-    () => (Array.isArray(compliance?.blocks) ? compliance.blocks : []),
+    () => (Array.isArray(compliance.blocks) ? compliance.blocks : []),
     [compliance]
   );
 
@@ -643,38 +624,35 @@ function AuditDetailPage() {
     if ((interviewees || []).length === 0) {
       warnings.push("No hay entrevistados registrados.");
     }
-    if ((annexes || []).length === 0) {
-      warnings.push("No hay anexos/evidencias documentales cargados.");
-    }
     if ((recommendations || []).length === 0) {
       warnings.push("No hay recomendaciones ni hallazgos registrados.");
     }
     return warnings;
-  }, [annexes, interviewees, recommendations]);
+  }, [interviewees, recommendations]);
 
   const clauseCheckSummary = useMemo(() => {
     const checks = Object.values(clauseChecksByCode || {}).flat();
     const total = checks.length;
-    const nonCompliant = checks.filter((item) => item?.clause_status === "non_compliant").length;
-    const partial = checks.filter((item) => item?.clause_status === "partial").length;
-    const compliant = checks.filter((item) => item?.clause_status === "compliant").length;
+    const nonCompliant = checks.filter((item) => item.clause_status === "non_compliant").length;
+    const partial = checks.filter((item) => item.clause_status === "partial").length;
+    const compliant = checks.filter((item) => item.clause_status === "compliant").length;
     return { total, compliant, partial, nonCompliant };
   }, [clauseChecksByCode]);
 
   const recommendationSummary = useMemo(() => {
     const total = recommendations.length;
     const nonConformities = recommendations.filter(
-      (item) => item?.recommendation_type === "non_conformity"
+      (item) => item.recommendation_type === "non_conformity"
     ).length;
     const observations = recommendations.filter(
-      (item) => item?.recommendation_type === "observation"
+      (item) => item.recommendation_type === "observation"
     ).length;
-    const open = recommendations.filter((item) => item?.recommendation_status !== "done").length;
+    const open = recommendations.filter((item) => item.recommendation_status !== "done").length;
     return { total, nonConformities, observations, open };
   }, [recommendations]);
 
   const exportState = useMemo(() => {
-    const normalizedStatus = String(report?.status || "draft")
+    const normalizedStatus = String(report.status || "draft")
       .trim()
       .toLowerCase();
     const isFinal = ["completed", "approved", "closed", "final", "finalized"].includes(
@@ -682,9 +660,9 @@ function AuditDetailPage() {
     );
     return {
       badgeValue: isFinal ? "completed" : "in_progress",
-      label: isFinal ? "Exportación: versión final" : "Exportación: borrador controlado",
+      label: isFinal ? "Exportación : versión final" : "Exportación: borrador controlado",
     };
-  }, [report?.status]);
+  }, [report.status]);
 
   const workspaceFlowLinks = useMemo(() => {
     return [
@@ -704,7 +682,7 @@ function AuditDetailPage() {
         key: "evidence",
         label: "Evidencias y personas clave",
         href: `#${WORKSPACE_ANCHORS.evidence}`,
-        detail: "Gestiona entrevistados, anexos y trazabilidad documental.",
+        detail: "Gestióna entrevistados, anexos y trazabilidad documental.",
       },
       {
         key: "sections",
@@ -735,9 +713,7 @@ function AuditDetailPage() {
       status:
         recommendations.length > 0 ||
         Boolean(normalizeRequiredText(headerForm.conclusions_text)) ||
-        Boolean(normalizeRequiredText(headerForm.final_dispositions_text))
-          ? "in_progress"
-          : "not_started",
+        Boolean(normalizeRequiredText(headerForm.final_dispositions_text)) ? "in_progress" : "not_started",
       progressText: "Recomendaciones y cierre",
     });
 
@@ -790,7 +766,7 @@ function AuditDetailPage() {
     [activeSectionDefinition, activeSectionItems]
   );
   const activeSectionFieldCompletion = useMemo(() => {
-    const fields = activeSectionDefinition?.flat_fields || [];
+    const fields = activeSectionDefinition.flat_fields || [];
     if (fields.length === 0) return { completed: 0, total: 0 };
     const completed = fields.filter((field) => {
       const value = activeSectionGuidedValues[field.field_code];
@@ -818,9 +794,9 @@ function AuditDetailPage() {
   }, [sectionsWithDraftStatus]);
 
   const contextualNavLinks = useMemo(() => {
-    const reportIdValue = report?.id || "";
-    const clientIdValue = client?.id || "";
-    const reportYearValue = report?.report_year ? String(report.report_year) : "";
+    const reportIdValue = report.id || "";
+    const clientIdValue = client.id || "";
+    const reportYearValue = report.report_year ? String(report.report_year) : "";
     const baseQuery = {
       report_id: reportIdValue,
       client_id: clientIdValue,
@@ -830,70 +806,70 @@ function AuditDetailPage() {
     return [
       {
         key: "iso-core",
-        label: "Contexto, alcance, politica, roles, procesos y objetivos",
+        label: "Contexto, alcance, política, roles, procesos y objetivos",
         detail:
-          `Contexto ${isoWorkbench?.context_profile_completed ? "completo" : "pendiente"} · ` +
-          `Partes ${isoWorkbench?.interested_parties_active ?? 0} · ` +
-          `Objetivos ${isoWorkbench?.objectives_total ?? 0}`,
+          `Contexto ${isoWorkbench.context_profile_completed ? "completo" : "pendiente"} · ` +
+          `Partes ${isoWorkbench.interested_parties_active ?? 0} · ` +
+          `Objetivos ${isoWorkbench.objectives_total ?? 0}`,
         to: buildQueryPath("/sistema-iso", baseQuery),
       },
       {
         key: "risks",
         label: "Riesgos y oportunidades",
-        detail: `Riesgos abiertos: ${isoWorkbench?.risks_open ?? 0}`,
+        detail: `Riesgos abiertos: ${isoWorkbench.risks_open ?? 0}`,
         to: buildQueryPath("/riesgos-oportunidades", baseQuery),
       },
       {
         key: "suppliers",
         label: "Proveedores evaluados",
-        detail: `Proveedores criticos: ${isoWorkbench?.suppliers_critical ?? 0}`,
+        detail: `Proveedores criticos: ${isoWorkbench.suppliers_critical ?? 0}`,
         to: buildQueryPath("/proveedores", baseQuery),
       },
       {
         key: "kpis",
         label: "Indicadores KPI",
         detail:
-          `Total KPI: ${isoWorkbench?.kpis_total ?? 0} · ` +
-          `Alerta/Critico: ${isoWorkbench?.kpis_alert_or_critical ?? 0}`,
+          `Total KPI: ${isoWorkbench.kpis_total ?? 0} · ` +
+          `Alerta/Crítico: ${isoWorkbench.kpis_alert_or_critical ?? 0}`,
         to: buildQueryPath("/indicadores", baseQuery),
       },
       {
         key: "feedback",
         label: "Satisfacción del cliente",
         detail:
-          `Feedback: ${isoWorkbench?.customer_feedback_total ?? 0} · ` +
-          `Media: ${isoWorkbench?.customer_feedback_average == null ? "-" : Number(isoWorkbench.customer_feedback_average).toFixed(2)}`,
+          `Feedback: ${isoWorkbench.customer_feedback_total ?? 0} · ` +
+          `Media: ${isoWorkbench.customer_feedback_average == null ? "-" : Number(isoWorkbench.customer_feedback_average).toFixed(2)}`,
         to: buildQueryPath("/satisfaccion-cliente", baseQuery),
       },
       {
         key: "nonconformities",
         label: "No conformidades y mejora (CAPA)",
         detail:
-          `NC desde auditoría: ${isoWorkbench?.nonconformities_from_audit_total ?? 0} · ` +
-          `Abiertas: ${isoWorkbench?.nonconformities_from_audit_open ?? 0} · ` +
-          `Mejoras: ${isoWorkbench?.improvements_from_audit_total ?? 0}`,
+          `NC desde auditoría: ${isoWorkbench.nonconformities_from_audit_total ?? 0} · ` +
+          `Abiertas: ${isoWorkbench.nonconformities_from_audit_open ?? 0} · ` +
+          `Mejoras: ${isoWorkbench.improvements_from_audit_total ?? 0}`,
         to: buildQueryPath("/no-conformidades", baseQuery),
       },
       {
         key: "management-reviews",
         label: "Revisión por la dirección",
-        detail: `Revisiones vinculadas: ${isoWorkbench?.management_reviews_linked_total ?? 0}`,
+        detail: `Revisiónes vinculadas: ${isoWorkbench.management_reviews_linked_total ?? 0}`,
         to: buildQueryPath("/revision-direccion", baseQuery),
       },
     ];
-  }, [client?.id, isoWorkbench, report?.id, report?.report_year]);
+  }, [client.id, isoWorkbench, report.id, report.report_year]);
 
   const isoMatrixLinks = useMemo(() => {
     const baseQuery = {
-      report_id: report?.id || "",
-      client_id: client?.id || "",
-      report_year: report?.report_year ? String(report.report_year) : "",
+      report_id: report.id || "",
+      client_id: client.id || "",
+      report_year: report.report_year ? String(report.report_year) : "",
     };
     return ISO_SECTION_MATRIX.map((item) => ({
       ...item,
       to: buildQueryPath(item.to, baseQuery),
     }));
-  }, [client?.id, report?.id, report?.report_year]);
+  }, [client.id, report.id, report.report_year]);
 
   function setSectionMetaDraft(sectionCode, patch) {
     const nextPatch = { ...(patch || {}) };
@@ -948,7 +924,7 @@ function AuditDetailPage() {
         pendingStatus: null,
       };
     }
-    return { key, entry: sectionStatusAutosaveRef.current[key] };
+return { key, entry : sectionStatusAutosaveRef.current[key] };
   }
 
   function getPersistedSectionStatus(sectionCode) {
@@ -957,7 +933,7 @@ function AuditDetailPage() {
     const persistedSection = (sectionsRef.current || []).find(
       (section) => section.section_code === key
     );
-    return normalizeSectionStatus(persistedSection?.status || "not_started");
+    return normalizeSectionStatus(persistedSection.status || "not_started");
   }
 
   function syncSectionDraftStatusToPersisted(sectionCode) {
@@ -975,9 +951,9 @@ function AuditDetailPage() {
       const persistedSection = (sectionsRef.current || []).find(
         (section) => section.section_code === key
       );
-      const persistedStatus = normalizeSectionStatus(persistedSection?.status || "not_started");
+      const persistedStatus = normalizeSectionStatus(persistedSection.status || "not_started");
       const draftStatus = normalizeSectionStatus(
-        nextStatusOverride ?? sectionDraftByCodeRef.current?.[key]?.status ?? persistedStatus
+        nextStatusOverride ?? sectionDraftByCodeRef.current[key]?.status ?? persistedStatus
       );
 
       if (entry.inFlight) {
@@ -990,7 +966,7 @@ function AuditDetailPage() {
       entry.inFlight = true;
       try {
         const updated = await patchAuditSection(reportId, key, { status: draftStatus });
-        const normalizedUpdatedStatus = normalizeSectionStatus(updated?.status || draftStatus);
+        const normalizedUpdatedStatus = normalizeSectionStatus(updated.status || draftStatus);
 
         setSections((prev) =>
           prev.map((section) => (section.section_code === key ? updated : section))
@@ -1008,9 +984,7 @@ function AuditDetailPage() {
         syncSectionDraftStatusToPersisted(key);
         if (activeSectionCode === key) {
           setError(
-            err instanceof Error
-              ? err.message
-              : `No se pudo autoguardar el estado de la sección ${key}.`
+            err instanceof Error ? err.message : `No se pudo autoguardar el estado de la sección ${key}.`
           );
         }
       } finally {
@@ -1024,11 +998,11 @@ function AuditDetailPage() {
         if (!savedSuccessfully) return;
 
         const persistedAfter = normalizeSectionStatus(
-          (sectionsRef.current || []).find((section) => section.section_code === key)?.status ||
+          (sectionsRef.current || []).find((section) => section.section_code === key).status ||
             "not_started"
         );
         const draftAfter = normalizeSectionStatus(
-          sectionDraftByCodeRef.current?.[key]?.status || persistedAfter
+          sectionDraftByCodeRef.current[key]?.status || persistedAfter
         );
 
         if (draftAfter !== persistedAfter) {
@@ -1077,14 +1051,14 @@ function AuditDetailPage() {
   useEffect(() => {
     return () => {
       Object.values(sectionStatusAutosaveRef.current || {}).forEach((entry) => {
-        if (entry?.timerId) clearTimeout(entry.timerId);
+        if (entry.timerId) clearTimeout(entry.timerId);
       });
     };
   }, []);
 
   useEffect(() => {
     Object.values(sectionStatusAutosaveRef.current || {}).forEach((entry) => {
-      if (entry?.timerId) clearTimeout(entry.timerId);
+      if (entry.timerId) clearTimeout(entry.timerId);
     });
     sectionStatusAutosaveRef.current = {};
   }, [reportId]);
@@ -1106,7 +1080,7 @@ function AuditDetailPage() {
         quality_responsible_name: normalizeNullableText(headerForm.quality_responsible_name),
         manager_name: normalizeNullableText(headerForm.manager_name),
         reference_standard: normalizeRequiredText(headerForm.reference_standard),
-        reference_standard_revision: normalizeNullableText(headerForm.reference_standard_revision),
+        reference_standard_revisión: normalizeNullableText(headerForm.reference_standard_revisión),
         audit_budget_code: normalizeNullableText(headerForm.audit_budget_code),
         system_scope: normalizeNullableText(headerForm.system_scope),
         audit_description: normalizeNullableText(headerForm.audit_description),
@@ -1353,66 +1327,6 @@ function AuditDetailPage() {
     }
   }
 
-  async function handleCreateAnnex(event) {
-    event.preventDefault();
-    if (!reportId || annexBusy) return;
-    setAnnexBusy(true);
-    setError("");
-    setStatusMessage("");
-    try {
-      const created = await createAuditAnnex(reportId, {
-        annex_code: normalizeNullableText(annexForm.annex_code),
-        title: normalizeRequiredText(annexForm.title),
-        file_url: normalizeNullableText(annexForm.file_url),
-        notes: normalizeNullableText(annexForm.notes),
-      });
-      setAnnexes((prev) => sortByOrderAndCode([...prev, created], "annex_code"));
-      setAnnexForm(createEmptyAnnexForm());
-      setStatusMessage("Anexo creado.");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo crear el anexo.");
-    } finally {
-      setAnnexBusy(false);
-    }
-  }
-
-  async function handlePatchAnnex(annexId, patch) {
-    if (!reportId || annexBusy) return;
-    setAnnexBusy(true);
-    setError("");
-    setStatusMessage("");
-    try {
-      const updated = await patchAuditAnnex(reportId, annexId, patch);
-      setAnnexes((prev) =>
-        sortByOrderAndCode(
-          prev.map((entry) => (entry.id === annexId ? updated : entry)),
-          "annex_code"
-        )
-      );
-      setStatusMessage("Anexo actualizado.");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo actualizar el anexo.");
-    } finally {
-      setAnnexBusy(false);
-    }
-  }
-
-  async function handleDeleteAnnex(annexId) {
-    if (!reportId || annexBusy) return;
-    setAnnexBusy(true);
-    setError("");
-    setStatusMessage("");
-    try {
-      await deleteAuditAnnex(reportId, annexId);
-      setAnnexes((prev) => prev.filter((entry) => entry.id !== annexId));
-      setStatusMessage("Anexo eliminado.");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo eliminar el anexo.");
-    } finally {
-      setAnnexBusy(false);
-    }
-  }
-
   function updateClauseCheckRow(index, patch) {
     if (!activeSectionCode) return;
     const nextChecks = activeSectionChecks.map((entry, rowIndex) =>
@@ -1449,9 +1363,8 @@ function AuditDetailPage() {
     <section className="page audit-page-refactor audit-detail-page">
       <PageHeader
         eyebrow="P03"
-        title={report?.report_code || "Auditoría interna"}
-        description={`Cliente: ${client?.name || "-"} · Año: ${report?.report_year || "-"} · Fecha: ${formatDate(
-          report?.audit_date
+        title={report.report_code || "Auditoría interna"} description={`Cliente : ${client.name || "-"} · Año: ${report.report_year || "-"} · Fecha: ${formatDate(
+          report.audit_date
         )}`}
         actions={
           <>
@@ -1475,7 +1388,7 @@ function AuditDetailPage() {
       />
 
       {statusMessage ? <p className="status">{statusMessage}</p> : null}
-      {error ? <p className="status error">{error}</p> : null}
+{error ? <p className="status error">{error}</p> : null}
 
       {showOnboardingBanner ? (
         <div className="status audit-onboarding-banner">
@@ -1511,16 +1424,15 @@ function AuditDetailPage() {
         }
       >
         <div className="inline-actions audit-closure-strip-metrics">
-          <StatusBadge value={report?.status || "draft"} />
+          <StatusBadge value={report.status || "draft"} />
           <span className="soft-label">
-            {compliance?.completed_blocks ?? 0}/{compliance?.total_blocks ?? 0} bloques en verde
+            {compliance.completed_blocks ?? 0}/{compliance.total_blocks ?? 0} bloques en verde
           </span>
           <StatusBadge
             value={closingBlockers.length === 0 ? "completed" : "pending"}
             label={closingBlockers.length === 0 ? "Sin bloqueos críticos" : `${closingBlockers.length} bloqueos`}
           />
           <span className="soft-label">Entrevistados: {interviewees.length}</span>
-          <span className="soft-label">Anexos: {annexes.length}</span>
           <span className="soft-label">NC: {recommendationSummary.nonConformities}</span>
         </div>
       </SectionCard>
@@ -1536,9 +1448,9 @@ function AuditDetailPage() {
           <article className="audit-workspace-metric">
             <p className="audit-workspace-label">Estado global</p>
             <div className="inline-actions">
-              <StatusBadge value={report?.status || "draft"} />
+              <StatusBadge value={report.status || "draft"} />
               <span className="soft-label">
-                {compliance?.completed_blocks ?? 0}/{compliance?.total_blocks ?? 0} bloques en verde
+                {compliance.completed_blocks ?? 0}/{compliance.total_blocks ?? 0} bloques en verde
               </span>
             </div>
           </article>
@@ -1555,7 +1467,6 @@ function AuditDetailPage() {
             <p className="audit-workspace-label">Evidencias</p>
             <div className="inline-actions">
               <span className="soft-label">Entrevistados: {interviewees.length}</span>
-              <span className="soft-label">Anexos: {annexes.length}</span>
             </div>
           </article>
           <article className="audit-workspace-metric">
@@ -1619,27 +1530,27 @@ function AuditDetailPage() {
         <ul className="kv-list audit-header-kv">
           <li>
             <span>Cdigo</span>
-            <strong>{report?.report_code || "-"}</strong>
+            <strong>{report.report_code || "-"}</strong>
           </li>
           <li>
             <span>Cliente</span>
-            <strong>{client?.name || "-"}</strong>
+            <strong>{client.name || "-"}</strong>
           </li>
           <li>
             <span>Estado</span>
-            <StatusBadge value={report?.status || "draft"} />
+            <StatusBadge value={report.status || "draft"} />
           </li>
           <li>
             <span>Año</span>
-            <strong>{report?.report_year || "-"}</strong>
+            <strong>{report.report_year || "-"}</strong>
           </li>
           <li>
             <span>Creación</span>
-            <strong>{formatDate(report?.created_at)}</strong>
+            <strong>{formatDate(report.created_at)}</strong>
           </li>
           <li>
             <span>Actualización</span>
-            <strong>{formatDate(report?.updated_at)}</strong>
+            <strong>{formatDate(report.updated_at)}</strong>
           </li>
         </ul>
 
@@ -1701,8 +1612,8 @@ function AuditDetailPage() {
                     />
                   </div>
                   <p className="finding-meta">
-                    Completados: {block.completed_fields?.length || 0} /{" "}
-                    {block.required_fields?.length || 0}
+                    Completados: {block.completed_fields.length || 0} /{" "}
+                    {block.required_fields.length || 0}
                   </p>
                   {(block.missing_fields || []).length > 0 ? (
                     <p>Faltan: {(block.missing_fields || []).join(", ")}</p>
@@ -1730,21 +1641,13 @@ function AuditDetailPage() {
         {isoWorkbench ? (
           <>
             <div className="inline-actions">
-              <StatusBadge
-                value={isoWorkbench.context_profile_completed ? "completed" : "pending"}
-                label={isoWorkbench.context_profile_completed ? "Contexto completo" : "Contexto pendiente"}
+              <StatusBadge value={isoWorkbench.context_profile_completed ? "completed" : "pending"} label={isoWorkbench.context_profile_completed ? "Contexto completo" : "Contexto pendiente"}
               />
-              <StatusBadge
-                value={isoWorkbench.recommendations_total > 0 ? "in_progress" : "pending"}
-                label={`Recomendaciones: ${isoWorkbench.recommendations_total}`}
+              <StatusBadge value={isoWorkbench.recommendations_total > 0 ? "in_progress" : "pending"} label={`Recomendaciones : ${isoWorkbench.recommendations_total}`}
               />
-              <StatusBadge
-                value={isoWorkbench.nonconformities_from_audit_open > 0 ? "pending" : "completed"}
-                label={`NC abiertas: ${isoWorkbench.nonconformities_from_audit_open}`}
+              <StatusBadge value={isoWorkbench.nonconformities_from_audit_open > 0 ? "pending" : "completed"} label={`NC abiertas : ${isoWorkbench.nonconformities_from_audit_open}`}
               />
-              <StatusBadge
-                value={isoWorkbench.management_reviews_linked_total > 0 ? "in_progress" : "pending"}
-                label={`Rev. dirección vinculadas: ${isoWorkbench.management_reviews_linked_total}`}
+              <StatusBadge value={isoWorkbench.management_reviews_linked_total > 0 ? "in_progress" : "pending"} label={`Rev. dirección vinculadas : ${isoWorkbench.management_reviews_linked_total}`}
               />
             </div>
 
@@ -1832,8 +1735,7 @@ function AuditDetailPage() {
                 <input
                   className="input-text"
                   type="date"
-                  value={headerForm.audit_date}
-                  onChange={(event) => setHeaderForm((prev) => ({ ...prev, audit_date: event.target.value }))}
+                  value={headerForm.audit_date} onChange={(event) => setHeaderForm((prev) => ({ ...prev, audit_date : event.target.value }))}
                 />
               </label>
 
@@ -1841,8 +1743,7 @@ function AuditDetailPage() {
                 <span>Área auditada</span>
                 <input
                   className="input-text"
-                  value={headerForm.audited_area}
-                  onChange={(event) => setHeaderForm((prev) => ({ ...prev, audited_area: event.target.value }))}
+                  value={headerForm.audited_area} onChange={(event) => setHeaderForm((prev) => ({ ...prev, audited_area : event.target.value }))}
                 />
               </label>
             </div>
@@ -1875,8 +1776,7 @@ function AuditDetailPage() {
                 <span>Modalidad</span>
                 <select
                   className="input-select"
-                  value={headerForm.modalidad}
-                  onChange={(event) => setHeaderForm((prev) => ({ ...prev, modalidad: event.target.value }))}
+                  value={headerForm.modalidad} onChange={(event) => setHeaderForm((prev) => ({ ...prev, modalidad : event.target.value }))}
                 >
                   {MODALIDAD_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -1901,9 +1801,9 @@ function AuditDetailPage() {
                 <span>Revisión de norma</span>
                 <input
                   className="input-text"
-                  value={headerForm.reference_standard_revision}
+                  value={headerForm.reference_standard_revisión}
                   onChange={(event) =>
-                    setHeaderForm((prev) => ({ ...prev, reference_standard_revision: event.target.value }))
+                    setHeaderForm((prev) => ({ ...prev, reference_standard_revisión: event.target.value }))
                   }
                 />
               </label>
@@ -1964,8 +1864,7 @@ function AuditDetailPage() {
                 <span>Alcance del sistema</span>
                 <RichTextarea
                   className="input-textarea"
-                  value={headerForm.system_scope}
-                  onChange={(event) => setHeaderForm((prev) => ({ ...prev, system_scope: event.target.value }))}
+                  value={headerForm.system_scope} onChange={(event) => setHeaderForm((prev) => ({ ...prev, system_scope : event.target.value }))}
                 />
               </label>
 
@@ -1996,8 +1895,7 @@ function AuditDetailPage() {
                 <span>Estado</span>
                 <select
                   className="input-select"
-                  value={headerForm.status}
-                  onChange={(event) => setHeaderForm((prev) => ({ ...prev, status: event.target.value }))}
+                  value={headerForm.status} onChange={(event) => setHeaderForm((prev) => ({ ...prev, status : event.target.value }))}
                 >
                   {REPORT_STATUS_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -2078,163 +1976,6 @@ function AuditDetailPage() {
       </SectionCard>
 
       <SectionCard
-        className="audit-annexes-card"
-        title="Anexos documentales"
-        description="Vincula evidencias y documentación de soporte para reforzar la trazabilidad y la información documentada del informe."
-      >
-        <p className="soft-label">
-          Registra anexos con código, referencia y notas para facilitar la revisión y la exportación final.
-        </p>
-        {annexes.length === 0 ? (
-          <p className="empty-state">Todavía no hay evidencias documentales vinculadas al expediente.</p>
-        ) : null}
-        <div className="stack-list">
-          {annexes.map((annex) => (
-            <article className="finding-item" key={annex.id}>
-              <div className="finding-head">
-                <p className="finding-title">{annex.title || "-"}</p>
-                <StatusBadge value="in_progress" label={`Orden ${annex.sort_order || 0}`} />
-              </div>
-              <div className="form-grid">
-                <label className="field-stack">
-                  <span>Código</span>
-                  <input
-                    className="input-text"
-                    value={annex.annex_code || ""}
-                    disabled={annexBusy}
-                    onChange={(event) =>
-                      setAnnexes((prev) =>
-                        prev.map((entry) =>
-                          entry.id === annex.id ? { ...entry, annex_code: event.target.value } : entry
-                        )
-                      )
-                    }
-                  />
-                </label>
-                <label className="field-stack">
-                  <span>Título</span>
-                  <input
-                    className="input-text"
-                    value={annex.title || ""}
-                    disabled={annexBusy}
-                    onChange={(event) =>
-                      setAnnexes((prev) =>
-                        prev.map((entry) =>
-                          entry.id === annex.id ? { ...entry, title: event.target.value } : entry
-                        )
-                      )
-                    }
-                  />
-                </label>
-                <label className="field-stack audit-full-width">
-                  <span>URL / Ruta</span>
-                  <input
-                    className="input-text"
-                    value={annex.file_url || ""}
-                    disabled={annexBusy}
-                    onChange={(event) =>
-                      setAnnexes((prev) =>
-                        prev.map((entry) =>
-                          entry.id === annex.id ? { ...entry, file_url: event.target.value } : entry
-                        )
-                      )
-                    }
-                  />
-                </label>
-                <label className="field-stack audit-full-width">
-                  <span>Notas</span>
-                  <RichTextarea
-                    className="input-textarea"
-                    value={annex.notes || ""}
-                    disabled={annexBusy}
-                    onChange={(event) =>
-                      setAnnexes((prev) =>
-                        prev.map((entry) =>
-                          entry.id === annex.id ? { ...entry, notes: event.target.value } : entry
-                        )
-                      )
-                    }
-                  />
-                </label>
-              </div>
-              <div className="inline-actions">
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  disabled={annexBusy}
-                  onClick={() =>
-                    handlePatchAnnex(annex.id, {
-                      annex_code: normalizeNullableText(annex.annex_code),
-                      title: normalizeRequiredText(annex.title),
-                      file_url: normalizeNullableText(annex.file_url),
-                      notes: normalizeNullableText(annex.notes),
-                    })
-                  }
-                >
-                  Guardar anexo
-                </button>
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  disabled={annexBusy}
-                  onClick={() => handleDeleteAnnex(annex.id)}
-                >
-                  Eliminar
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <form className="form-grid" onSubmit={handleCreateAnnex}>
-          <label className="field-stack">
-            <span>Código</span>
-            <input
-              className="input-text"
-              value={annexForm.annex_code}
-              disabled={annexBusy}
-              onChange={(event) =>
-                setAnnexForm((prev) => ({ ...prev, annex_code: event.target.value }))
-              }
-            />
-          </label>
-          <label className="field-stack">
-            <span>Título *</span>
-            <input
-              className="input-text"
-              value={annexForm.title}
-              required
-              disabled={annexBusy}
-              onChange={(event) => setAnnexForm((prev) => ({ ...prev, title: event.target.value }))}
-            />
-          </label>
-          <label className="field-stack audit-full-width">
-            <span>URL / Ruta</span>
-            <input
-              className="input-text"
-              value={annexForm.file_url}
-              disabled={annexBusy}
-              onChange={(event) => setAnnexForm((prev) => ({ ...prev, file_url: event.target.value }))}
-            />
-          </label>
-          <label className="field-stack audit-full-width">
-            <span>Notas</span>
-            <RichTextarea
-              className="input-textarea"
-              value={annexForm.notes}
-              disabled={annexBusy}
-              onChange={(event) => setAnnexForm((prev) => ({ ...prev, notes: event.target.value }))}
-            />
-          </label>
-          <div className="form-actions">
-            <button type="submit" className="btn-primary" disabled={annexBusy}>
-              {annexBusy ? "Guardando..." : "Crear anexo"}
-            </button>
-          </div>
-        </form>
-      </SectionCard>
-
-      <SectionCard
         id={WORKSPACE_ANCHORS.sections}
         className="audit-sections-nav-card"
         title="Secciones 4-10 del informe"
@@ -2249,7 +1990,7 @@ function AuditDetailPage() {
         <StepTabs
           items={sectionTabs}
           activeIndex={activeTabIndex}
-          onChange={(index) => setActiveTabKey(sectionTabs[index]?.key || RESULTS_TAB_KEY)}
+          onChange={(index) => setActiveTabKey(sectionTabs[index].key || RESULTS_TAB_KEY)}
           ariaLabel="Navegación de auditoría"
           className="step-tabs-audit"
         />
@@ -2262,7 +2003,7 @@ function AuditDetailPage() {
             description={activeSection.title || "Control del estado y notas de sección."}
             actions={
               <div className="inline-actions audit-section-header-actions">
-                <StatusBadge value={activeSectionDraft?.status || "not_started"} />
+                <StatusBadge value={activeSectionDraft.status || "not_started"} />
                 <button
                   type="button"
                   className="btn-primary"
@@ -2279,7 +2020,7 @@ function AuditDetailPage() {
                 <span>Estado de sección</span>
                 <select
                   className="input-select"
-                  value={activeSectionDraft?.status || "not_started"}
+                  value={activeSectionDraft.status || "not_started"}
                   onChange={(event) =>
                     void handleSectionStatusChange(activeSection.section_code, event.target.value)
                   }
@@ -2296,7 +2037,7 @@ function AuditDetailPage() {
                 <span>Notas del auditor</span>
                 <RichTextarea
                   className="input-textarea"
-                  value={activeSectionDraft?.auditor_notes || ""}
+                  value={activeSectionDraft.auditor_notes || ""}
                   onChange={(event) =>
                     setSectionMetaDraft(activeSection.section_code, {
                       auditor_notes: event.target.value,
@@ -2370,12 +2111,12 @@ function AuditDetailPage() {
             ) : (
               <div
                 className={`audit-check-table-wrap ${
-                  activeSection?.section_code === "9" ? "audit-check-table-wrap-compact" : ""
+                  activeSection.section_code === "9" ? "audit-check-table-wrap-compact" : ""
                 }`}
               >
                 <table
                   className={`audit-check-table ${
-                    activeSection?.section_code === "9" ? "audit-check-table-compact" : ""
+                    activeSection.section_code === "9" ? "audit-check-table-compact" : ""
                   }`}
                 >
                   <thead>
@@ -2425,7 +2166,7 @@ function AuditDetailPage() {
                         <td>
                           <input
                             className={`input-text ${
-                              activeSection?.section_code === "9" ? "audit-check-evidence-input" : ""
+                              activeSection.section_code === "9" ? "audit-check-evidence-input" : ""
                             }`}
                             value={check.evidence_summary || ""}
                             onChange={(event) =>
@@ -2438,7 +2179,7 @@ function AuditDetailPage() {
                         <td>
                           <RichTextarea
                             className={`input-textarea ${
-                              activeSection?.section_code === "9" ? "audit-check-observation-input" : ""
+                              activeSection.section_code === "9" ? "audit-check-observation-input" : ""
                             }`}
                             value={check.observation_text || ""}
                             onChange={(event) =>
@@ -2461,7 +2202,7 @@ function AuditDetailPage() {
               <span>Texto del informe</span>
               <RichTextarea
                 className="input-textarea"
-                value={activeSectionDraft?.final_text || ""}
+                value={activeSectionDraft.final_text || ""}
                 onChange={(event) =>
                   setSectionMetaDraft(activeSection.section_code, {
                     final_text: event.target.value,
@@ -2498,8 +2239,8 @@ function AuditDetailPage() {
                       <Link
                         className="inline-link"
                         to={buildQueryPath("/no-conformidades", {
-                          report_id: report?.id,
-                          client_id: client?.id,
+                          report_id: report.id,
+                          client_id: client.id,
                           source_recommendation_id: entry.id,
                           origin_type: "audit",
                           title: entry.body_text || "",
@@ -2517,9 +2258,7 @@ function AuditDetailPage() {
                             onChange={(event) =>
                               setRecommendations((prev) =>
                                 prev.map((item) =>
-                                  item.id === entry.id
-                                    ? { ...item, followup_comment: event.target.value }
-                                    : item
+                                  item.id === entry.id ? { ...item, followup_comment : event.target.value } : item
                                 )
                               )
                             }
@@ -2743,6 +2482,8 @@ function AuditDetailPage() {
 }
 
 export default AuditDetailPage;
+
+
 
 
 
