@@ -944,7 +944,7 @@ function AuditDetailPage() {
         pendingStatus: null,
       };
     }
-return { key, entry : sectionStatusAutosaveRef.current[key] };
+    return { key, entry: sectionStatusAutosaveRef.current[key] };
   }
 
   function getPersistedSectionStatus(sectionCode) {

@@ -160,7 +160,7 @@ export async function createKpi(payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al crear indicador.");
   }
-return { ...data, id: ensureUuid(data.id, "id") };
+  return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function patchKpi(kpiId, payload) {
@@ -174,7 +174,7 @@ export async function patchKpi(kpiId, payload) {
   if (!data || typeof data !== "object" || typeof data.id !== "string") {
     throw new Error("Respuesta invalida al actualizar indicador.");
   }
-return { ...data, id: ensureUuid(data.id, "id") };
+  return { ...data, id: ensureUuid(data.id, "id") };
 }
 
 export async function deleteKpi(kpiId) {
