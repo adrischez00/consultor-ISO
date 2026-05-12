@@ -50,6 +50,7 @@ export async function createAuditReport(payload) {
     modalidad: normalizeNullableText(payload?.modalidad),
     audited_facilities: normalizeNullableText(payload?.audited_facilities),
     quality_responsible_name: normalizeNullableText(payload?.quality_responsible_name),
+    manager_name: normalizeNullableText(payload?.manager_name),
     reference_standard_revision: normalizeNullableText(payload?.reference_standard_revision),
     audit_budget_code: normalizeNullableText(payload?.audit_budget_code),
     system_scope: normalizeNullableText(payload?.system_scope),

@@ -565,7 +565,11 @@ def _build_export_context_by_section(
     context["4"].append(
         f"Entidad: {_short_text(report.entity_name)}. Alcance declarado: {_short_text(report.system_scope)}."
     )
-    context["5"].append(f"Responsable del sistema declarado: {_short_text(report.quality_responsible_name)}.")
+    context["5"].append(
+        "Responsable del sistema declarado: "
+        f"{_short_text(report.quality_responsible_name)}. "
+        f"Gerente declarado: {_short_text(report.manager_name)}."
+    )
     context["8"].append(f"Area auditada: {_short_text(report.audited_area)}.")
 
     if _CONTEXT_DOCUMENT_TABLES.issubset(tables):
@@ -1244,6 +1248,7 @@ def create_audit_report(
                         quality_responsible_name=_normalize_optional_text(
                             payload.quality_responsible_name
                         ),
+                        manager_name=_normalize_optional_text(payload.manager_name),
                         reference_standard_revision=_normalize_optional_text(
                             payload.reference_standard_revision
                         ),
@@ -1733,6 +1738,7 @@ def patch_audit_report(
                     "audited_area",
                     "audited_facilities",
                     "quality_responsible_name",
+                    "manager_name",
                     "reference_standard_revision",
                     "audit_budget_code",
                     "system_scope",

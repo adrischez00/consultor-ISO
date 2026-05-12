@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
+import RichTextContent from "../components/RichTextContent";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -246,15 +248,15 @@ function SuppliersPage() {
         actions={
           contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-              Volver a auditoría
+              Volver a auditorÃ­a
             </Link>
           ) : null
         }
       />
       {contextReportId ? (
         <p className="status">
-          Vista contextual desde auditoría {contextReportId}. Revisa la evaluación de proveedores como evidencia de
-          operación y control externo.
+          Vista contextual desde auditorÃ­a {contextReportId}. Revisa la evaluaciÃ³n de proveedores como evidencia de
+          operaciÃ³n y control externo.
         </p>
       ) : null}
 
@@ -547,7 +549,7 @@ function SuppliersPage() {
 
             <label className="field-stack">
               <span>Notas de evaluacion</span>
-              <textarea
+              <RichTextarea
                 className="input-textarea"
                 value={form.evaluation_notes}
                 onChange={(event) => setFormField("evaluation_notes", event.target.value)}
@@ -580,15 +582,15 @@ function SuppliersPage() {
                     </div>
                   </div>
                   <p className="finding-meta">
-                    Categoria: {supplier.service_category || "-"} · Score global: {formatScore(supplier.global_score)} / 5
+                    Categoria: {supplier.service_category || "-"} Â· Score global: {formatScore(supplier.global_score)} / 5
                   </p>
                   <p className="finding-meta">
-                    Evaluacion: {formatDate(supplier.evaluation_date)} · Incidencias: {supplier.incidents_count}
+                    Evaluacion: {formatDate(supplier.evaluation_date)} Â· Incidencias: {supplier.incidents_count}
                   </p>
                   <p className="finding-meta">
-                    Contacto: {supplier.contact_name || "-"} · {supplier.contact_email || "-"} · {supplier.contact_phone || "-"}
+                    Contacto: {supplier.contact_name || "-"} Â· {supplier.contact_email || "-"} Â· {supplier.contact_phone || "-"}
                   </p>
-                  {supplier.evaluation_notes ? <p>{supplier.evaluation_notes}</p> : null}
+                  {supplier.evaluation_notes ? <RichTextContent value={supplier.evaluation_notes} /> : null}
                   <div className="inline-actions">
                     <button
                       type="button"
@@ -618,3 +620,6 @@ function SuppliersPage() {
 }
 
 export default SuppliersPage;
+
+
+

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import PageHeader from "../components/PageHeader";
+import RichTextContent from "../components/RichTextContent";
 import SectionCard from "../components/SectionCard";
 import StatusBadge from "../components/StatusBadge";
 import { fetchAuditReports } from "../api/auditsApi";
@@ -108,7 +109,7 @@ function ClientDetailPage() {
               </li>
               <li>
                 <span>Descripción</span>
-                <strong>{client.description || "-"}</strong>
+                <RichTextContent value={client.description} />
               </li>
             </ul>
           </SectionCard>

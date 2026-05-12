@@ -64,6 +64,7 @@ class AuditReport(Base):
     modalidad: Mapped[str] = mapped_column(Text, nullable=False, default="presencialmente")
     audited_facilities: Mapped[str | None] = mapped_column(Text, nullable=True)
     quality_responsible_name: Mapped[str | None] = mapped_column(Text, nullable=True)
+    manager_name: Mapped[str | None] = mapped_column(Text, nullable=True)
     reference_standard: Mapped[str] = mapped_column(
         Text,
         nullable=False,

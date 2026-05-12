@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -200,14 +201,14 @@ function KpisPage() {
         actions={
           contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-              Volver a auditoría
+              Volver a auditorÃ­a
             </Link>
           ) : null
         }
       />
       {contextReportId ? (
         <p className="status">
-          Vista contextual desde auditoría {contextReportId}. Usa este bloque como evidencia de desempeño y objetivos.
+          Vista contextual desde auditorÃ­a {contextReportId}. Usa este bloque como evidencia de desempeÃ±o y objetivos.
         </p>
       ) : null}
 
@@ -404,7 +405,7 @@ function KpisPage() {
 
             <label className="field-stack">
               <span>Descripcion</span>
-              <textarea
+              <RichTextarea
                 className="input-textarea"
                 value={form.description}
                 onChange={(event) => setFormField("description", event.target.value)}
@@ -484,3 +485,6 @@ function KpisPage() {
 }
 
 export default KpisPage;
+
+
+

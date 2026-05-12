@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -28,7 +29,7 @@ const LEVEL_OPTIONS = [
   { value: "low", label: "Bajo" },
   { value: "medium", label: "Medio" },
   { value: "high", label: "Alto" },
-  { value: "critical", label: "Crítico" },
+  { value: "critical", label: "CrÃ­tico" },
 ];
 
 const INITIAL_FILTERS = {
@@ -82,7 +83,7 @@ function mapLevelLabel(level) {
   if (level === "low") return "Bajo";
   if (level === "medium") return "Medio";
   if (level === "high") return "Alto";
-  if (level === "critical") return "Crítico";
+  if (level === "critical") return "CrÃ­tico";
   return "-";
 }
 
@@ -227,18 +228,18 @@ function RiskOpportunitiesPage() {
       <PageHeader
         eyebrow="ISO 9001"
         title="Riesgos y Oportunidades"
-        description="Gestión estructurada de riesgos y oportunidades con nivel calculado automáticamente."
+        description="GestiÃ³n estructurada de riesgos y oportunidades con nivel calculado automÃ¡ticamente."
         actions={
           contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-              Volver a auditoría
+              Volver a auditorÃ­a
             </Link>
           ) : null
         }
       />
       {contextReportId ? (
         <p className="status">
-          Vista contextual desde auditoría {contextReportId}. Revisa aquí riesgos abiertos y oportunidades ligadas al
+          Vista contextual desde auditorÃ­a {contextReportId}. Revisa aquÃ­ riesgos abiertos y oportunidades ligadas al
           informe.
         </p>
       ) : null}
@@ -249,10 +250,10 @@ function RiskOpportunitiesPage() {
 
       <SectionCard
         title="Resumen"
-        description="Preparado para seguimiento del sistema y futuras revisiones por la dirección."
+        description="Preparado para seguimiento del sistema y futuras revisiones por la direcciÃ³n."
       >
         <div className="inline-actions">
-          <StatusBadge value="non_compliant" label={`Críticos: ${summary?.critical_count ?? 0}`} />
+          <StatusBadge value="non_compliant" label={`CrÃ­ticos: ${summary?.critical_count ?? 0}`} />
           <StatusBadge value="high" label={`Altos: ${summary?.high_count ?? 0}`} />
           <StatusBadge value="pending" label={`Abiertos: ${summary?.open_items ?? 0}`} />
           <StatusBadge value="completed" label={`Completados: ${summary?.completed_items ?? 0}`} />
@@ -326,11 +327,11 @@ function RiskOpportunitiesPage() {
       <div className="layout-grid two-columns">
         <SectionCard
           title={editingId ? "Editar registro" : "Nuevo registro"}
-          description="Formulario de alta/edición con cálculo automático del nivel."
+          description="Formulario de alta/ediciÃ³n con cÃ¡lculo automÃ¡tico del nivel."
           actions={
             editingId ? (
               <button type="button" className="btn-ghost" onClick={resetForm} disabled={saving}>
-                Cancelar edición
+                Cancelar ediciÃ³n
               </button>
             ) : null
           }
@@ -348,8 +349,8 @@ function RiskOpportunitiesPage() {
             </label>
 
             <label className="field-stack">
-              <span>Descripción</span>
-              <textarea
+              <span>DescripciÃ³n</span>
+              <RichTextarea
                 className="input-textarea"
                 value={form.description}
                 onChange={(event) => setFormField("description", event.target.value)}
@@ -423,7 +424,7 @@ function RiskOpportunitiesPage() {
               </label>
 
               <label className="field-inline">
-                <span>Fecha revisión *</span>
+                <span>Fecha revisiÃ³n *</span>
                 <input
                   className="input-text"
                   type="date"
@@ -436,8 +437,8 @@ function RiskOpportunitiesPage() {
             </div>
 
             <label className="field-stack">
-              <span>Acción *</span>
-              <textarea
+              <span>AcciÃ³n *</span>
+              <RichTextarea
                 className="input-textarea"
                 value={form.action_plan}
                 onChange={(event) => setFormField("action_plan", event.target.value)}
@@ -481,10 +482,10 @@ function RiskOpportunitiesPage() {
                     </div>
                   </div>
                   <p className="finding-meta">
-                    Probabilidad: {item.probability} · Impacto: {item.impact} · Nivel: {item.level_score}
+                    Probabilidad: {item.probability} Â· Impacto: {item.impact} Â· Nivel: {item.level_score}
                   </p>
                   <p className="finding-meta">
-                    Responsable: {item.responsible_name || "-"} · Revisión: {formatDate(item.review_date)}
+                    Responsable: {item.responsible_name || "-"} Â· RevisiÃ³n: {formatDate(item.review_date)}
                   </p>
                   <div className="inline-actions">
                     <button
@@ -515,3 +516,6 @@ function RiskOpportunitiesPage() {
 }
 
 export default RiskOpportunitiesPage;
+
+
+

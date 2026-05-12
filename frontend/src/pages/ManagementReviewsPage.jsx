@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
+import RichTextContent from "../components/RichTextContent";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -338,7 +340,7 @@ function ManagementReviewsPage() {
             </button>
             {contextReportId ? (
               <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-                Volver a auditoría
+                Volver a auditorÃ­a
               </Link>
             ) : null}
           </>
@@ -346,7 +348,7 @@ function ManagementReviewsPage() {
       />
       {contextReportId ? (
         <p className="status">
-          Modo contextual desde auditoría {contextReportId}. El formulario precarga la referencia al informe.
+          Modo contextual desde auditorÃ­a {contextReportId}. El formulario precarga la referencia al informe.
         </p>
       ) : null}
 
@@ -523,23 +525,26 @@ function ManagementReviewsPage() {
                 </ul>
                 <article className="finding-item">
                   <p className="finding-title">Resumen</p>
-                  <p>{selectedDetail.review.summary || "-"}</p>
+                  <RichTextContent value={selectedDetail.review.summary} />
                 </article>
                 <article className="finding-item">
                   <p className="finding-title">Conclusiones</p>
-                  <p>{selectedDetail.review.conclusions || "-"}</p>
+                  <RichTextContent value={selectedDetail.review.conclusions} />
                 </article>
                 <article className="finding-item">
                   <p className="finding-title">Decisiones</p>
-                  <p>{selectedDetail.review.decisions || "-"}</p>
+                  <RichTextContent value={selectedDetail.review.decisions} />
                 </article>
                 <article className="finding-item">
                   <p className="finding-title">Acciones derivadas</p>
-                  <p>{selectedDetail.review.derived_actions || "-"}</p>
+                  <RichTextContent value={selectedDetail.review.derived_actions} />
                 </article>
                 <article className="finding-item">
                   <p className="finding-title">Seguimiento</p>
-                  <p>{selectedDetail.review.followup_notes || "Sin notas de seguimiento."}</p>
+                  <RichTextContent
+                    value={selectedDetail.review.followup_notes}
+                    emptyLabel="Sin notas de seguimiento."
+                  />
                 </article>
 
                 <div className="stack-list">
@@ -629,7 +634,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Resumen *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={form.summary}
                   onChange={(event) => setFormField("summary", event.target.value)}
@@ -640,7 +645,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Conclusiones *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={form.conclusions}
                   onChange={(event) => setFormField("conclusions", event.target.value)}
@@ -651,7 +656,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Decisiones *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={form.decisions}
                   onChange={(event) => setFormField("decisions", event.target.value)}
@@ -662,7 +667,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Acciones derivadas *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={form.derived_actions}
                   onChange={(event) => setFormField("derived_actions", event.target.value)}
@@ -673,7 +678,7 @@ function ManagementReviewsPage() {
 
               <label className="field-stack">
                 <span>Notas de seguimiento</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={form.followup_notes}
                   onChange={(event) => setFormField("followup_notes", event.target.value)}
@@ -768,3 +773,6 @@ function ManagementReviewsPage() {
 }
 
 export default ManagementReviewsPage;
+
+
+

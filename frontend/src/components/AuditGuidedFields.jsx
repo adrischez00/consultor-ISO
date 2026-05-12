@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useState, useEffect, useMemo } from "react";
+import RichTextarea from "./RichTextarea";
+import RichTextContent from "./RichTextContent";
 
 import {
   fetchAuditContextDocument,
@@ -13,7 +15,7 @@ const P09_MASTER_TEMPLATE_ROWS = [
   {
     stakeholder: "Gerencia",
     needs: "Rentabilidad, control y margen de actuacion.",
-    expectations: "Resultados sostenidos, retorno de la inversión y crecimiento.",
+    expectations: "Resultados sostenidos, retorno de la inversiÃ³n y crecimiento.",
     requirements: "Objetivos e indicadores alcanzables y cumplimiento de requisitos aplicables.",
     risks: "Mala toma de decisiones, perdida de beneficios, falta de comunicacion e incumplimientos legales.",
     opportunities: "Crecimiento sostenible y mejora del posicionamiento.",
@@ -26,7 +28,7 @@ const P09_MASTER_TEMPLATE_ROWS = [
     requirements: "Cumplimiento PRL, legislacion laboral e instrucciones de trabajo claras.",
     risks: "Accidentes, fuga de personal, bajas prolongadas y falta de comunicacion.",
     opportunities: "Mayor productividad, especializacion y mejora del compromiso.",
-    actions: "Formación continua, reuniones periódicas, seguimiento del desempeño y entrega de EPIs.",
+    actions: "FormaciÃ³n continua, reuniones periÃ³dicas, seguimiento del desempeÃ±o y entrega de EPIs.",
   },
   {
     stakeholder: "Clientes",
@@ -34,7 +36,7 @@ const P09_MASTER_TEMPLATE_ROWS = [
     expectations: "Atencion adecuada, cumplimiento de plazos, confianza y buena imagen.",
     requirements: "Cumplimiento de especificaciones, requisitos del servicio y normativa aplicable.",
     risks: "Retrasos, errores de ejecucion, incumplimientos e incidencias de seguridad.",
-    opportunities: "Fidelización, servicios personalizados, mejora reputacional y nuevas inversiones.",
+    opportunities: "FidelizaciÃ³n, servicios personalizados, mejora reputacional y nuevas inversiones.",
     actions: "Control de calidad, seguimiento del servicio, mejora continua y cumplimiento normativo.",
   },
   {
@@ -44,7 +46,7 @@ const P09_MASTER_TEMPLATE_ROWS = [
     requirements: "Contratos claros, criterios definidos y cumplimiento legal.",
     risks: "Incumplimientos, interrupciones de suministro y dependencia excesiva.",
     opportunities: "Alianzas, mejora de condiciones y colaboracion a largo plazo.",
-    actions: "Evaluación periódica, homologación, solicitud de certificaciones y seguimiento.",
+    actions: "EvaluaciÃ³n periÃ³dica, homologaciÃ³n, solicitud de certificaciones y seguimiento.",
   },
   {
     stakeholder: "Competencia",
@@ -71,7 +73,7 @@ const P09_MASTER_TEMPLATE_ROWS = [
     requirements: "Cumplimiento legal y reglamentario aplicable.",
     risks: "Multas, sanciones e incumplimientos administrativos.",
     opportunities: "Confianza institucional y reduccion de contingencias.",
-    actions: "Auditorías, actualización legislativa y seguimiento del cumplimiento.",
+    actions: "AuditorÃ­as, actualizaciÃ³n legislativa y seguimiento del cumplimiento.",
   },
   {
     stakeholder: "Bancos y aseguradoras",
@@ -94,11 +96,11 @@ const P09_MASTER_TEMPLATE_ROWS = [
   {
     stakeholder: "Servicio prevencion ajeno",
     needs: "Integracion preventiva real y seguimiento eficaz.",
-    expectations: "Colaboración, evaluación y planificación preventiva.",
+    expectations: "ColaboraciÃ³n, evaluaciÃ³n y planificaciÃ³n preventiva.",
     requirements: "Cumplimiento PRL, evaluaciones y medidas preventivas actualizadas.",
     risks: "Riesgos laborales no controlados, falta de seguimiento y deficiencias documentales.",
     opportunities: "Mejora de cultura preventiva, reduccion de incidentes y mejor planificacion.",
-    actions: "Seguimiento de planificación preventiva, revisiones periódicas, coordinación y actualización de evaluaciones.",
+    actions: "Seguimiento de planificaciÃ³n preventiva, revisiones periÃ³dicas, coordinaciÃ³n y actualizaciÃ³n de evaluaciones.",
   },
   {
     stakeholder: "Contratas",
@@ -106,8 +108,8 @@ const P09_MASTER_TEMPLATE_ROWS = [
     expectations: "Colaboracion fluida, calidad y cumplimiento.",
     requirements: "CAE, requisitos contractuales y control operativo.",
     risks: "Errores de ejecucion, incumplimientos documentales y fallos de coordinacion.",
-    opportunities: "Sinergias, mejora de satisfacción del cliente y refuerzo de cumplimiento.",
-    actions: "Control de coordinación, seguimiento documental, revisión de trabajos y control del desempeño.",
+    opportunities: "Sinergias, mejora de satisfacciÃ³n del cliente y refuerzo de cumplimiento.",
+    actions: "Control de coordinaciÃ³n, seguimiento documental, revisiÃ³n de trabajos y control del desempeÃ±o.",
   },
 ];
 
@@ -123,7 +125,7 @@ const CONTEXT_P09_MASTER_TEMPLATE_ROWS = [
     context_group: "externo",
     environment: "Economico y financiero",
     risks: "Inflacion, subida de costes y tension de tesoreria.",
-    opportunities: "Optimización de costes y nuevas inversiones sostenibles.",
+    opportunities: "OptimizaciÃ³n de costes y nuevas inversiones sostenibles.",
     actions: "Control financiero periodico y diversificacion de proveedores.",
   },
   {
@@ -138,7 +140,7 @@ const CONTEXT_P09_MASTER_TEMPLATE_ROWS = [
     environment: "Tecnologico",
     risks: "Obsolescencia tecnologica y baja capacidad de respuesta.",
     opportunities: "Innovacion, digitalizacion y mejora operativa.",
-    actions: "Inversión en tecnología y formación técnica del equipo.",
+    actions: "InversiÃ³n en tecnologÃ­a y formaciÃ³n tÃ©cnica del equipo.",
   },
   {
     context_group: "externo",
@@ -156,7 +158,7 @@ const CONTEXT_P09_MASTER_TEMPLATE_ROWS = [
   },
   {
     context_group: "interno",
-    environment: "Organización",
+    environment: "OrganizaciÃ³n",
     risks: "Falta de estructura clara y solapamiento de responsabilidades.",
     opportunities: "Mejora de la eficiencia y de la coordinacion interna.",
     actions: "Definicion de roles, responsabilidades y procesos clave.",
@@ -187,7 +189,7 @@ const CONTEXT_P09_MASTER_TEMPLATE_ROWS = [
     environment: "Infraestructura",
     risks: "Instalaciones inadecuadas y fallos de mantenimiento.",
     opportunities: "Optimizacion de recursos y mejora de seguridad.",
-    actions: "Mantenimiento planificado e inversión en infraestructura.",
+    actions: "Mantenimiento planificado e inversiÃ³n en infraestructura.",
   },
   {
     context_group: "interno",
@@ -214,7 +216,7 @@ const RISK_OPPORTUNITY_SWOT_TEMPLATE = {
 
 const RISK_OPPORTUNITY_SEVERITY_OPTIONS = [
   { value: "slight", label: "Ligero" },
-  { value: "harm", label: "Daño" },
+  { value: "harm", label: "DaÃ±o" },
   { value: "extreme", label: "Extremo" },
 ];
 
@@ -237,7 +239,7 @@ const RISK_OPPORTUNITY_ACTION_TYPE_OPTIONS = [
 ];
 
 const RISK_OPPORTUNITY_YES_NO_OPTIONS = [
-  { value: "yes", label: "Sí" },
+  { value: "yes", label: "SÃ­" },
   { value: "no", label: "No" },
 ];
 
@@ -322,7 +324,7 @@ function normalizeYesNoValue(value, fallback = "no") {
   const normalized = String(value || "")
     .trim()
     .toLowerCase();
-  if (["yes", "si", "sí", "true", "1"].includes(normalized)) return "yes";
+  if (["yes", "si", "sÃ­", "true", "1"].includes(normalized)) return "yes";
   if (["no", "false", "0"].includes(normalized)) return "no";
   return fallback;
 }
@@ -1369,7 +1371,7 @@ function mapApiRowsToRiskOpportunityDraft(rows) {
       const actionTypeFallback =
         !row?.action_type &&
         followUpStatusRaw &&
-        !["yes", "no", "si", "sí", "true", "false", "1", "0"].includes(
+        !["yes", "no", "si", "sÃ­", "true", "false", "1", "0"].includes(
           followUpStatusRaw.trim().toLowerCase()
         )
           ? followUpStatusRaw
@@ -1711,14 +1713,14 @@ function renderListField(field, value, onChange, disabled) {
 
   return (
     <div className="guided-list-field">
-      {listValues.length === 0 ? <p className="soft-label">Sin elementos añadidos.</p> : null}
+      {listValues.length === 0 ? <p className="soft-label">Sin elementos aÃ±adidos.</p> : null}
       {listValues.map((itemValue, index) => (
         <div className="guided-list-row" key={`${field.field_code}-${index}`}>
           <input
             className="input-text"
             value={itemValue}
             disabled={disabled}
-            placeholder={field.placeholder || "Añade un valor"}
+            placeholder={field.placeholder || "AÃ±ade un valor"}
             onChange={(event) => updateListItem(index, event.target.value)}
           />
           <button
@@ -1733,7 +1735,7 @@ function renderListField(field, value, onChange, disabled) {
       ))}
 
       <button type="button" className="btn-secondary" disabled={disabled} onClick={addListItem}>
-        Añadir elemento
+        AÃ±adir elemento
       </button>
     </div>
   );
@@ -1744,7 +1746,7 @@ function renderJsonField(field, value, onChange, disabled) {
     typeof value === "string" ? value : value != null ? JSON.stringify(value, null, 2) : "";
 
   return (
-    <textarea
+    <RichTextarea
       className="input-textarea"
       value={textValue}
       disabled={disabled}
@@ -1757,7 +1759,7 @@ function renderJsonField(field, value, onChange, disabled) {
 function renderDefaultInput(field, value, onChange, disabled) {
   if (field.type === "textarea") {
     return (
-      <textarea
+      <RichTextarea
         className="input-textarea"
         value={value ?? ""}
         disabled={disabled}
@@ -2162,7 +2164,7 @@ function renderGroupFields(
               <div className="audit-performance-tab-block">
                 <div className="audit-performance-tab-toolbar">
                   <p className="soft-label">
-                    Seguimiento trimestral por indicador. El campo anual se calcula automáticamente.
+                    Seguimiento trimestral por indicador. El campo anual se calcula automÃ¡ticamente.
                   </p>
                   <label className="field-stack audit-performance-annual-mode">
                     <span>Anual</span>
@@ -2188,7 +2190,7 @@ function renderGroupFields(
                     <div className="audit-performance-table-head tracking">
                       <span>Indicador</span>
                       <span>1er Trimestre</span>
-                      <span>2º Trimestre</span>
+                      <span>2Âº Trimestre</span>
                       <span>3er Trimestre</span>
                       <span>Anual</span>
                     </div>
@@ -2344,7 +2346,7 @@ function renderGroupFields(
         >
           <div className="audit-p09-panel-header">
             <p className="audit-p09-panel-title">
-              {"Documento P09 \u2013 Contexto de la organización (4.1)"}
+              {"Documento P09 \u2013 Contexto de la organizaciÃ³n (4.1)"}
             </p>
             <div className="audit-p09-panel-status">
               <span className="soft-label">Estado</span>
@@ -2354,7 +2356,7 @@ function renderGroupFields(
             </div>
           </div>
           <p className="audit-p09-panel-description">
-            Documento maestro del contexto de la organización para ISO 9001 (cláusula 4.1).
+            Documento maestro del contexto de la organizaciÃ³n para ISO 9001 (clÃ¡usula 4.1).
           </p>
           {contextUi.isCompleted ? (
             <div className="audit-p09-panel-meta">
@@ -2446,7 +2448,7 @@ function renderGroupFields(
             </div>
           </div>
           <p className="audit-p09-panel-description">
-            Documento maestro de partes interesadas para ISO 9001 (cláusula 4.2).
+            Documento maestro de partes interesadas para ISO 9001 (clÃ¡usula 4.2).
           </p>
           {interestedPartiesUi.isCompleted ? (
             <div className="audit-p09-panel-meta">
@@ -2871,7 +2873,7 @@ function AuditGuidedFields({
   async function handleSaveP09Edition() {
     const normalizedAuditReportId = String(auditReportId || "").trim();
     if (!normalizedAuditReportId) {
-      setP09ValidationError("No se pudo identificar la auditoría para guardar el documento.");
+      setP09ValidationError("No se pudo identificar la auditorÃ­a para guardar el documento.");
       return;
     }
 
@@ -2990,7 +2992,7 @@ function AuditGuidedFields({
   async function handleSaveContextEdition() {
     const normalizedAuditReportId = String(auditReportId || "").trim();
     if (!normalizedAuditReportId) {
-      setContextValidationError("No se pudo identificar la auditoría para guardar el documento.");
+      setContextValidationError("No se pudo identificar la auditorÃ­a para guardar el documento.");
       return;
     }
 
@@ -3197,7 +3199,7 @@ function AuditGuidedFields({
     const normalizedAuditReportId = String(auditReportId || "").trim();
     if (!normalizedAuditReportId) {
       setRiskOpportunityValidationError(
-        "No se pudo identificar la auditoría para guardar el documento."
+        "No se pudo identificar la auditorÃ­a para guardar el documento."
       );
       return;
     }
@@ -3556,7 +3558,7 @@ function AuditGuidedFields({
                 onOpenEditor: openRiskOpportunityEditor,
                 onOpenSummary: openRiskOpportunitySummary,
                 registeredCount: riskOpportunityRegisteredCount,
-                summaryLine: `${riskOpportunitySavedCounters.riskCount} riesgos · ${riskOpportunitySavedCounters.generatedOpportunityCount} oportunidades · ${riskOpportunitySavedCounters.actionCount} acciones`,
+                summaryLine: `${riskOpportunitySavedCounters.riskCount} riesgos Â· ${riskOpportunitySavedCounters.generatedOpportunityCount} oportunidades Â· ${riskOpportunitySavedCounters.actionCount} acciones`,
                 revisionLabel: riskOpportunityRevisionLabel,
                 dateLabel: riskOpportunityDocumentDate,
                 loading: riskOpportunityLoading,
@@ -3591,10 +3593,10 @@ function AuditGuidedFields({
           >
             <header className="audit-p09-drawer-header">
               <div className="audit-p09-drawer-headings">
-                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÁUSULA 4.2</p>
+                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÃUSULA 4.2</p>
                 <h4>{"P09 \u2013 Partes interesadas"}</h4>
                 <p>
-                  Define las partes interesadas y sus necesidades/expectativas para esta auditoría.
+                  Define las partes interesadas y sus necesidades/expectativas para esta auditorÃ­a.
                 </p>
               </div>
               <div className="audit-p09-drawer-right">
@@ -3605,7 +3607,7 @@ function AuditGuidedFields({
                   <p className="audit-p09-drawer-meta-line">
                     {p09Completed
                       ? `${p09RevisionLabel || "-"} | ${p09DocumentDate || "-"}`
-                      : "Sin versión guardada"}
+                      : "Sin versiÃ³n guardada"}
                   </p>
                 </div>
                 <button
@@ -3632,7 +3634,7 @@ function AuditGuidedFields({
                 <>
                   <div className="audit-p09-editor-toolbar">
                     <p className="soft-label audit-p09-editor-helper">
-                      Completa el documento en bloques para facilitar la lectura y edición.
+                      Completa el documento en bloques para facilitar la lectura y ediciÃ³n.
                     </p>
                     <button
                       type="button"
@@ -3640,12 +3642,12 @@ function AuditGuidedFields({
                       onClick={handleAddP09Row}
                       disabled={p09Saving}
                     >
-                      + Añadir parte interesada
+                      + AÃ±adir parte interesada
                     </button>
                   </div>
 
                   {p09DraftRows.length === 0 ? (
-                    <p className="empty-state">No hay filas. Añade una para empezar.</p>
+                    <p className="empty-state">No hay filas. AÃ±ade una para empezar.</p>
                   ) : (
                     <div className="audit-p09-editor-list">
                       {p09DraftRows.map((row, index) => (
@@ -3711,7 +3713,7 @@ function AuditGuidedFields({
                                       handleP09RowChange(row.id, "applies", event.target.value)
                                     }
                                   >
-                                    <option value="yes">Sí</option>
+                                    <option value="yes">SÃ­</option>
                                     <option value="no">No</option>
                                   </select>
                                 </label>
@@ -3720,7 +3722,7 @@ function AuditGuidedFields({
                               <div className="audit-p09-editor-card-body">
                                 <label className="field-stack audit-p09-editor-field">
                                   <span>Necesidades</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea audit-p09-editor-textarea"
                                     value={row.needs}
                                     disabled={p09Saving}
@@ -3733,7 +3735,7 @@ function AuditGuidedFields({
 
                                 <label className="field-stack audit-p09-editor-field">
                                   <span>Expectativas</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea audit-p09-editor-textarea"
                                     value={row.expectations}
                                     disabled={p09Saving}
@@ -3746,7 +3748,7 @@ function AuditGuidedFields({
 
                                 <label className="field-stack audit-p09-editor-field">
                                   <span>Requisitos</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea audit-p09-editor-textarea"
                                     value={row.requirements}
                                     disabled={p09Saving}
@@ -3759,7 +3761,7 @@ function AuditGuidedFields({
 
                                 <label className="field-stack audit-p09-editor-field">
                                   <span>Riesgos</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea audit-p09-editor-textarea"
                                     value={row.risks}
                                     disabled={p09Saving}
@@ -3772,7 +3774,7 @@ function AuditGuidedFields({
 
                                 <label className="field-stack audit-p09-editor-field">
                                   <span>Oportunidades</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea audit-p09-editor-textarea"
                                     value={row.opportunities}
                                     disabled={p09Saving}
@@ -3785,7 +3787,7 @@ function AuditGuidedFields({
 
                                 <label className="field-stack audit-p09-editor-field">
                                   <span>Acciones</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea audit-p09-editor-textarea"
                                     value={row.actions}
                                     disabled={p09Saving}
@@ -3798,7 +3800,7 @@ function AuditGuidedFields({
 
                                 <label className="field-stack audit-p09-editor-field audit-p09-editor-field-wide">
                                   <span>Observaciones</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea audit-p09-editor-textarea"
                                     value={row.observations}
                                     disabled={p09Saving}
@@ -3834,31 +3836,31 @@ function AuditGuidedFields({
                           <div className="audit-p09-summary-grid">
                             <div>
                               <p className="soft-label">Necesidades</p>
-                              <p>{row.needs || "-"}</p>
+                              <RichTextContent value={row.needs} />
                             </div>
                             <div>
                               <p className="soft-label">Expectativas</p>
-                              <p>{row.expectations || "-"}</p>
+                              <RichTextContent value={row.expectations} />
                             </div>
                             <div>
                               <p className="soft-label">Requisitos</p>
-                              <p>{row.requirements || "-"}</p>
+                              <RichTextContent value={row.requirements} />
                             </div>
                             <div>
                               <p className="soft-label">Riesgos</p>
-                              <p>{row.risks || "-"}</p>
+                              <RichTextContent value={row.risks} />
                             </div>
                             <div>
                               <p className="soft-label">Oportunidades</p>
-                              <p>{row.opportunities || "-"}</p>
+                              <RichTextContent value={row.opportunities} />
                             </div>
                             <div>
                               <p className="soft-label">Acciones</p>
-                              <p>{row.actions || "-"}</p>
+                              <RichTextContent value={row.actions} />
                             </div>
                             <div className="audit-p09-summary-wide">
                               <p className="soft-label">Observaciones</p>
-                              <p>{row.observations || "-"}</p>
+                              <RichTextContent value={row.observations} />
                             </div>
                           </div>
                         </article>
@@ -3900,16 +3902,16 @@ function AuditGuidedFields({
             className="audit-p09-drawer"
             role="dialog"
             aria-modal="true"
-            aria-label="P09 - Contexto de la organización"
+            aria-label="P09 - Contexto de la organizaciÃ³n"
             onClick={(event) => event.stopPropagation()}
           >
             <header className="audit-p09-drawer-header">
               <div className="audit-p09-drawer-headings">
-                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÁUSULA 4.1</p>
-                <h4>{"P09 - Contexto de la organización"}</h4>
+                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÃUSULA 4.1</p>
+                <h4>{"P09 - Contexto de la organizaciÃ³n"}</h4>
                 <p>
                   Define el contexto interno y externo, incorporando riesgos, oportunidades y
-                  acciones para la auditoría.
+                  acciones para la auditorÃ­a.
                 </p>
               </div>
               <div className="audit-p09-drawer-right">
@@ -3920,7 +3922,7 @@ function AuditGuidedFields({
                   <p className="audit-p09-drawer-meta-line">
                     {contextCompleted
                       ? `${contextRevisionLabel || "-"} | ${contextDocumentDate || "-"}`
-                      : "Sin versión guardada"}
+                      : "Sin versiÃ³n guardada"}
                   </p>
                 </div>
                 <button
@@ -3938,7 +3940,7 @@ function AuditGuidedFields({
               <article className="audit-p09-info-box">
                 <p className="audit-p09-info-title">Contexto del documento</p>
                 <p>
-                  Documento de contexto de la organización según ISO 9001 (4.1), con estructura por
+                  Documento de contexto de la organizaciÃ³n segÃºn ISO 9001 (4.1), con estructura por
                   entorno externo e interno.
                 </p>
               </article>
@@ -3978,12 +3980,12 @@ function AuditGuidedFields({
                       onClick={handleAddContextRow}
                       disabled={contextSaving}
                     >
-                      + Añadir entorno
+                      + AÃ±adir entorno
                     </button>
                   </div>
 
                   {contextDraftRows.length === 0 ? (
-                    <p className="empty-state">No hay filas. Añade una para empezar.</p>
+                    <p className="empty-state">No hay filas. AÃ±ade una para empezar.</p>
                   ) : (
                     <>
                       {CONTEXT_GROUP_ORDER.map((groupKey) => {
@@ -4089,7 +4091,7 @@ function AuditGuidedFields({
                                           <div className="audit-p09-editor-card-body">
                                             <label className="field-stack audit-p09-editor-field">
                                               <span>Riesgos</span>
-                                              <textarea
+                                              <RichTextarea
                                                 className="input-textarea audit-p09-editor-textarea"
                                                 value={row.risks}
                                                 disabled={contextSaving}
@@ -4105,7 +4107,7 @@ function AuditGuidedFields({
                                             </label>
                                             <label className="field-stack audit-p09-editor-field">
                                               <span>Oportunidades</span>
-                                              <textarea
+                                              <RichTextarea
                                                 className="input-textarea audit-p09-editor-textarea"
                                                 value={row.opportunities}
                                                 disabled={contextSaving}
@@ -4121,7 +4123,7 @@ function AuditGuidedFields({
                                             </label>
                                             <label className="field-stack audit-p09-editor-field">
                                               <span>Acciones</span>
-                                              <textarea
+                                              <RichTextarea
                                                 className="input-textarea audit-p09-editor-textarea"
                                                 value={row.actions}
                                                 disabled={contextSaving}
@@ -4137,7 +4139,7 @@ function AuditGuidedFields({
                                             </label>
                                             <label className="field-stack audit-p09-editor-field">
                                               <span>Observaciones</span>
-                                              <textarea
+                                              <RichTextarea
                                                 className="input-textarea audit-p09-editor-textarea"
                                                 value={row.observations}
                                                 disabled={contextSaving}
@@ -4205,19 +4207,19 @@ function AuditGuidedFields({
                                   <div className="audit-p09-summary-grid">
                                     <div>
                                       <p className="soft-label">Riesgos</p>
-                                      <p>{row.risks || "-"}</p>
+                                      <RichTextContent value={row.risks} />
                                     </div>
                                     <div>
                                       <p className="soft-label">Oportunidades</p>
-                                      <p>{row.opportunities || "-"}</p>
+                                      <RichTextContent value={row.opportunities} />
                                     </div>
                                     <div>
                                       <p className="soft-label">Acciones</p>
-                                      <p>{row.actions || "-"}</p>
+                                      <RichTextContent value={row.actions} />
                                     </div>
                                     <div>
                                       <p className="soft-label">Observaciones</p>
-                                      <p>{row.observations || "-"}</p>
+                                      <RichTextContent value={row.observations} />
                                     </div>
                                   </div>
                                 </article>
@@ -4282,7 +4284,7 @@ function AuditGuidedFields({
           >
             <header className="audit-p09-drawer-header">
               <div className="audit-p09-drawer-headings">
-                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÁUSULA 6.1</p>
+                <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÃUSULA 6.1</p>
                 <h4>{"P09 - Riesgos y oportunidades"}</h4>
                 <p>Gestion centralizada de DAFO, riesgos, oportunidades y acciones.</p>
               </div>
@@ -4294,7 +4296,7 @@ function AuditGuidedFields({
                   <p className="audit-p09-drawer-meta-line">
                     {riskOpportunityCompleted
                       ? `${riskOpportunityRevisionLabel || "-"} | ${riskOpportunityDocumentDate || "-"}`
-                      : "Sin versión guardada"}
+                      : "Sin versiÃ³n guardada"}
                   </p>
                 </div>
                 <button
@@ -4378,7 +4380,7 @@ function AuditGuidedFields({
                                   onClick={() => handleAddSwotRow(section.key)}
                                   disabled={riskOpportunitySaving}
                                 >
-                                  + Añadir elemento
+                                  + AÃ±adir elemento
                                 </button>
                               </div>
                             </header>
@@ -4388,7 +4390,7 @@ function AuditGuidedFields({
                               <div className="audit-risk-doc-list">
                                 {rows.map((row) => (
                                   <div className="audit-risk-doc-row" key={row.id}>
-                                    <textarea
+                                    <RichTextarea
                                       className="input-textarea"
                                       value={row.description}
                                       disabled={riskOpportunitySaving}
@@ -4424,7 +4426,7 @@ function AuditGuidedFields({
                         onClick={handleAddRiskRow}
                         disabled={riskOpportunitySaving}
                       >
-                        + Añadir riesgo
+                        + AÃ±adir riesgo
                       </button>
                     </header>
                     {riskOpportunityDraft.riskRows.length === 0 ? (
@@ -4437,7 +4439,7 @@ function AuditGuidedFields({
                           <span>Riesgo</span>
                           <span>Probabilidad</span>
                           <span>Severidad</span>
-                          <span>Evaluación</span>
+                          <span>EvaluaciÃ³n</span>
                         </div>
                         {riskOpportunityDraft.riskRows.map((row, index) => {
                           const evaluation = calculateRiskEvaluation(row.probability, row.severity);
@@ -4486,7 +4488,7 @@ function AuditGuidedFields({
                                 </label>
                                 <label className="field-stack audit-risk-field-wide">
                                   <span>Riesgo</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea"
                                     value={row.description}
                                     disabled={riskOpportunitySaving}
@@ -4530,7 +4532,7 @@ function AuditGuidedFields({
                                   </select>
                                 </label>
                                 <div className="audit-risk-calculation">
-                                  <span className="soft-label">Evaluación</span>
+                                  <span className="soft-label">EvaluaciÃ³n</span>
                                   <p className={`audit-risk-evaluation-pill ${evaluation.tone}`}>
                                     {`${evaluation.label} (${evaluation.score})`}
                                   </p>
@@ -4553,7 +4555,7 @@ function AuditGuidedFields({
                             <tr>
                               <th>Probabilidad \ Severidad</th>
                               <th>Ligero</th>
-                              <th>Daño</th>
+                              <th>DaÃ±o</th>
                               <th>Extremo</th>
                             </tr>
                           </thead>
@@ -4585,7 +4587,7 @@ function AuditGuidedFields({
                       </div>
                     </aside>
 
-                    <div className="audit-risk-legend-strip" aria-label="Leyenda de evaluación">
+                    <div className="audit-risk-legend-strip" aria-label="Leyenda de evaluaciÃ³n">
                       <span className="audit-risk-evaluation-pill trivial">Trivial</span>
                       <span className="audit-risk-evaluation-pill tolerable">Tolerable</span>
                       <span className="audit-risk-evaluation-pill moderate">Moderado</span>
@@ -4603,7 +4605,7 @@ function AuditGuidedFields({
                         onClick={handleAddOpportunityRow}
                         disabled={riskOpportunitySaving}
                       >
-                        + Añadir oportunidad
+                        + AÃ±adir oportunidad
                       </button>
                     </header>
                     {riskOpportunityDraft.opportunityRows.length === 0 ? (
@@ -4672,7 +4674,7 @@ function AuditGuidedFields({
                                 </label>
                                 <label className="field-stack audit-risk-field-wide">
                                   <span>Oportunidad</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea"
                                     value={row.description}
                                     disabled={riskOpportunitySaving}
@@ -4762,7 +4764,7 @@ function AuditGuidedFields({
                         onClick={handleAddFollowUpRow}
                         disabled={riskOpportunitySaving}
                       >
-                        + Añadir acción
+                        + AÃ±adir acciÃ³n
                       </button>
                     </header>
                     {riskOpportunityDraft.followUpRows.length === 0 ? (
@@ -4848,7 +4850,7 @@ function AuditGuidedFields({
                                 </label>
                                 <label className="field-stack audit-full-width">
                                   <span>Accion</span>
-                                  <textarea
+                                  <RichTextarea
                                     className="input-textarea"
                                     value={row.action}
                                     disabled={riskOpportunitySaving}
@@ -5000,7 +5002,9 @@ function AuditGuidedFields({
                                 ) : (
                                   <ul className="audit-risk-doc-bullets">
                                     {rows.map((row) => (
-                                      <li key={row.id}>{row.description}</li>
+                                      <li key={row.id}>
+                                        <RichTextContent value={row.description} />
+                                      </li>
                                     ))}
                                   </ul>
                                 )}
@@ -5022,7 +5026,7 @@ function AuditGuidedFields({
                               return (
                                 <article className="audit-risk-doc-card" key={`summary-risk-${row.id}`}>
                                   <p className="soft-label">{`Proceso: ${row.process_name || "-"}`}</p>
-                                  <p>{row.description}</p>
+                                  <RichTextContent value={row.description} />
                                   <p className={`audit-risk-evaluation-pill ${evaluation.tone}`}>
                                     {`${evaluation.label} (${evaluation.score})`}
                                   </p>
@@ -5047,7 +5051,7 @@ function AuditGuidedFields({
                               return (
                                 <article className="audit-risk-doc-card" key={`summary-opportunity-${row.id}`}>
                                   <p className="soft-label">{`Proceso: ${row.process_name || "-"}`}</p>
-                                  <p>{row.description}</p>
+                                  <RichTextContent value={row.description} />
                                   <p className="soft-label">{`Viabilidad: ${row.viability} | Atractiva: ${row.attractiveness}`}</p>
                                   <p className={`audit-risk-evaluation-pill ${evaluation.tone}`}>
                                     {`${evaluation.label} (${evaluation.total})`}
@@ -5092,10 +5096,10 @@ function AuditGuidedFields({
                                     {resultBadge.label}
                                   </span>
                                   <p className="soft-label">{`Referencia: ${referenceLabel}`}</p>
-                                  <p>{row.action || "-"}</p>
+                                  <RichTextContent value={row.action} />
                                   <p className="soft-label">{`Tipo: ${row.action_type || "-"}`}</p>
-                                  <p className="soft-label">{`Indicador: ${normalizeYesNoValue(row.indicator) === "yes" ? "Sí" : "No"}`}</p>
-                                  <p className="soft-label">{`Objetivo asociado: ${normalizeYesNoValue(row.objective_associated) === "yes" ? "Sí" : "No"}`}</p>
+                                  <p className="soft-label">{`Indicador: ${normalizeYesNoValue(row.indicator) === "yes" ? "SÃ­" : "No"}`}</p>
+                                  <p className="soft-label">{`Objetivo asociado: ${normalizeYesNoValue(row.objective_associated) === "yes" ? "SÃ­" : "No"}`}</p>
                                   <p className="soft-label">{`Plazo: ${normalizeP09DateLabel(row.due_date) || "-"}`}</p>
                                 </article>
                               );
@@ -5151,4 +5155,7 @@ function AuditGuidedFields({
 }
 
 export default AuditGuidedFields;
+
+
+
 

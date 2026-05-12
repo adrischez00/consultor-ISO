@@ -5149,3 +5149,64 @@ body {
     width: 100%;
   }
 }
+
+.rich-textarea {
+  position: relative;
+  width: 100%;
+}
+
+.rich-textarea-proxy-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+  padding: 0;
+}
+
+.rich-textarea .ql-toolbar.ql-snow {
+  border: 1px solid #d6dfeb;
+  border-radius: 10px 10px 0 0;
+  background: #f6f9fe;
+}
+
+.rich-textarea .ql-container.ql-snow {
+  border: 1px solid #d6dfeb;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background: #fff;
+  min-height: 160px;
+  font-family: inherit;
+}
+
+.rich-textarea .ql-editor {
+  min-height: 130px;
+  font-size: 0.96rem;
+  line-height: 1.45;
+  color: inherit;
+}
+
+.rich-textarea .ql-editor.ql-blank::before {
+  color: #6f7e95;
+  font-style: normal;
+}
+
+.rich-textarea .ql-picker,
+.rich-textarea .ql-stroke,
+.rich-textarea .ql-fill {
+  color: #24324a;
+  stroke: currentColor;
+}
+
+.rich-textarea .ql-container {
+  font-family: inherit;
+}
+
+.rich-text-content > :first-child {
+  margin-top: 0;
+}
+
+.rich-text-content > :last-child {
+  margin-bottom: 0;
+}

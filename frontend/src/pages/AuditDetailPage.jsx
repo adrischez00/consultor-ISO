@@ -1,5 +1,6 @@
-﻿import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+﻿import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
 
 import {
   createAuditAnnex,
@@ -212,6 +213,7 @@ function createEmptyHeaderForm() {
     modalidad: "presencialmente",
     audited_facilities: "",
     quality_responsible_name: "",
+    manager_name: "",
     reference_standard: "ISO 9001",
     reference_standard_revision: "",
     audit_budget_code: "",
@@ -416,6 +418,7 @@ function AuditDetailPage() {
       header.modalidad = nextReport.modalidad || "presencialmente";
       header.audited_facilities = nextReport.audited_facilities || "";
       header.quality_responsible_name = nextReport.quality_responsible_name || "";
+      header.manager_name = nextReport.manager_name || "";
       header.reference_standard = nextReport.reference_standard || "ISO 9001";
       header.reference_standard_revision = nextReport.reference_standard_revision || "";
       header.audit_budget_code = nextReport.audit_budget_code || "";
@@ -1101,6 +1104,7 @@ function AuditDetailPage() {
         modalidad: normalizeRequiredText(headerForm.modalidad),
         audited_facilities: normalizeNullableText(headerForm.audited_facilities),
         quality_responsible_name: normalizeNullableText(headerForm.quality_responsible_name),
+        manager_name: normalizeNullableText(headerForm.manager_name),
         reference_standard: normalizeRequiredText(headerForm.reference_standard),
         reference_standard_revision: normalizeNullableText(headerForm.reference_standard_revision),
         audit_budget_code: normalizeNullableText(headerForm.audit_budget_code),
@@ -1914,7 +1918,7 @@ function AuditDetailPage() {
             <div className="audit-form-grid audit-header-grid">
               <label className="field-stack audit-full-width">
                 <span>Instalaciones auditadas</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={headerForm.audited_facilities}
                   onChange={(event) =>
@@ -1935,6 +1939,17 @@ function AuditDetailPage() {
               </label>
 
               <label className="field-stack">
+                <span>Gerente</span>
+                <input
+                  className="input-text"
+                  value={headerForm.manager_name}
+                  onChange={(event) =>
+                    setHeaderForm((prev) => ({ ...prev, manager_name: event.target.value }))
+                  }
+                />
+              </label>
+
+              <label className="field-stack">
                 <span>Código de presupuesto</span>
                 <input
                   className="input-text"
@@ -1947,7 +1962,7 @@ function AuditDetailPage() {
 
               <label className="field-stack audit-full-width">
                 <span>Alcance del sistema</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={headerForm.system_scope}
                   onChange={(event) => setHeaderForm((prev) => ({ ...prev, system_scope: event.target.value }))}
@@ -1956,7 +1971,7 @@ function AuditDetailPage() {
 
               <label className="field-stack audit-full-width">
                 <span>Notas adicionales para la introducción</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={headerForm.audit_description}
                   onChange={(event) =>
@@ -2128,7 +2143,7 @@ function AuditDetailPage() {
                 </label>
                 <label className="field-stack audit-full-width">
                   <span>Notas</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={annex.notes || ""}
                     disabled={annexBusy}
@@ -2204,7 +2219,7 @@ function AuditDetailPage() {
           </label>
           <label className="field-stack audit-full-width">
             <span>Notas</span>
-            <textarea
+            <RichTextarea
               className="input-textarea"
               value={annexForm.notes}
               disabled={annexBusy}
@@ -2279,7 +2294,7 @@ function AuditDetailPage() {
 
               <label className="field-stack audit-full-width">
                 <span>Notas del auditor</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={activeSectionDraft?.auditor_notes || ""}
                   onChange={(event) =>
@@ -2421,7 +2436,7 @@ function AuditDetailPage() {
                           />
                         </td>
                         <td>
-                          <textarea
+                          <RichTextarea
                             className={`input-textarea ${
                               activeSection?.section_code === "9" ? "audit-check-observation-input" : ""
                             }`}
@@ -2444,7 +2459,7 @@ function AuditDetailPage() {
           <SectionCard title="D. Texto del informe" description="Texto narrativo final visible en el informe.">
             <label className="field-stack">
               <span>Texto del informe</span>
-              <textarea
+              <RichTextarea
                 className="input-textarea"
                 value={activeSectionDraft?.final_text || ""}
                 onChange={(event) =>
@@ -2496,7 +2511,7 @@ function AuditDetailPage() {
                       <div className="audit-recommendation-editor">
                         <label className="field-stack">
                           <span>Comentario de seguimiento</span>
-                          <textarea
+                          <RichTextarea
                             className="input-textarea"
                             value={entry.followup_comment || ""}
                             onChange={(event) =>
@@ -2618,7 +2633,7 @@ function AuditDetailPage() {
 
                 <label className="field-stack">
                   <span>Texto</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={newRecommendationForm.body_text}
                     onChange={(event) =>
@@ -2630,7 +2645,7 @@ function AuditDetailPage() {
 
                 <label className="field-stack">
                   <span>Comentario de seguimiento</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={newRecommendationForm.followup_comment}
                     onChange={(event) =>
@@ -2692,7 +2707,7 @@ function AuditDetailPage() {
           <div className="audit-results-final-block">
             <label className="field-stack">
               <span>Conclusiones</span>
-              <textarea
+              <RichTextarea
                 className="input-textarea"
                 value={headerForm.conclusions_text}
                 onChange={(event) =>
@@ -2703,7 +2718,7 @@ function AuditDetailPage() {
 
             <label className="field-stack">
               <span>Disposiciones finales</span>
-              <textarea
+              <RichTextarea
                 className="input-textarea"
                 value={headerForm.final_dispositions_text}
                 onChange={(event) =>
@@ -2728,3 +2743,6 @@ function AuditDetailPage() {
 }
 
 export default AuditDetailPage;
+
+
+

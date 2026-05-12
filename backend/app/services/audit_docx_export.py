@@ -4,6 +4,7 @@ import json
 import logging
 import re
 import unicodedata
+from html import unescape
 from collections import defaultdict
 from datetime import date, datetime
 from importlib import import_module
@@ -161,17 +162,35 @@ class AuditDocxGenerationError(RuntimeError):
     pass
 
 
+def _strip_rich_text(value: Any) -> str:
+    raw = str(value or "")
+    if "<" not in raw or ">" not in raw:
+        return raw
+
+    normalized_breaks = re.sub(r"(?i)<br\\s*/?>", "\n", raw)
+    normalized_breaks = re.sub(
+        r"(?i)</(p|div|h1|h2|h3|h4|h5|h6|li|tr|blockquote)>",
+        "\n",
+        normalized_breaks,
+    )
+    stripped = re.sub(r"<[^>]+>", "", normalized_breaks)
+    unescaped = unescape(stripped)
+    compacted = re.sub(r"[\\t\\f\\v]+", " ", unescaped)
+    compacted = re.sub(r"\\r\\n?|\\n{3,}", "\n\n", compacted)
+    return compacted.strip()
+
+
 def _to_display(value: Any) -> str:
     if value is None:
         return "-"
     if isinstance(value, (date, datetime)):
         return value.strftime("%d/%m/%Y")
-    normalized = str(value).strip()
+    normalized = _strip_rich_text(value).strip()
     return normalized or "-"
 
 
 def _short_text(value: Any, *, max_len: int = 140) -> str:
-    normalized = re.sub(r"\s+", " ", str(value or "").strip())
+    normalized = re.sub(r"\s+", " ", _strip_rich_text(value))
     if not normalized:
         return "-"
     if len(normalized) <= max_len:
@@ -920,6 +939,7 @@ def build_audit_report_docx(
             ("Modalidad", _to_display(_normalize_audit_modality(report.modalidad))),
             ("Instalaciones auditadas", _to_display(report.audited_facilities)),
             ("Responsable del sistema", _to_display(report.quality_responsible_name)),
+            ("Gerente", _to_display(report.manager_name)),
             (
                 "Norma de referencia",
                 (

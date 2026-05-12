@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useState, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -21,10 +22,10 @@ const INITIAL_FORM = {
 };
 
 const SORT_OPTIONS = [
-  { value: "created_desc", label: "Alta más reciente" },
+  { value: "created_desc", label: "Alta mÃ¡s reciente" },
   { value: "name_asc", label: "Nombre A-Z" },
   { value: "name_desc", label: "Nombre Z-A" },
-  { value: "created_asc", label: "Alta más antigua" },
+  { value: "created_asc", label: "Alta mÃ¡s antigua" },
 ];
 
 function normalizeSearchValue(value) {
@@ -173,9 +174,9 @@ function ClientsPage() {
     if (filteredClients.length === 0) {
       return (
         <div className="empty-state-block">
-          <p className="empty-state">No hay resultados para la búsqueda actual.</p>
+          <p className="empty-state">No hay resultados para la bÃºsqueda actual.</p>
           <button type="button" className="btn-ghost" onClick={() => setListSearch("")}>
-            Limpiar búsqueda
+            Limpiar bÃºsqueda
           </button>
         </div>
       );
@@ -196,7 +197,7 @@ function ClientsPage() {
             </div>
             <div className="diagnostic-list-actions clients-item-actions">
               <Link className="btn-ghost link-btn" to={`/auditorias/nueva?client_id=${client.id}`}>
-                Nueva auditoría
+                Nueva auditorÃ­a
               </Link>
               <Link className="btn-secondary link-btn" to={`/clientes/${client.id}`}>
                 Ver detalle
@@ -213,7 +214,7 @@ function ClientsPage() {
       <PageHeader
         eyebrow="Cartera"
         title="Clientes"
-        description="Gestiona empresas para asociar auditorías P03 y trazabilidad histórica."
+        description="Gestiona empresas para asociar auditorÃ­as P03 y trazabilidad histÃ³rica."
       />
 
       {loading ? <p className="status">Cargando clientes...</p> : null}
@@ -223,7 +224,7 @@ function ClientsPage() {
         <SectionCard
           className="clients-create-card"
           title="Nuevo cliente"
-          description="Crea una empresa para asociar futuras auditorías y diagnósticos legacy."
+          description="Crea una empresa para asociar futuras auditorÃ­as y diagnÃ³sticos legacy."
         >
           <form className="form-grid clients-create-form" onSubmit={handleCreateClient}>
             <label className="field-stack">
@@ -264,8 +265,8 @@ function ClientsPage() {
             </label>
 
             <label className="field-stack">
-              <span>Descripción</span>
-              <textarea
+              <span>DescripciÃ³n</span>
+              <RichTextarea
                 className="input-textarea"
                 name="description"
                 rows={3}
@@ -286,7 +287,7 @@ function ClientsPage() {
         <SectionCard
           className="clients-list-card"
           title="Listado de clientes"
-          description="Búsqueda, ordenación y acceso rápido a auditorías."
+          description="BÃºsqueda, ordenaciÃ³n y acceso rÃ¡pido a auditorÃ­as."
           actions={
             <div className="clients-list-toolbar">
               <input
@@ -367,3 +368,6 @@ function ClientsPage() {
 }
 
 export default ClientsPage;
+
+
+

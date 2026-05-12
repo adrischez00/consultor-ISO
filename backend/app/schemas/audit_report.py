@@ -48,6 +48,7 @@ class AuditReportCreateRequest(BaseModel):
     modalidad: str | None = None
     audited_facilities: str | None = None
     quality_responsible_name: str | None = None
+    manager_name: str | None = None
     reference_standard_revision: str | None = None
     audit_budget_code: str | None = None
     system_scope: str | None = None
@@ -63,6 +64,7 @@ class AuditReportUpdateRequest(BaseModel):
     modalidad: str | None = None
     audited_facilities: str | None = None
     quality_responsible_name: str | None = None
+    manager_name: str | None = None
     reference_standard: str | None = None
     reference_standard_revision: str | None = None
     audit_budget_code: str | None = None
@@ -92,6 +94,7 @@ class AuditReportRead(BaseModel):
     modalidad: str | None
     audited_facilities: str | None
     quality_responsible_name: str | None
+    manager_name: str | None
     reference_standard: str
     reference_standard_revision: str | None
     audit_budget_code: str | None

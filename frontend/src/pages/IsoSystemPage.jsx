@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -690,16 +691,16 @@ function IsoSystemPage() {
         actions={
           contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-              Volver a auditoría
+              Volver a auditorÃ­a
             </Link>
           ) : null
         }
       />
       {contextReportId ? (
         <p className="status">
-          Contexto de auditoría activo {contextReportId}
-          {contextReportYear ? ` · Año ${contextReportYear}` : ""}. Completa aquí los bloques base antes de cerrar
-          la auditoría.
+          Contexto de auditorÃ­a activo {contextReportId}
+          {contextReportYear ? ` Â· AÃ±o ${contextReportYear}` : ""}. Completa aquÃ­ los bloques base antes de cerrar
+          la auditorÃ­a.
         </p>
       ) : null}
 
@@ -713,7 +714,7 @@ function IsoSystemPage() {
             <form className="form-grid" onSubmit={handleSaveContext}>
               <label className="field-stack">
                 <span>Contexto interno *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={contextForm.internal_context}
                   onChange={(event) => setContextForm((prev) => ({ ...prev, internal_context: event.target.value }))}
@@ -723,7 +724,7 @@ function IsoSystemPage() {
               </label>
               <label className="field-stack">
                 <span>Contexto externo *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={contextForm.external_context}
                   onChange={(event) => setContextForm((prev) => ({ ...prev, external_context: event.target.value }))}
@@ -733,7 +734,7 @@ function IsoSystemPage() {
               </label>
               <label className="field-stack">
                 <span>Alcance del sistema *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={contextForm.system_scope}
                   onChange={(event) => setContextForm((prev) => ({ ...prev, system_scope: event.target.value }))}
@@ -743,7 +744,7 @@ function IsoSystemPage() {
               </label>
               <label className="field-stack">
                 <span>Exclusiones</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={contextForm.exclusions}
                   onChange={(event) => setContextForm((prev) => ({ ...prev, exclusions: event.target.value }))}
@@ -801,7 +802,7 @@ function IsoSystemPage() {
                 </label>
                 <label className="field-stack">
                   <span>Necesidades y expectativas *</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={partyForm.needs_expectations}
                     onChange={(event) =>
@@ -933,7 +934,7 @@ function IsoSystemPage() {
                 </div>
                 <label className="field-stack">
                   <span>Politica *</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={policyForm.policy_text}
                     onChange={(event) => setPolicyForm((prev) => ({ ...prev, policy_text: event.target.value }))}
@@ -1013,7 +1014,7 @@ function IsoSystemPage() {
               </label>
               <label className="field-stack">
                 <span>Descripcion *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={objectiveForm.description}
                   onChange={(event) => setObjectiveForm((prev) => ({ ...prev, description: event.target.value }))}
@@ -1151,7 +1152,7 @@ function IsoSystemPage() {
               </label>
               <label className="field-stack">
                 <span>Motivo *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={changeForm.reason}
                   onChange={(event) => setChangeForm((prev) => ({ ...prev, reason: event.target.value }))}
@@ -1161,7 +1162,7 @@ function IsoSystemPage() {
               </label>
               <label className="field-stack">
                 <span>Impacto *</span>
-                <textarea
+                <RichTextarea
                   className="input-textarea"
                   value={changeForm.impact}
                   onChange={(event) => setChangeForm((prev) => ({ ...prev, impact: event.target.value }))}
@@ -1277,7 +1278,7 @@ function IsoSystemPage() {
                 </label>
                 <label className="field-stack">
                   <span>Detalle de responsabilidad *</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={roleForm.responsibility_details}
                     onChange={(event) =>
@@ -1371,7 +1372,7 @@ function IsoSystemPage() {
                 </label>
                 <label className="field-stack">
                   <span>Descripcion *</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={processForm.description}
                     onChange={(event) => setProcessForm((prev) => ({ ...prev, description: event.target.value }))}
@@ -1484,3 +1485,6 @@ function IsoSystemPage() {
 }
 
 export default IsoSystemPage;
+
+
+

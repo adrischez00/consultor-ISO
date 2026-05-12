@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import RichTextarea from "../components/RichTextarea";
 
 import PageHeader from "../components/PageHeader";
 import SectionCard from "../components/SectionCard";
@@ -324,14 +325,14 @@ function NonconformitiesPage() {
         actions={
           contextReportId ? (
             <Link className="btn-ghost link-btn" to={`/auditorias/${contextReportId}/editar`}>
-              Volver a auditoría
+              Volver a auditorÃ­a
             </Link>
           ) : null
         }
       />
       {contextReportId ? (
         <p className="status">
-          Flujo CAPA contextual desde auditoría {contextReportId}. Las nuevas no conformidades pueden vincularse
+          Flujo CAPA contextual desde auditorÃ­a {contextReportId}. Las nuevas no conformidades pueden vincularse
           directamente a hallazgos del informe.
         </p>
       ) : null}
@@ -416,7 +417,7 @@ function NonconformitiesPage() {
                 </label>
                 <label className="field-stack">
                   <span>Descripcion *</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={nonconformityForm.description}
                     onChange={(event) =>
@@ -458,7 +459,7 @@ function NonconformitiesPage() {
                 </div>
                 <label className="field-stack">
                   <span>Analisis de causa</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={nonconformityForm.cause_analysis}
                     onChange={(event) =>
@@ -469,7 +470,7 @@ function NonconformitiesPage() {
                 </label>
                 <label className="field-stack">
                   <span>Accion correctiva</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={nonconformityForm.corrective_action}
                     onChange={(event) =>
@@ -626,7 +627,7 @@ function NonconformitiesPage() {
                 </label>
                 <label className="field-stack">
                   <span>Descripcion *</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={improvementForm.description}
                     onChange={(event) => setImprovementForm((prev) => ({ ...prev, description: event.target.value }))}
@@ -636,7 +637,7 @@ function NonconformitiesPage() {
                 </label>
                 <label className="field-stack">
                   <span>Plan de accion *</span>
-                  <textarea
+                  <RichTextarea
                     className="input-textarea"
                     value={improvementForm.action_plan}
                     onChange={(event) => setImprovementForm((prev) => ({ ...prev, action_plan: event.target.value }))}
@@ -728,3 +729,6 @@ function NonconformitiesPage() {
 }
 
 export default NonconformitiesPage;
+
+
+
