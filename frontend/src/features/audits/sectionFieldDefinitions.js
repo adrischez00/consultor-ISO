@@ -357,7 +357,7 @@ function createField(fieldGroup, fieldCode, index) {
     placeholder,
     required: REQUIRED_FIELD_CODES.has(fieldCode),
     help_text: HELP_TEXT_BY_FIELD[fieldCode] || "",
-    options: selectConfig.options || [],
+    options: selectConfig?.options || [],
     repeatable: type === "list",
     field_mode: type === "list" ? "repeatable" : "simple",
     sort_order: index,
