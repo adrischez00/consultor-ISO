@@ -12,100 +12,100 @@ import {
 const P09_MASTER_TEMPLATE_ROWS = [
   {
     stakeholder: "Gerencia",
-    needs: "Rentabilidad, control y margen de actuacion.",
+    needs: "Rentabilidad, control y margen de actuación.",
     expectations: "Resultados sostenidos, retorno de la inversión y crecimiento.",
     requirements: "Objetivos e indicadores alcanzables y cumplimiento de requisitos aplicables.",
-    risks: "Mala toma de decisiones, perdida de beneficios, falta de comunicacion e incumplimientos legales.",
+    risks: "Mala toma de decisiones, pérdida de beneficios, falta de comunicación e incumplimientos legales.",
     opportunities: "Crecimiento sostenible y mejora del posicionamiento.",
-    actions: "Seguimiento periodico, revision de indicadores y mejora de la comunicacion y control estrategico.",
+    actions: "Seguimiento periódico, revisión de indicadores y mejora de la comunicación y control estratégico.",
   },
   {
     stakeholder: "Trabajadores",
-    needs: "Seguridad, estabilidad, medios adecuados y formacion.",
-    expectations: "Buen ambiente, desarrollo profesional y comunicacion interna eficaz.",
-    requirements: "Cumplimiento PRL, legislacion laboral e instrucciones de trabajo claras.",
-    risks: "Accidentes, fuga de personal, bajas prolongadas y falta de comunicacion.",
-    opportunities: "Mayor productividad, especializacion y mejora del compromiso.",
+    needs: "Seguridad, estabilidad, medios adecuados y formación.",
+    expectations: "Buen ambiente, desarrollo profesional y comunicación interna eficaz.",
+    requirements: "Cumplimiento PRL, legislación laboral e instrucciones de trabajo claras.",
+    risks: "Accidentes, fuga de personal, bajas prolongadas y falta de comunicación.",
+    opportunities: "Mayor productividad, especialización y mejora del compromiso.",
     actions: "Formación continua, reuniones periódicas, seguimiento del desempeño y entrega de EPIs.",
   },
   {
     stakeholder: "Clientes",
     needs: "Calidad, cumplimiento, rentabilidad y servicio fiable.",
-    expectations: "Atencion adecuada, cumplimiento de plazos, confianza y buena imagen.",
+    expectations: "Atención adecuada, cumplimiento de plazos, confianza y buena imagen.",
     requirements: "Cumplimiento de especificaciones, requisitos del servicio y normativa aplicable.",
-    risks: "Retrasos, errores de ejecucion, incumplimientos e incidencias de seguridad.",
+    risks: "Retrasos, errores de ejecución, incumplimientos e incidencias de seguridad.",
     opportunities: "Fidelización, servicios personalizados, mejora reputacional y nuevas inversiones.",
     actions: "Control de calidad, seguimiento del servicio, mejora continua y cumplimiento normativo.",
   },
   {
     stakeholder: "Proveedores",
-    needs: "Relacion estable, planificacion y pagos previsibles.",
-    expectations: "Comunicacion clara y continuidad de colaboracion.",
+    needs: "Relación estable, planificación y pagos previsibles.",
+    expectations: "Comunicación clara y continuidad de colaboración.",
     requirements: "Contratos claros, criterios definidos y cumplimiento legal.",
     risks: "Incumplimientos, interrupciones de suministro y dependencia excesiva.",
-    opportunities: "Alianzas, mejora de condiciones y colaboracion a largo plazo.",
+    opportunities: "Alianzas, mejora de condiciones y colaboración a largo plazo.",
     actions: "Evaluación periódica, homologación, solicitud de certificaciones y seguimiento.",
   },
   {
     stakeholder: "Competencia",
     needs: "Vigilancia del mercado y posicionamiento competitivo.",
-    expectations: "Diferenciacion y mantenimiento de cuota.",
-    requirements: "Analisis de mercado y estrategia comercial coherente.",
-    risks: "Perdida de cuota y competencia desleal.",
-    opportunities: "Mejora competitiva, diferenciacion y refuerzo de certificaciones.",
-    actions: "Analisis de mercado, revision de posicionamiento y mejora continua.",
+    expectations: "Diferenciación y mantenimiento de cuota.",
+    requirements: "Análisis de mercado y estrategia comercial coherente.",
+    risks: "Pérdida de cuota y competencia desleal.",
+    opportunities: "Mejora competitiva, diferenciación y refuerzo de certificaciones.",
+    actions: "Análisis de mercado, revisión de posicionamiento y mejora continua.",
   },
   {
     stakeholder: "Cambio climatico",
-    needs: "Adaptacion, eficiencia y control del impacto ambiental.",
-    expectations: "Mejora de imagen sostenible, reduccion de costes y atraccion de clientes sensibilizados.",
-    requirements: "Consideracion de impactos ambientales y requisitos aplicables.",
-    risks: "Sanciones, dano reputacional y aumento de costes energeticos o de materiales.",
-    opportunities: "Eficiencia energetica, innovacion y diferenciacion sostenible.",
-    actions: "Reduccion de emisiones, mejora de consumos, impulso de cultura ambiental y uso de tecnologias mas limpias.",
+    needs: "Adaptación, eficiencia y control del impacto ambiental.",
+    expectations: "Mejora de imagen sostenible, reducción de costes y atracción de clientes sensibilizados.",
+    requirements: "Consideración de impactos ambientales y requisitos aplicables.",
+    risks: "Sanciones, daño reputacional y aumento de costes energéticos o de materiales.",
+    opportunities: "Eficiencia energética, innovación y diferenciación sostenible.",
+    actions: "Reducción de emisiones, mejora de consumos, impulso de cultura ambiental y uso de tecnologías más limpias.",
   },
   {
     stakeholder: "Autoridades legales",
     needs: "Cumplimiento normativo.",
-    expectations: "Colaboracion, transparencia y adecuacion legal.",
+    expectations: "Colaboración, transparencia y adecuación legal.",
     requirements: "Cumplimiento legal y reglamentario aplicable.",
     risks: "Multas, sanciones e incumplimientos administrativos.",
-    opportunities: "Confianza institucional y reduccion de contingencias.",
+    opportunities: "Confianza institucional y reducción de contingencias.",
     actions: "Auditorías, actualización legislativa y seguimiento del cumplimiento.",
   },
   {
     stakeholder: "Bancos y aseguradoras",
     needs: "Estabilidad financiera y cobertura adecuada.",
     expectations: "Solvencia, control y cumplimiento documental.",
-    requirements: "Obligaciones financieras y contractuales al dia.",
-    risks: "Falta de financiacion, coberturas insuficientes y desviaciones financieras.",
-    opportunities: "Mejores condiciones, digitalizacion y optimizacion de costes.",
-    actions: "Control financiero, revision de polizas, actualizacion documental y seguimiento de riesgos.",
+    requirements: "Obligaciones financieras y contractuales al día.",
+    risks: "Falta de financiación, coberturas insuficientes y desviaciones financieras.",
+    opportunities: "Mejores condiciones, digitalización y optimización de costes.",
+    actions: "Control financiero, revisión de pólizas, actualización documental y seguimiento de riesgos.",
   },
   {
     stakeholder: "Mutua accidentes",
-    needs: "Coordinacion en salud laboral y gestion de contingencias.",
-    expectations: "Prevencion, comunicacion rapida y cumplimiento.",
-    requirements: "Gestion de accidentes y obligaciones preventivas.",
+    needs: "Coordinación en salud laboral y gestión de contingencias.",
+    expectations: "Prevención, comunicación rápida y cumplimiento.",
+    requirements: "Gestión de accidentes y obligaciones preventivas.",
     risks: "Accidentes, incidencias laborales y deficiencias preventivas.",
     opportunities: "Mejora preventiva y reduccion de siniestralidad.",
-    actions: "Protocolos, seguimiento de accidentes, coordinacion documental y acciones preventivas.",
+    actions: "Protocolos, seguimiento de accidentes, coordinación documental y acciones preventivas.",
   },
   {
-    stakeholder: "Servicio prevencion ajeno",
-    needs: "Integracion preventiva real y seguimiento eficaz.",
+    stakeholder: "Servicio prevención ajeno",
+    needs: "Integración preventiva real y seguimiento eficaz.",
     expectations: "Colaboración, evaluación y planificación preventiva.",
     requirements: "Cumplimiento PRL, evaluaciones y medidas preventivas actualizadas.",
     risks: "Riesgos laborales no controlados, falta de seguimiento y deficiencias documentales.",
-    opportunities: "Mejora de cultura preventiva, reduccion de incidentes y mejor planificacion.",
+    opportunities: "Mejora de cultura preventiva, reducción de incidentes y mejor planificación.",
     actions: "Seguimiento de planificación preventiva, revisiones periódicas, coordinación y actualización de evaluaciones.",
   },
   {
     stakeholder: "Contratas",
-    needs: "Coordinacion, ejecucion correcta y cumplimiento documental.",
-    expectations: "Colaboracion fluida, calidad y cumplimiento.",
+    needs: "Coordinación, ejecución correcta y cumplimiento documental.",
+    expectations: "Colaboración fluida, calidad y cumplimiento.",
     requirements: "CAE, requisitos contractuales y control operativo.",
-    risks: "Errores de ejecucion, incumplimientos documentales y fallos de coordinacion.",
+    risks: "Errores de ejecución, incumplimientos documentales y fallos de coordinación.",
     opportunities: "Sinergias, mejora de satisfacción del cliente y refuerzo de cumplimiento.",
     actions: "Control de coordinación, seguimiento documental, revisión de trabajos y control del desempeño.",
   },
@@ -116,100 +116,100 @@ const CONTEXT_P09_MASTER_TEMPLATE_ROWS = [
     context_group: "externo",
     environment: "Legal y normativo",
     risks: "Cambios regulatorios y sanciones por incumplimiento.",
-    opportunities: "Adaptacion temprana a normativa y mejora del cumplimiento.",
-    actions: "Seguimiento legislativo, actualizacion documental y formacion continua.",
+    opportunities: "Adaptación temprana a normativa y mejora del cumplimiento.",
+    actions: "Seguimiento legislativo, actualización documental y formación continua.",
   },
   {
     context_group: "externo",
-    environment: "Economico y financiero",
-    risks: "Inflacion, subida de costes y tension de tesoreria.",
+    environment: "Económico y financiero",
+    risks: "Inflación, subida de costes y tensión de tesorería.",
     opportunities: "Optimización de costes y nuevas inversiones sostenibles.",
-    actions: "Control financiero periodico y diversificacion de proveedores.",
+    actions: "Control financiero periódico y diversificación de proveedores.",
   },
   {
     context_group: "externo",
     environment: "Competitivo y de mercado",
-    risks: "Alta competencia y presion en precios.",
-    opportunities: "Diferenciacion en calidad y servicio.",
-    actions: "Analisis de mercado y ajuste de estrategia comercial.",
+    risks: "Alta competencia y presión en precios.",
+    opportunities: "Diferenciación en calidad y servicio.",
+    actions: "Análisis de mercado y ajuste de estrategia comercial.",
   },
   {
     context_group: "externo",
-    environment: "Tecnologico",
-    risks: "Obsolescencia tecnologica y baja capacidad de respuesta.",
-    opportunities: "Innovacion, digitalizacion y mejora operativa.",
+    environment: "Tecnológico",
+    risks: "Obsolescencia tecnológica y baja capacidad de respuesta.",
+    opportunities: "Innovación, digitalización y mejora operativa.",
     actions: "Inversión en tecnología y formación técnica del equipo.",
   },
   {
     context_group: "externo",
     environment: "Social",
-    risks: "Cambios en la demanda o en la percepcion del servicio.",
-    opportunities: "Mejor adaptacion al cliente y mejora de la confianza.",
-    actions: "Escucha activa y adaptacion de servicios a necesidades reales.",
+    risks: "Cambios en la demanda o en la percepción del servicio.",
+    opportunities: "Mejor adaptación al cliente y mejora de la confianza.",
+    actions: "Escucha activa y adaptación de servicios a necesidades reales.",
   },
   {
     context_group: "externo",
     environment: "Medioambiental",
     risks: "Restricciones ambientales y mayores exigencias regulatorias.",
     opportunities: "Posicionamiento sostenible y eficiencia en consumos.",
-    actions: "Uso de materiales ecologicos y gestion responsable de residuos.",
+    actions: "Uso de materiales ecológicos y gestión responsable de residuos.",
   },
   {
     context_group: "interno",
     environment: "Organización",
     risks: "Falta de estructura clara y solapamiento de responsabilidades.",
-    opportunities: "Mejora de la eficiencia y de la coordinacion interna.",
-    actions: "Definicion de roles, responsabilidades y procesos clave.",
+    opportunities: "Mejora de la eficiencia y de la coordinación interna.",
+    actions: "Definición de roles, responsabilidades y procesos clave.",
   },
   {
     context_group: "interno",
     environment: "Valores",
-    risks: "Desalineacion interna y debilidad de cultura corporativa.",
+    risks: "Desalineación interna y debilidad de cultura corporativa.",
     opportunities: "Cultura corporativa fuerte y compromiso sostenido.",
-    actions: "Comunicacion de valores y refuerzo del liderazgo.",
+    actions: "Comunicación de valores y refuerzo del liderazgo.",
   },
   {
     context_group: "interno",
     environment: "Conocimientos",
-    risks: "Falta de formacion y dependencia de personas clave.",
-    opportunities: "Especializacion tecnica y transferencia de conocimiento.",
-    actions: "Plan de formacion continua y gestion del conocimiento.",
+    risks: "Falta de formación y dependencia de personas clave.",
+    opportunities: "Especialización técnica y transferencia de conocimiento.",
+    actions: "Plan de formación continua y gestión del conocimiento.",
   },
   {
     context_group: "interno",
-    environment: "Tecnologia",
+    environment: "Tecnología",
     risks: "Sistemas obsoletos y baja trazabilidad operativa.",
-    opportunities: "Automatizacion y mayor control del proceso.",
-    actions: "Actualizacion de software, equipos y herramientas digitales.",
+    opportunities: "Automatización y mayor control del proceso.",
+    actions: "Actualización de software, equipos y herramientas digitales.",
   },
   {
     context_group: "interno",
     environment: "Infraestructura",
     risks: "Instalaciones inadecuadas y fallos de mantenimiento.",
-    opportunities: "Optimizacion de recursos y mejora de seguridad.",
+    opportunities: "Optimización de recursos y mejora de seguridad.",
     actions: "Mantenimiento planificado e inversión en infraestructura.",
   },
   {
     context_group: "interno",
-    environment: "Comunicacion",
-    risks: "Falta de coordinacion y errores por informacion incompleta.",
-    opportunities: "Mejor trabajo en equipo y toma de decisiones agil.",
-    actions: "Implantar canales efectivos y rutinas de comunicacion.",
+    environment: "Comunicación",
+    risks: "Falta de coordinación y errores por información incompleta.",
+    opportunities: "Mejor trabajo en equipo y toma de decisiones ágil.",
+    actions: "Implantar canales efectivos y rutinas de comunicación.",
   },
   {
     context_group: "interno",
     environment: "Factores operacionales",
-    risks: "Errores de ejecucion y variabilidad en resultados.",
-    opportunities: "Estandarizacion y mayor estabilidad del servicio.",
-    actions: "Procedimientos operativos y controles de calidad periodicos.",
+    risks: "Errores de ejecución y variabilidad en resultados.",
+    opportunities: "Estandarización y mayor estabilidad del servicio.",
+    actions: "Procedimientos operativos y controles de calidad periódicos.",
   },
 ];
 
 const RISK_OPPORTUNITY_SWOT_TEMPLATE = {
-  weakness: ["Dependencia de recursos clave en procesos criticos."],
+  weakness: ["Dependencia de recursos clave en procesos críticos."],
   threat: ["Incremento de costes y cambios regulatorios con impacto operativo."],
-  strength: ["Experiencia tecnica consolidada y capacidad de respuesta."],
-  opportunity: ["Digitalizacion y mejora de eficiencia en la prestacion del servicio."],
+  strength: ["Experiencia técnica consolidada y capacidad de respuesta."],
+  opportunity: ["Digitalización y mejora de eficiencia en la prestación del servicio."],
 };
 
 const RISK_OPPORTUNITY_SEVERITY_OPTIONS = [
@@ -563,8 +563,8 @@ const PERFORMANCE_ANNUAL_MODE_OPTIONS = [
 const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
   {
     area: "Clientes",
-    indicator: "Indice de satisfaccion",
-    description: "Nivel de satisfaccion del cliente",
+    indicator: "Índice de satisfacción",
+    description: "Nivel de satisfacción del cliente",
     formula: "(Encuestas positivas / Total encuestas) * 100",
     objective_associated: "no",
     target: "",
@@ -574,8 +574,8 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
   {
     area: "Clientes",
     indicator: "Reclamaciones",
-    description: "Numero de reclamaciones por proyecto",
-    formula: "Total reclamaciones / Numero de proyectos",
+    description: "Número de reclamaciones por proyecto",
+    formula: "Total reclamaciones / Número de proyectos",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
@@ -589,22 +589,22 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
-    responsible: "Produccion",
+    responsible: "Producción",
   },
   {
     area: "Operaciones",
-    indicator: "Desviacion de plazos",
+    indicator: "Desviación de plazos",
     description: "Diferencia entre plazo previsto y real",
     formula: "Dias reales - Dias previstos",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
-    responsible: "Produccion",
+    responsible: "Producción",
   },
   {
     area: "Calidad",
     indicator: "No conformidades",
-    description: "Numero de no conformidades detectadas",
+    description: "Número de no conformidades detectadas",
     formula: "Conteo total",
     objective_associated: "no",
     target: "",
@@ -623,9 +623,9 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
   },
   {
     area: "Compras",
-    indicator: "Evaluacion de proveedores",
-    description: "Desempeno de proveedores",
-    formula: "Puntuacion media de evaluaciones",
+    indicator: "Evaluación de proveedores",
+    description: "Desempeño de proveedores",
+    formula: "Puntuación media de evaluaciones",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
@@ -635,21 +635,21 @@ const PERFORMANCE_CATALOG_TEMPLATE_ROWS = [
     area: "Compras",
     indicator: "Incidencias de proveedor",
     description: "Problemas con suministros",
-    formula: "Numero de incidencias / pedidos",
+    formula: "Número de incidencias / pedidos",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
     responsible: "Compras",
   },
   {
-    area: "Tecnico",
+    area: "Técnico",
     indicator: "Incidencias en puesta en marcha",
     description: "Errores en arranque de instalaciones",
     formula: "Conteo total",
     objective_associated: "no",
     target: "",
     frequency: "Trimestral",
-    responsible: "Produccion",
+    responsible: "Producción",
   },
   {
     area: "Legal",
@@ -1675,7 +1675,7 @@ function renderSelectField(field, value, onChange, disabled) {
       disabled={disabled}
       onChange={(event) => onChange(field.field_code, event.target.value)}
     >
-      <option value="">Selecciona una opcion</option>
+      <option value="">Selecciona una opción</option>
       {(field.options || []).map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}
@@ -1896,7 +1896,7 @@ function renderGroupFields(
           </div>
         </div>
         <p className="audit-p09-panel-description">
-          Documento central de planificacion para DAFO, riesgos, oportunidades y acciones.
+          Documento central de planificación para DAFO, riesgos, oportunidades y acciones.
         </p>
         {riskOpportunityUi.isCompleted ? (
           <div className="audit-p09-panel-meta">
@@ -4229,7 +4229,7 @@ function AuditGuidedFields({
               <div className="audit-p09-drawer-headings">
                 <p className="audit-p09-drawer-kicker">DOCUMENTO ISO 9001 - CLÁUSULA 6.1</p>
                 <h4>{"P09 - Riesgos y oportunidades"}</h4>
-                <p>Gestion centralizada de DAFO, riesgos, oportunidades y acciones.</p>
+                <p>Gestión centralizada de DAFO, riesgos, oportunidades y acciones.</p>
               </div>
               <div className="audit-p09-drawer-right">
                 <div className="audit-p09-drawer-meta">
@@ -4898,7 +4898,7 @@ function AuditGuidedFields({
                               </div>
                               {hasIncompleteReference ? (
                                 <p className="audit-p09-validation-error">
-                                  Selecciona referencia de riesgo u oportunidad para esta accion.
+                                  Selecciona referencia de riesgo u oportunidad para esta acción.
                                 </p>
                               ) : null}
                             </article>
