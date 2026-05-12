@@ -3307,9 +3307,11 @@ function AuditGuidedFields({
         const revisionLabel =
           String(documentData.revision_label || "").trim() || formatP09Revision(safeRevisionNumber);
         const dateLabel = normalizeP09DateLabel(documentData.document_date);
+        const normalizedStatus = String(documentData.status || "").toLowerCase();
+        const hasContentRows = mappedRows.length > 0;
 
         setP09SavedRows(mappedRows);
-        setP09Completed(true);
+        setP09Completed(normalizedStatus === "completed" || hasContentRows);
         setP09RevisionNumber(safeRevisionNumber);
         setP09DocumentDate(dateLabel);
         setP09HasPersistedDocument(true);
@@ -3372,9 +3374,10 @@ function AuditGuidedFields({
         const nextContextSummary = buildContextAutoSummary(mappedRows);
         const externalIssuesSummary = nextContextSummary.externalItems.join("\n");
         const internalIssuesSummary = nextContextSummary.internalItems.join("\n");
+        const hasContentRows = mappedRows.length > 0;
 
         setContextSavedRows(mappedRows);
-        setContextCompleted(normalizedStatus === "completed");
+        setContextCompleted(normalizedStatus === "completed" || hasContentRows);
         setContextRevisionNumber(safeRevisionNumber);
         setContextDocumentDate(dateLabel);
         setContextReviewedBy(String(documentData.reviewed_by || ""));

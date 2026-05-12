@@ -3,10 +3,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.models.audit_context_document import AuditContextDocument
+from app.models.audit_context_document_row import AuditContextDocumentRow
+from app.models.audit_interested_parties_document import AuditInterestedPartiesDocument
+from app.models.audit_interested_parties_document_row import (
+    AuditInterestedPartiesDocumentRow,
+)
 from app.models.audit_risk_opportunity_document import AuditRiskOpportunityDocument
 from app.models.audit_report_item import AuditReportItem
 
@@ -239,6 +245,18 @@ def _build_item_index(
     return index
 
 
+def _safe_scalar(db: Session, statement):
+    try:
+        with db.begin_nested():
+            return db.scalar(statement)
+    except SQLAlchemyError:
+        return None
+
+
+def _is_completed_status(value: str | None) -> bool:
+    return str(value or "").strip().lower() == "completed"
+
+
 def build_report_compliance(
     *,
     report_id: UUID,
@@ -254,15 +272,16 @@ def build_report_compliance(
         missing_fields: list[str] = []
 
         for field_code in rule.required_fields:
+            key = (rule.section_code, _normalize_code(field_code))
+            field_item = item_index.get(key)
+            has_item_value = _has_item_value(field_item)
             if field_code in normalized_document_flags:
-                if normalized_document_flags[field_code]:
+                if normalized_document_flags[field_code] or has_item_value:
                     completed_fields.append(field_code)
                 else:
                     missing_fields.append(field_code)
                 continue
-            key = (rule.section_code, _normalize_code(field_code))
-            field_item = item_index.get(key)
-            if _has_item_value(field_item):
+            if has_item_value:
                 completed_fields.append(field_code)
             else:
                 missing_fields.append(field_code)
@@ -302,19 +321,73 @@ def load_report_compliance(db: Session, report_id: UUID) -> ReportComplianceResu
     items = db.scalars(
         select(AuditReportItem).where(AuditReportItem.audit_report_id == report_id)
     ).all()
-    risk_opportunity_document = None
-    try:
-        risk_opportunity_document = db.scalar(
-            select(AuditRiskOpportunityDocument).where(
-                AuditRiskOpportunityDocument.audit_report_id == report_id
+    context_document = _safe_scalar(
+        db,
+        select(AuditContextDocument).where(AuditContextDocument.audit_report_id == report_id),
+    )
+    interested_parties_document = _safe_scalar(
+        db,
+        select(AuditInterestedPartiesDocument).where(
+            AuditInterestedPartiesDocument.audit_report_id == report_id
+        ),
+    )
+    risk_opportunity_document = _safe_scalar(
+        db,
+        select(AuditRiskOpportunityDocument).where(
+            AuditRiskOpportunityDocument.audit_report_id == report_id
+        ),
+    )
+
+    context_rows_count = 0
+    if context_document is not None:
+        context_rows_count = int(
+            _safe_scalar(
+                db,
+                select(func.count(AuditContextDocumentRow.id)).where(
+                    AuditContextDocumentRow.document_id == context_document.id
+                ),
             )
+            or 0
         )
-    except SQLAlchemyError:
-        risk_opportunity_document = None
+
+    interested_rows_count = 0
+    if interested_parties_document is not None:
+        interested_rows_count = int(
+            _safe_scalar(
+                db,
+                select(func.count(AuditInterestedPartiesDocumentRow.id)).where(
+                    AuditInterestedPartiesDocumentRow.document_id
+                    == interested_parties_document.id
+                ),
+            )
+            or 0
+        )
+
+    context_document_completed = bool(
+        context_document
+        and (
+            _is_completed_status(context_document.status)
+            or context_rows_count > 0
+        )
+    )
+    interested_parties_document_completed = bool(
+        interested_parties_document
+        and (
+            _is_completed_status(interested_parties_document.status)
+            or interested_rows_count > 0
+        )
+    )
+
     document_flags = {
+        # Section 4 evidence can come from dedicated P09 documents.
+        "context_document_code": context_document_completed,
+        "external_issues_summary": context_document_completed,
+        "interested_parties_document_code": interested_parties_document_completed,
+        "interested_parties_revision": interested_parties_document_completed,
+        "interested_parties_date": interested_parties_document_completed,
         "risk_opportunity_document_completed": bool(
             risk_opportunity_document
-            and str(risk_opportunity_document.status or "").strip().lower() == "completed"
+            and _is_completed_status(risk_opportunity_document.status)
         )
     }
     return build_report_compliance(
