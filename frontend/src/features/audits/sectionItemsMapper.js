@@ -32,6 +32,7 @@ function parseJsonValue(rawValue) {
 }
 
 function extractRawItemValue(item) {
+  if (!item) return null;
   if (item.value_json != null) return item.value_json;
   return item.value_text ?? "";
 }
