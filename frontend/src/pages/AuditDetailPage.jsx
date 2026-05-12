@@ -1363,9 +1363,8 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
     <section className="page audit-page-refactor audit-detail-page">
       <PageHeader
         eyebrow="P03"
-        title={report.report_code || "Auditoría interna"} description={`Cliente : ${client.name || "-"} · Año: ${report.report_year || "-"} · Fecha: ${formatDate(
-          report.audit_date
-        )}`}
+        title={report?.report_code || "Auditoría interna"}
+        description={`Cliente: ${client?.name || "-"} · Año: ${report?.report_year || "-"} · Fecha: ${formatDate(report?.audit_date)}`}
         actions={
           <>
             <StatusBadge value={exportState.badgeValue} label={exportState.label} />
@@ -1424,9 +1423,9 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
         }
       >
         <div className="inline-actions audit-closure-strip-metrics">
-          <StatusBadge value={report.status || "draft"} />
+          <StatusBadge value={report?.status || "draft"} />
           <span className="soft-label">
-            {compliance.completed_blocks ?? 0}/{compliance.total_blocks ?? 0} bloques en verde
+            {compliance?.completed_blocks ?? 0}/{compliance?.total_blocks ?? 0} bloques en verde
           </span>
           <StatusBadge
             value={closingBlockers.length === 0 ? "completed" : "pending"}
@@ -1448,9 +1447,9 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
           <article className="audit-workspace-metric">
             <p className="audit-workspace-label">Estado global</p>
             <div className="inline-actions">
-              <StatusBadge value={report.status || "draft"} />
+              <StatusBadge value={report?.status || "draft"} />
               <span className="soft-label">
-                {compliance.completed_blocks ?? 0}/{compliance.total_blocks ?? 0} bloques en verde
+                {compliance?.completed_blocks ?? 0}/{compliance?.total_blocks ?? 0} bloques en verde
               </span>
             </div>
           </article>
@@ -1530,27 +1529,27 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
         <ul className="kv-list audit-header-kv">
           <li>
             <span>Cdigo</span>
-            <strong>{report.report_code || "-"}</strong>
+            <strong>{report?.report_code || "-"}</strong>
           </li>
           <li>
             <span>Cliente</span>
-            <strong>{client.name || "-"}</strong>
+            <strong>{client?.name || "-"}</strong>
           </li>
           <li>
             <span>Estado</span>
-            <StatusBadge value={report.status || "draft"} />
+            <StatusBadge value={report?.status || "draft"} />
           </li>
           <li>
             <span>Año</span>
-            <strong>{report.report_year || "-"}</strong>
+            <strong>{report?.report_year || "-"}</strong>
           </li>
           <li>
             <span>Creación</span>
-            <strong>{formatDate(report.created_at)}</strong>
+            <strong>{formatDate(report?.created_at)}</strong>
           </li>
           <li>
             <span>Actualización</span>
-            <strong>{formatDate(report.updated_at)}</strong>
+            <strong>{formatDate(report?.updated_at)}</strong>
           </li>
         </ul>
 
@@ -1581,11 +1580,11 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
             <div className="inline-actions">
               <span>Estado global</span>
               <StatusBadge
-                value={toComplianceBadgeValue(compliance.overall_status)}
-                label={compliance.overall_status.toUpperCase()}
+                value={toComplianceBadgeValue(compliance?.overall_status)}
+                label={(compliance?.overall_status || "").toUpperCase()}
               />
               <span className="soft-label">
-                {compliance.completed_blocks}/{compliance.total_blocks} bloques en verde
+                {compliance?.completed_blocks ?? 0}/{compliance?.total_blocks ?? 0} bloques en verde
               </span>
             </div>
             {closingBlockers.length > 0 ? (
@@ -1608,12 +1607,12 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
                     </p>
                     <StatusBadge
                       value={toComplianceBadgeValue(block.status)}
-                      label={block.status.toUpperCase()}
+                      label={(block.status || "").toUpperCase()}
                     />
                   </div>
                   <p className="finding-meta">
-                    Completados: {block.completed_fields.length || 0} /{" "}
-                    {block.required_fields.length || 0}
+                    Completados: {block.completed_fields?.length || 0} /{" "}
+                    {block.required_fields?.length || 0}
                   </p>
                   {(block.missing_fields || []).length > 0 ? (
                     <p>Faltan: {(block.missing_fields || []).join(", ")}</p>
@@ -1990,7 +1989,7 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
         <StepTabs
           items={sectionTabs}
           activeIndex={activeTabIndex}
-          onChange={(index) => setActiveTabKey(sectionTabs[index].key || RESULTS_TAB_KEY)}
+          onChange={(index) => setActiveTabKey(sectionTabs[index]?.key || RESULTS_TAB_KEY)}
           ariaLabel="Navegación de auditoría"
           className="step-tabs-audit"
         />
