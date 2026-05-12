@@ -3,8 +3,10 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import RichTextarea from "../components/RichTextarea";
 
 import {
+  createAuditAnnex,
   createAuditInterviewee,
   createAuditRecommendation,
+  deleteAuditAnnex,
   deleteAuditInterviewee,
   deleteAuditRecommendation,
   exportAuditReportDocx,
@@ -13,6 +15,7 @@ import {
   fetchAuditRecommendationHistory,
   fetchAuditReportDetail,
   patchAuditRecommendation,
+  patchAuditAnnex,
   patchAuditReport,
   patchAuditSection,
   putAuditClauseChecks,
@@ -50,8 +53,8 @@ const REPORT_STATUS_OPTIONS = [
 
 const TIPO_AUDITORIA_OPTIONS = [
   { value: "inicial", label: "Inicial" },
-  { value: "revisión_1", label: "Revisión I" },
-  { value: "revisión_2", label: "Revisión II" },
+  { value: "revision_1", label: "Revisión I" },
+  { value: "revision_2", label: "Revisión II" },
   { value: "recertificacion", label: "Recertificación" },
 ];
 
@@ -212,7 +215,7 @@ function createEmptyHeaderForm() {
     quality_responsible_name: "",
     manager_name: "",
     reference_standard: "ISO 9001",
-    reference_standard_revisión: "",
+    reference_standard_revision: "",
     audit_budget_code: "",
     system_scope: "",
     audit_description: "",
@@ -241,6 +244,15 @@ function createEmptyRecommendationForm() {
   };
 }
 
+
+function createEmptyAnnexForm() {
+  return {
+    annex_code: "",
+    title: "",
+    file_url: "",
+    notes: "",
+  };
+}
 
 function toComplianceBadgeValue(status) {
   if (status === "green") return "compliant";
@@ -271,7 +283,7 @@ function buildQueryPath(pathname, query) {
     search.set(key, normalized);
   });
   const raw = search.toString();
-  return raw ? `${pathname}${raw}` : pathname;
+  return raw ? `${pathname}?${raw}` : pathname;
 }
 
 function sortByOrderAndCode(list, codeField = "item_code") {
@@ -370,6 +382,10 @@ function AuditDetailPage() {
   const [guidedValuesBySection, setGuidedValuesBySection] = useState({});
   const [clauseChecksByCode, setClauseChecksByCode] = useState({});
 
+  const [annexes, setAnnexes] = useState([]);
+  const [annexForm, setAnnexForm] = useState(createEmptyAnnexForm);
+  const [annexBusy, setAnnexBusy] = useState(false);
+
   const [interviewees, setInterviewees] = useState([]);
   const [intervieweeForm, setIntervieweeForm] = useState(createEmptyIntervieweeForm);
   const [intervieweeBusy, setIntervieweeBusy] = useState(false);
@@ -406,7 +422,7 @@ function AuditDetailPage() {
       header.quality_responsible_name = nextReport.quality_responsible_name || "";
       header.manager_name = nextReport.manager_name || "";
       header.reference_standard = nextReport.reference_standard || "ISO 9001";
-      header.reference_standard_revisión = nextReport.reference_standard_revisión || "";
+      header.reference_standard_revision = nextReport.reference_standard_revision || "";
       header.audit_budget_code = nextReport.audit_budget_code || "";
       header.system_scope = nextReport.system_scope || "";
       header.audit_description = nextReport.audit_description || "";
@@ -460,6 +476,7 @@ function AuditDetailPage() {
     setSectionItemsByCode(itemsByCode);
     setGuidedValuesBySection(nextGuidedValuesBySection);
     setClauseChecksByCode(checksByCode);
+    setAnnexes(sortByOrderAndCode(Array.isArray(detail?.annexes) ? detail.annexes : [], "annex_code"));
     setInterviewees(Array.isArray(detail?.interviewees) ? detail.interviewees : []);
     setRecommendations(Array.isArray(detail?.recommendations) ? detail.recommendations : []);
     setHistoryRecommendations(Array.isArray(history) ? history : []);
@@ -621,6 +638,9 @@ function AuditDetailPage() {
 
   const auditWarnings = useMemo(() => {
     const warnings = [];
+    if ((annexes || []).length === 0) {
+      warnings.push("No hay anexos/evidencias documentales cargados.");
+    }
     if ((interviewees || []).length === 0) {
       warnings.push("No hay entrevistados registrados.");
     }
@@ -628,7 +648,7 @@ function AuditDetailPage() {
       warnings.push("No hay recomendaciones ni hallazgos registrados.");
     }
     return warnings;
-  }, [interviewees, recommendations]);
+  }, [annexes, interviewees, recommendations]);
 
   const clauseCheckSummary = useMemo(() => {
     const checks = Object.values(clauseChecksByCode || {}).flat();
@@ -660,7 +680,7 @@ function AuditDetailPage() {
     );
     return {
       badgeValue: isFinal ? "completed" : "in_progress",
-      label: isFinal ? "Exportación : versión final" : "Exportación: borrador controlado",
+      label: isFinal ? "Exportación: versión final" : "Exportación: borrador controlado",
     };
   }, [report?.status]);
 
@@ -682,7 +702,7 @@ function AuditDetailPage() {
         key: "evidence",
         label: "Evidencias y personas clave",
         href: `#${WORKSPACE_ANCHORS.evidence}`,
-        detail: "Gestióna entrevistados, anexos y trazabilidad documental.",
+        detail: "Gestiona entrevistados, anexos y trazabilidad documental.",
       },
       {
         key: "sections",
@@ -853,7 +873,7 @@ function AuditDetailPage() {
       {
         key: "management-reviews",
         label: "Revisión por la dirección",
-        detail: `Revisiónes vinculadas: ${isoWorkbench?.management_reviews_linked_total ?? 0}`,
+        detail: `Revisiones vinculadas: ${isoWorkbench?.management_reviews_linked_total ?? 0}`,
         to: buildQueryPath("/revision-direccion", baseQuery),
       },
     ];
@@ -1080,7 +1100,7 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
         quality_responsible_name: normalizeNullableText(headerForm.quality_responsible_name),
         manager_name: normalizeNullableText(headerForm.manager_name),
         reference_standard: normalizeRequiredText(headerForm.reference_standard),
-        reference_standard_revisión: normalizeNullableText(headerForm.reference_standard_revisión),
+        reference_standard_revision: normalizeNullableText(headerForm.reference_standard_revision),
         audit_budget_code: normalizeNullableText(headerForm.audit_budget_code),
         system_scope: normalizeNullableText(headerForm.system_scope),
         audit_description: normalizeNullableText(headerForm.audit_description),
@@ -1327,6 +1347,66 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
     }
   }
 
+  async function handleCreateAnnex(event) {
+    event.preventDefault();
+    if (!reportId || annexBusy) return;
+    setAnnexBusy(true);
+    setError("");
+    setStatusMessage("");
+    try {
+      const created = await createAuditAnnex(reportId, {
+        annex_code: normalizeNullableText(annexForm.annex_code),
+        title: normalizeRequiredText(annexForm.title),
+        file_url: normalizeNullableText(annexForm.file_url),
+        notes: normalizeNullableText(annexForm.notes),
+      });
+      setAnnexes((prev) => sortByOrderAndCode([...prev, created], "annex_code"));
+      setAnnexForm(createEmptyAnnexForm());
+      setStatusMessage("Anexo creado.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo crear el anexo.");
+    } finally {
+      setAnnexBusy(false);
+    }
+  }
+
+  async function handlePatchAnnex(annexId, patch) {
+    if (!reportId || annexBusy) return;
+    setAnnexBusy(true);
+    setError("");
+    setStatusMessage("");
+    try {
+      const updated = await patchAuditAnnex(reportId, annexId, patch);
+      setAnnexes((prev) =>
+        sortByOrderAndCode(
+          prev.map((entry) => (entry.id === annexId ? updated : entry)),
+          "annex_code"
+        )
+      );
+      setStatusMessage("Anexo actualizado.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo actualizar el anexo.");
+    } finally {
+      setAnnexBusy(false);
+    }
+  }
+
+  async function handleDeleteAnnex(annexId) {
+    if (!reportId || annexBusy) return;
+    setAnnexBusy(true);
+    setError("");
+    setStatusMessage("");
+    try {
+      await deleteAuditAnnex(reportId, annexId);
+      setAnnexes((prev) => prev.filter((entry) => entry.id !== annexId));
+      setStatusMessage("Anexo eliminado.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo eliminar el anexo.");
+    } finally {
+      setAnnexBusy(false);
+    }
+  }
+
   function updateClauseCheckRow(index, patch) {
     if (!activeSectionCode) return;
     const nextChecks = activeSectionChecks.map((entry, rowIndex) =>
@@ -1432,6 +1512,7 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
             label={closingBlockers.length === 0 ? "Sin bloqueos críticos" : `${closingBlockers.length} bloqueos`}
           />
           <span className="soft-label">Entrevistados: {interviewees.length}</span>
+          <span className="soft-label">Anexos: {annexes.length}</span>
           <span className="soft-label">NC: {recommendationSummary.nonConformities}</span>
         </div>
       </SectionCard>
@@ -1466,6 +1547,7 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
             <p className="audit-workspace-label">Evidencias</p>
             <div className="inline-actions">
               <span className="soft-label">Entrevistados: {interviewees.length}</span>
+              <span className="soft-label">Anexos: {annexes.length}</span>
             </div>
           </article>
           <article className="audit-workspace-metric">
@@ -1800,9 +1882,9 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
                 <span>Revisión de norma</span>
                 <input
                   className="input-text"
-                  value={headerForm.reference_standard_revisión}
+                  value={headerForm.reference_standard_revision}
                   onChange={(event) =>
-                    setHeaderForm((prev) => ({ ...prev, reference_standard_revisión: event.target.value }))
+                    setHeaderForm((prev) => ({ ...prev, reference_standard_revision: event.target.value }))
                   }
                 />
               </label>
@@ -1969,6 +2051,163 @@ return { key, entry : sectionStatusAutosaveRef.current[key] };
           <div className="interviewee-compact-actions">
             <button type="submit" className="btn-primary interviewee-add-btn" disabled={intervieweeBusy}>
               Añadir entrevistado
+            </button>
+          </div>
+        </form>
+      </SectionCard>
+
+      <SectionCard
+        id={WORKSPACE_ANCHORS.evidence}
+        className="audit-annexes-card"
+        title="Anexos documentales"
+        description="Vincula evidencias y documentación de soporte para reforzar la trazabilidad y la información documentada del informe."
+      >
+        <p className="soft-label">
+          Registra anexos con código, referencia y notas para facilitar la revisión y la exportación final.
+        </p>
+        {annexes.length === 0 ? (
+          <p className="empty-state">Todavía no hay evidencias documentales vinculadas al expediente.</p>
+        ) : null}
+        <div className="stack-list">
+          {annexes.map((annex) => (
+            <article className="finding-item" key={annex.id}>
+              <div className="finding-head">
+                <p className="finding-title">{annex.title || "-"}</p>
+                <StatusBadge value="in_progress" label={`Orden ${annex.sort_order || 0}`} />
+              </div>
+              <div className="form-grid">
+                <label className="field-stack">
+                  <span>Código</span>
+                  <input
+                    className="input-text"
+                    value={annex.annex_code || ""}
+                    disabled={annexBusy}
+                    onChange={(event) =>
+                      setAnnexes((prev) =>
+                        prev.map((entry) =>
+                          entry.id === annex.id ? { ...entry, annex_code: event.target.value } : entry
+                        )
+                      )
+                    }
+                  />
+                </label>
+                <label className="field-stack">
+                  <span>Título</span>
+                  <input
+                    className="input-text"
+                    value={annex.title || ""}
+                    disabled={annexBusy}
+                    onChange={(event) =>
+                      setAnnexes((prev) =>
+                        prev.map((entry) =>
+                          entry.id === annex.id ? { ...entry, title: event.target.value } : entry
+                        )
+                      )
+                    }
+                  />
+                </label>
+                <label className="field-stack audit-full-width">
+                  <span>URL / Ruta</span>
+                  <input
+                    className="input-text"
+                    value={annex.file_url || ""}
+                    disabled={annexBusy}
+                    onChange={(event) =>
+                      setAnnexes((prev) =>
+                        prev.map((entry) =>
+                          entry.id === annex.id ? { ...entry, file_url: event.target.value } : entry
+                        )
+                      )
+                    }
+                  />
+                </label>
+                <label className="field-stack audit-full-width">
+                  <span>Notas</span>
+                  <textarea
+                    className="input-textarea"
+                    value={annex.notes || ""}
+                    disabled={annexBusy}
+                    onChange={(event) =>
+                      setAnnexes((prev) =>
+                        prev.map((entry) =>
+                          entry.id === annex.id ? { ...entry, notes: event.target.value } : entry
+                        )
+                      )
+                    }
+                  />
+                </label>
+              </div>
+              <div className="inline-actions">
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  disabled={annexBusy}
+                  onClick={() =>
+                    handlePatchAnnex(annex.id, {
+                      annex_code: normalizeNullableText(annex.annex_code),
+                      title: normalizeRequiredText(annex.title),
+                      file_url: normalizeNullableText(annex.file_url),
+                      notes: normalizeNullableText(annex.notes),
+                    })
+                  }
+                >
+                  Guardar anexo
+                </button>
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  disabled={annexBusy}
+                  onClick={() => handleDeleteAnnex(annex.id)}
+                >
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+        <form className="form-grid" onSubmit={handleCreateAnnex}>
+          <label className="field-stack">
+            <span>Código</span>
+            <input
+              className="input-text"
+              value={annexForm.annex_code}
+              disabled={annexBusy}
+              onChange={(event) =>
+                setAnnexForm((prev) => ({ ...prev, annex_code: event.target.value }))
+              }
+            />
+          </label>
+          <label className="field-stack">
+            <span>Título *</span>
+            <input
+              className="input-text"
+              value={annexForm.title}
+              required
+              disabled={annexBusy}
+              onChange={(event) => setAnnexForm((prev) => ({ ...prev, title: event.target.value }))}
+            />
+          </label>
+          <label className="field-stack audit-full-width">
+            <span>URL / Ruta</span>
+            <input
+              className="input-text"
+              value={annexForm.file_url}
+              disabled={annexBusy}
+              onChange={(event) => setAnnexForm((prev) => ({ ...prev, file_url: event.target.value }))}
+            />
+          </label>
+          <label className="field-stack audit-full-width">
+            <span>Notas</span>
+            <textarea
+              className="input-textarea"
+              value={annexForm.notes}
+              disabled={annexBusy}
+              onChange={(event) => setAnnexForm((prev) => ({ ...prev, notes: event.target.value }))}
+            />
+          </label>
+          <div className="form-actions">
+            <button type="submit" className="btn-primary" disabled={annexBusy}>
+              {annexBusy ? "Guardando..." : "Crear anexo"}
             </button>
           </div>
         </form>
