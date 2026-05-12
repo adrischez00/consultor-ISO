@@ -943,8 +943,23 @@ function AuditDetailPage() {
     return { key, entry: sectionStatusAutosaveRef.current[key] };
   }
 
+  function getPersistedSectionStatus(sectionCode) {
+    const key = String(sectionCode || "").trim();
+    if (!key) return "not_started";
+    const persistedSection = (sectionsRef.current || []).find(
+      (section) => section.section_code === key
+    );
+    return normalizeSectionStatus(persistedSection?.status || "not_started");
+  }
+
+  function syncSectionDraftStatusToPersisted(sectionCode) {
+    const key = String(sectionCode || "").trim();
+    if (!key) return;
+    setSectionMetaDraft(key, { status: getPersistedSectionStatus(key) });
+  }
+
   const flushSectionStatusAutosave = useCallback(
-    async (sectionCode) => {
+    async (sectionCode, nextStatusOverride = null) => {
       const { key, entry } = getSectionAutosaveEntry(sectionCode);
       if (!reportId || !key || !entry || entry.inFlight) return;
       let savedSuccessfully = false;
@@ -954,7 +969,7 @@ function AuditDetailPage() {
       );
       const persistedStatus = normalizeSectionStatus(persistedSection?.status || "not_started");
       const draftStatus = normalizeSectionStatus(
-        sectionDraftByCodeRef.current?.[key]?.status || persistedStatus
+        nextStatusOverride ?? sectionDraftByCodeRef.current?.[key]?.status ?? persistedStatus
       );
 
       if (draftStatus === persistedStatus) return;
@@ -977,6 +992,7 @@ function AuditDetailPage() {
 
         await refreshCompliance();
       } catch (err) {
+        syncSectionDraftStatusToPersisted(key);
         if (activeSectionCode === key) {
           setError(
             err instanceof Error
@@ -1021,9 +1037,21 @@ function AuditDetailPage() {
     [flushSectionStatusAutosave, reportId]
   );
 
-  function handleSectionStatusChange(sectionCode, statusValue) {
+  async function handleSectionStatusChange(sectionCode, statusValue) {
     const normalizedStatus = normalizeSectionStatus(statusValue);
+    setError("");
     setSectionMetaDraft(sectionCode, { status: normalizedStatus });
+
+    if (normalizedStatus === "completed" && sectionCode === activeSectionCode) {
+      const savedItems = await handleSaveSectionItems({ silent: true });
+      if (!savedItems) {
+        syncSectionDraftStatusToPersisted(sectionCode);
+        return;
+      }
+      await flushSectionStatusAutosave(sectionCode, normalizedStatus);
+      return;
+    }
+
     scheduleSectionStatusAutosave(sectionCode);
   }
 
@@ -1120,17 +1148,21 @@ function AuditDetailPage() {
       await refreshCompliance();
       setStatusMessage(`Sección ${activeSectionCode} guardada.`);
     } catch (err) {
+      syncSectionDraftStatusToPersisted(activeSectionCode);
       setError(err instanceof Error ? err.message : "No se pudo guardar la sección.");
     } finally {
       setSavingSection(false);
     }
   }
 
-  async function handleSaveSectionItems() {
-    if (!reportId || !activeSectionCode) return;
+  async function handleSaveSectionItems(options = {}) {
+    const { silent = false } = options;
+    if (!reportId || !activeSectionCode) return false;
     setSavingItems(true);
-    setError("");
-    setStatusMessage("");
+    if (!silent) {
+      setError("");
+      setStatusMessage("");
+    }
     try {
       const safeGuidedValues = guidedValuesBySection[activeSectionCode] || {};
       const mergedItems = buildItemsFromGuidedValues(
@@ -1154,9 +1186,13 @@ function AuditDetailPage() {
         buildGuidedValuesFromItems(activeSectionDefinition, normalizedSavedItems)
       );
       await refreshCompliance();
-      setStatusMessage(`Datos de la sección ${activeSectionCode} guardados.`);
+      if (!silent) {
+        setStatusMessage(`Datos de la sección ${activeSectionCode} guardados.`);
+      }
+      return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : "No se pudieron guardar los datos de la sección.");
+      return false;
     } finally {
       setSavingItems(false);
     }
@@ -2214,7 +2250,7 @@ function AuditDetailPage() {
                   className="input-select"
                   value={activeSectionDraft?.status || "not_started"}
                   onChange={(event) =>
-                    handleSectionStatusChange(activeSection.section_code, event.target.value)
+                    void handleSectionStatusChange(activeSection.section_code, event.target.value)
                   }
                 >
                   {SECTION_STATUS_OPTIONS.map((option) => (
