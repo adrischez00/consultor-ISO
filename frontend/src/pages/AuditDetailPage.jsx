@@ -31,6 +31,7 @@ import Section6PlanningPanel from "../components/Section6PlanningPanel";
 import Section7SupportPanel from "../components/Section7SupportPanel";
 import Section8OperationPanel from "../components/Section8OperationPanel";
 import Section9PerformancePanel from "../components/Section9PerformancePanel";
+import Section10ImprovementPanel from "../components/Section10ImprovementPanel";
 import { getSectionFieldDefinition, getSectionFieldGroups } from "../features/audits/sectionFieldDefinitions";
 import {
   buildGuidedValuesFromItems,
@@ -466,7 +467,7 @@ function AuditDetailPage() {
         clause_code: entry.clause_code || "",
         clause_title: entry.clause_title || "",
         applicable: Boolean(entry.applicable),
-        clause_status: entry.clause_status || (code === "9" ? "in_progress" : "compliant"),
+        clause_status: entry.clause_status || (code === "9" || code === "10" ? "in_progress" : "compliant"),
         evidence_summary: entry.evidence_summary || "",
         observation_text: entry.observation_text || "",
         sort_order: entry.sort_order || 0,
@@ -856,6 +857,11 @@ function AuditDetailPage() {
     "org_chart_updated",
     "staff_aware_of_roles",
   ]);
+  const SECTION10_HIDDEN_FROM_B = new Set([
+    // Gestionados en el workspace interactivo de seccion 10
+    "corrective_actions_matrix",
+    "s10_guided_answers",
+  ]);
 
   const activeSectionGroups = useMemo(() => {
     const groups = getSectionFieldGroups(activeSectionCode);
@@ -895,6 +901,15 @@ function AuditDetailPage() {
         }))
         .filter((g) => g.fields.length > 0);
     }
+    if (activeSectionCode === "10") {
+      return groups
+        .filter((g) => g.field_group !== "workspace_s10")
+        .map((g) => ({
+          ...g,
+          fields: g.fields.filter((f) => !SECTION10_HIDDEN_FROM_B.has(f.field_code)),
+        }))
+        .filter((g) => g.fields.length > 0);
+    }
     return groups;
   // SECTION5/6/7_HIDDEN_FROM_B son constantes de render, no van en deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -909,6 +924,12 @@ function AuditDetailPage() {
   const section9GuidedAnswers = useMemo(() => {
     if (activeSectionCode !== "9") return {};
     const raw = activeSectionGuidedValues?.s9_guided_answers;
+    if (raw && typeof raw === "object" && !Array.isArray(raw)) return raw;
+    return {};
+  }, [activeSectionCode, activeSectionGuidedValues]);
+  const section10GuidedAnswers = useMemo(() => {
+    if (activeSectionCode !== "10") return {};
+    const raw = activeSectionGuidedValues?.s10_guided_answers;
     if (raw && typeof raw === "object" && !Array.isArray(raw)) return raw;
     return {};
   }, [activeSectionCode, activeSectionGuidedValues]);
@@ -1354,9 +1375,10 @@ function AuditDetailPage() {
     try {
       const payload = (activeSectionChecks || []).map((check) => {
         const clauseStatus = normalizeRequiredText(check.clause_status);
-        const uiStatus = activeSectionCode === "9" ? getClauseStatusUiValue(check) : "";
+        const sectionUsesInProgress = activeSectionCode === "9" || activeSectionCode === "10";
+        const uiStatus = sectionUsesInProgress ? getClauseStatusUiValue(check) : "";
         const normalizedStatus =
-          activeSectionCode === "9" && uiStatus === "in_progress"
+          sectionUsesInProgress && uiStatus === "in_progress"
             ? "in_progress"
             : clauseStatus || "compliant";
         return {
@@ -1569,10 +1591,12 @@ function AuditDetailPage() {
 
   function getClauseStatusUiValue(check) {
     const rawStatus = normalizeRequiredText(check?.clause_status);
-    if (activeSectionCode !== "9") return rawStatus || "compliant";
+    if (activeSectionCode !== "9" && activeSectionCode !== "10") return rawStatus || "compliant";
 
     const clauseCode = normalizeRequiredText(check?.clause_code);
-    const clauseAnswers = section9GuidedAnswers?.[clauseCode];
+    const guidedAnswersByClause =
+      activeSectionCode === "9" ? section9GuidedAnswers : section10GuidedAnswers;
+    const clauseAnswers = guidedAnswersByClause?.[clauseCode];
     const hasGuidedEvidence = Object.entries(clauseAnswers || {}).some(
       ([key, value]) => /^q\d+$/.test(key) && normalizeRequiredText(value)
     );
@@ -2456,7 +2480,7 @@ function AuditDetailPage() {
             </div>
           </SectionCard>
 
-          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && activeSection.section_code !== "7" && activeSection.section_code !== "8" && activeSection.section_code !== "9" && (
+          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && activeSection.section_code !== "7" && activeSection.section_code !== "8" && activeSection.section_code !== "9" && activeSection.section_code !== "10" && (
             <SectionCard
               title="B. Datos de la sección"
               description="Formulario guiado alineado con el informe P03."
@@ -2551,6 +2575,37 @@ function AuditDetailPage() {
               }
             >
               <Section9PerformancePanel
+                valuesByFieldCode={activeSectionGuidedValues}
+                clauseChecks={activeSectionChecks}
+                currentFinalText={activeSectionDraft?.final_text || ""}
+                onFieldChange={handleSectionGuidedFieldChange}
+                onApplyDraftText={(text) =>
+                  setSectionMetaDraft(activeSection.section_code, { final_text: text })
+                }
+                onApplySuggestedClauseCheck={handleApplySuggestedClauseCheck}
+                disabled={savingItems}
+              />
+            </SectionCard>
+          ) : null}
+
+          {activeSection.section_code === "10" ? (
+            <SectionCard
+              title="B. Workspace de mejora"
+              description="Panel ejecutivo de mejora continua, no conformidades, acciones correctivas, seguimiento de eficacia y narrativa auditora."
+              actions={
+                <div className="inline-actions">
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={savingItems}
+                    onClick={handleSaveSectionItems}
+                  >
+                    {savingItems ? "Guardando..." : "Guardar datos"}
+                  </button>
+                </div>
+              }
+            >
+              <Section10ImprovementPanel
                 valuesByFieldCode={activeSectionGuidedValues}
                 clauseChecks={activeSectionChecks}
                 currentFinalText={activeSectionDraft?.final_text || ""}
@@ -2673,7 +2728,7 @@ function AuditDetailPage() {
           >
             {activeSectionChecks.length === 0 ? (
               <p className="empty-state">No hay cláusulas configuradas para esta sección.</p>
-            ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" || activeSection.section_code === "8" || activeSection.section_code === "9" ? (
+            ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" || activeSection.section_code === "8" || activeSection.section_code === "9" || activeSection.section_code === "10" ? (
               <div className="s5-check-cards">
                 {activeSectionChecks.map((check, index) => {
                   const clauseStatusValue = getClauseStatusUiValue(check);

@@ -83,10 +83,14 @@ function MatrixRow({ row, index, schema, isExpanded, onToggle, onUpdate, onRemov
           )}
           {schema.compactCols.map((col) => {
             const val = row[col.key];
-            if (!val) return null;
+            const displayValue =
+              col.optionsMap && Object.prototype.hasOwnProperty.call(col.optionsMap, val)
+                ? col.optionsMap[val]
+                : val;
+            if (!displayValue) return null;
             return (
               <span key={col.key} className="mat-row-meta-item" title={col.label}>
-                {col.type === "date" ? val.slice(0, 7) : val}
+                {col.type === "date" ? String(displayValue).slice(0, 7) : displayValue}
               </span>
             );
           })}

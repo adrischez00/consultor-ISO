@@ -6703,3 +6703,92 @@ body {
 }
 
 /* ── End Section 8 ───────────────────────────────────────────────────────── */
+
+/* -- Section 10 dashboard -- */
+
+.s10-panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.s10-context-grid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.s10-context-card {
+  border: 1px solid #d8e1ec;
+  border-radius: 0.95rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  padding: 0.72rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.s10-context-card h4 {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.s10-context-fields {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.s10-field-wide {
+  grid-column: 1 / -1;
+}
+
+.s10-matrix-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+  margin-bottom: 0.55rem;
+}
+
+.s10-matrix-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.22rem 0.62rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.s10-chip-warning {
+  background: #fff8e6;
+  color: #92400e;
+  border: 1px solid #f3d499;
+}
+
+.s10-chip-critical {
+  background: #fff1f2;
+  color: #9f1239;
+  border: 1px solid #f9b5bf;
+}
+
+.s10-chip-ok {
+  background: #ecfdf3;
+  color: #15803d;
+  border: 1px solid #b7e4c7;
+}
+
+.s10-draft-tools .s5-draft-row {
+  align-items: flex-start;
+}
+
+@media (max-width: 960px) {
+  .s10-context-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .s10-context-fields {
+    grid-template-columns: 1fr;
+  }
+}

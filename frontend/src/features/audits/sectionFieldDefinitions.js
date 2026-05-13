@@ -217,6 +217,8 @@ const JSON_FIELD_CODES = new Set([
   "document_traceability_matrix",
   "s8_guided_answers",
   "s9_guided_answers",
+  "corrective_actions_matrix",
+  "s10_guided_answers",
 ]);
 
 const NUMBER_FIELD_CODES = new Set([
@@ -325,6 +327,10 @@ const HELP_TEXT_BY_FIELD = {
   supplier_average_score: "Valoración media obtenida en la evaluación de proveedores, en escala 0–10.",
   s9_guided_answers:
     "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 9 (9.1, 9.1.2, 9.2 y 9.3). Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
+  corrective_actions_matrix:
+    "Matriz central de acciones correctivas de la sección 10. Cada fila incluye tipo, hallazgo, causa raíz, acción, responsable, fecha, estado, eficacia, reincidencia y notas.",
+  s10_guided_answers:
+    "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 10 (10.1, 10.2 y 10.3). Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
 };
 
 const LABEL_OVERRIDES = {
@@ -401,6 +407,8 @@ const LABEL_OVERRIDES = {
   document_traceability_matrix: "Matriz de trazabilidad documental (§8)",
   supplier_average_score: "Valoración media de proveedores",
   s9_guided_answers: "Respuestas guiadas del auditor (§9)",
+  corrective_actions_matrix: "Matriz central de acciones correctivas (§10.2)",
+  s10_guided_answers: "Respuestas guiadas del auditor (§10)",
 };
 
 const PLACEHOLDER_OVERRIDES = {
@@ -909,6 +917,15 @@ export const sectionFieldDefinitions = {
           "internal_nc_exists",
           "internal_nc_summary",
           "corrective_actions_followed",
+        ]
+      ),
+      buildGroup(
+        "workspace_s10",
+        "Workspace de auditoria guiada (§10)",
+        "Matriz central de acciones correctivas y preguntas guiadas por clausula.",
+        [
+          "corrective_actions_matrix",
+          "s10_guided_answers",
         ]
       ),
     ],
