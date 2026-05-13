@@ -170,8 +170,15 @@ const BOOLEAN_FIELD_CODES = new Set([
   "process_inputs_outputs_defined",
   "quality_policy_updated",
   "quality_policy_includes_climate_change",
+  "quality_policy_available",
+  "quality_policy_coherent",
   "roles_defined",
   "org_chart_updated",
+  "staff_aware_of_roles",
+  "management_resources_adequate",
+  "sgc_integrated_in_business",
+  "s512_requirements_met",
+  "s512_feedback_tracked",
   "objectives_are_measurable",
   "extraordinary_changes_exist",
   "resources_sufficient",
@@ -199,6 +206,7 @@ const LIST_FIELD_CODES = new Set([
 
 const JSON_FIELD_CODES = new Set([
   "performance_indicators_matrix",
+  "s5_objective_evidence",
 ]);
 
 const NUMBER_FIELD_CODES = new Set([
@@ -264,6 +272,26 @@ const HELP_TEXT_BY_FIELD = {
   interested_parties_document_code: "Autogenerado desde el documento P09 de partes interesadas.",
   interested_parties_revision: "Autogenerado desde el documento P09 de partes interesadas.",
   interested_parties_date: "Autogenerado desde el documento P09 de partes interesadas.",
+  top_management_involvement_summary:
+    "Resume la implicación activa de la dirección: participación en revisiones, comunicación interna, toma de decisiones y asignación de recursos.",
+  leadership_evidence_summary:
+    "Cita evidencias concretas observadas: actas de revisión por la dirección, comunicaciones, objetivos establecidos, recursos asignados...",
+  s512_satisfaction_summary:
+    "Describe el estado de la satisfacción del cliente: encuestas, resultados, tendencias y acciones derivadas.",
+  s512_complaints_summary:
+    "Registra las reclamaciones o incidencias del periodo: cantidad, tipología y estado de resolución.",
+  s512_communication_notes:
+    "Describe los canales de comunicación cliente-organización: comercial, posventa, gestión de incidencias...",
+  s512_customer_risks_summary:
+    "Riesgos identificados asociados a incumplimientos de requisitos o expectativas del cliente.",
+  s512_evidence_notes:
+    "Evidencias documentales revisadas en relación al enfoque al cliente: encuestas, registros de reclamaciones, indicadores comerciales...",
+  s5_objective_evidence:
+    "Selecciona las evidencias documentales revisadas durante la auditoría de esta sección. Se incorporarán al texto final del informe.",
+  quality_policy_change_summary:
+    "Describe los cambios realizados respecto a la versión anterior: nueva redacción, nuevos compromisos, actualización de objetivos...",
+  roles_changes_summary:
+    "Describe cambios en la estructura organizativa, nuevas responsabilidades asignadas o modificaciones al organigrama.",
 };
 
 const LABEL_OVERRIDES = {
@@ -313,6 +341,47 @@ const LABEL_OVERRIDES = {
   corrective_actions_followed: "Acciones correctivas con seguimiento",
   continuous_improvement_mechanism_summary: "Mecanismo de mejora continua",
   management_review_outputs_used_for_improvement: "Salidas de revisión usadas para mejorar",
+  // Sección 5 — nuevos campos
+  top_management_involvement_summary: "Implicación de la alta dirección",
+  leadership_evidence_summary: "Evidencias de liderazgo observadas",
+  management_resources_adequate: "Recursos asignados adecuadamente",
+  sgc_integrated_in_business: "SGC integrado en procesos de negocio",
+  s512_satisfaction_summary: "Evaluación de satisfacción del cliente",
+  s512_complaints_summary: "Reclamaciones e incidencias del periodo",
+  s512_requirements_met: "Requisitos del cliente cumplidos",
+  s512_feedback_tracked: "Seguimiento de feedback activo",
+  s512_communication_notes: "Canales de comunicación con el cliente",
+  s512_customer_risks_summary: "Riesgos relacionados con el cliente",
+  s512_evidence_notes: "Evidencias de enfoque al cliente revisadas",
+  quality_policy_available: "Política disponible y comunicada al personal",
+  quality_policy_coherent: "Coherente con el contexto y dirección estratégica",
+  staff_aware_of_roles: "El personal conoce sus funciones y autoridades",
+  s5_objective_evidence: "Evidencias objetivas revisadas (§5)",
+};
+
+const PLACEHOLDER_OVERRIDES = {
+  top_management_involvement_summary:
+    "Ej: La dirección participa en revisiones periódicas, establece objetivos, asigna recursos y asegura la comunicación interna del SGC...",
+  leadership_evidence_summary:
+    "Ej: Acta de revisión por la dirección (RD-2024-01), correos de comunicación de objetivos, registro de asignación de recursos...",
+  s512_satisfaction_summary:
+    "Ej: Se realizaron 12 encuestas con un score medio de 8,4/10. Tendencia positiva respecto al ejercicio anterior...",
+  s512_complaints_summary:
+    "Ej: 3 reclamaciones registradas en el periodo. Todas resueltas en plazo. Sin NC derivadas...",
+  s512_communication_notes:
+    "Ej: Canal comercial, email de incidencias, encuesta anual de satisfacción, reuniones de seguimiento de contrato...",
+  s512_customer_risks_summary:
+    "Ej: Riesgo de incumplimiento de plazo en proyecto X por dependencia de proveedor crítico. Acciones preventivas definidas...",
+  s512_evidence_notes:
+    "Ej: Encuesta satisfacción 2024, registro de reclamaciones Q1-Q3, actas de reunión con cliente principal...",
+  quality_policy_change_summary:
+    "Ej: Se actualizó el punto 3 para incluir compromisos relacionados con cambio climático, en línea con la revisión ISO 9001:2024...",
+  roles_changes_summary:
+    "Ej: Se incorporó la figura de Responsable de Calidad con dedicación parcial. Organigrama actualizado en enero 2024...",
+  quality_system_responsible_name: "Nombre y apellidos del responsable del SGC",
+  roles_document_reference: "Ej: P05 Descripción de puestos de trabajo, Rev. 3",
+  org_chart_reference: "Ej: Organigrama corporativo, versión vigente en intranet",
+  quality_policy_revision: "Ej: Rev. 4",
 };
 
 function inferFieldType(fieldCode) {
@@ -347,7 +416,8 @@ function createField(fieldGroup, fieldCode, index) {
   const type = inferFieldType(fieldCode);
   const selectConfig = SELECT_FIELD_CODES[fieldCode];
   const placeholder =
-    type === "textarea"
+    PLACEHOLDER_OVERRIDES[fieldCode] ||
+    (type === "textarea"
       ? "Describe la evidencia observada..."
       : type === "date"
         ? "Selecciona fecha"
@@ -355,7 +425,7 @@ function createField(fieldGroup, fieldCode, index) {
           ? "Introduce valor numérico"
           : type === "list"
             ? "Añade un valor"
-            : "Introduce valor";
+            : "Introduce valor");
 
   return {
     field_group: fieldGroup,
@@ -451,33 +521,63 @@ export const sectionFieldDefinitions = {
     groups: [
       buildGroup(
         "liderazgo_direccion",
-        "Liderazgo de la dirección",
-        "Compromiso y evidencias de liderazgo.",
-        ["top_management_involvement_summary", "leadership_evidence_summary"]
+        "5.1 Liderazgo y compromiso",
+        "Verifica la implicación activa de la alta dirección en el mantenimiento y mejora del SGC.",
+        [
+          "top_management_involvement_summary",
+          "leadership_evidence_summary",
+          "management_resources_adequate",
+          "sgc_integrated_in_business",
+        ]
+      ),
+      buildGroup(
+        "enfoque_cliente",
+        "5.1.2 Enfoque al cliente",
+        "Verifica que la dirección asegura el cumplimiento de requisitos del cliente y el seguimiento de su satisfacción.",
+        [
+          "s512_satisfaction_summary",
+          "s512_requirements_met",
+          "s512_feedback_tracked",
+          "s512_complaints_summary",
+          "s512_communication_notes",
+          "s512_customer_risks_summary",
+          "s512_evidence_notes",
+        ]
       ),
       buildGroup(
         "politica_calidad",
-        "Política de calidad",
-        "Estado y cambios de la política.",
+        "5.2 Política de calidad",
+        "Estado, vigencia, coherencia y comunicación de la política de calidad.",
         [
           "quality_policy_revision",
           "quality_policy_date",
           "quality_policy_updated",
+          "quality_policy_available",
+          "quality_policy_coherent",
           "quality_policy_includes_climate_change",
           "quality_policy_change_summary",
         ]
       ),
       buildGroup(
         "roles_organizacion",
-        "Roles y organización",
-        "Responsabilidades y estructura organizativa.",
+        "5.3 Roles, responsabilidades y autoridades",
+        "Verifica la definición, comunicación y conocimiento de roles y autoridades en el SGC.",
         [
           "quality_system_responsible_name",
           "roles_defined",
           "roles_document_reference",
           "org_chart_reference",
           "org_chart_updated",
+          "staff_aware_of_roles",
           "roles_changes_summary",
+        ]
+      ),
+      buildGroup(
+        "evidencias_s5",
+        "Evidencias objetivas revisadas",
+        "Selecciona los documentos y registros revisados durante la auditoría de esta sección.",
+        [
+          "s5_objective_evidence",
         ]
       ),
     ],

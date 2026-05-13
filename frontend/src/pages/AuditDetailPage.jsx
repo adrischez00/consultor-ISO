@@ -26,6 +26,7 @@ import SectionCard from "../components/SectionCard";
 import StatusBadge from "../components/StatusBadge";
 import StepTabs from "../components/StepTabs";
 import AuditGuidedFields from "../components/AuditGuidedFields";
+import Section5LeadershipPanel from "../components/Section5LeadershipPanel";
 import { getSectionFieldDefinition, getSectionFieldGroups } from "../features/audits/sectionFieldDefinitions";
 import {
   buildGuidedValuesFromItems,
@@ -2329,6 +2330,23 @@ function AuditDetailPage() {
               </details>
             ) : null}
           </SectionCard>
+
+          {activeSection.section_code === "5" ? (
+            <SectionCard
+              title="B2. Auditor — Preguntas, evidencias y texto"
+              description="Herramientas de apoyo al auditor: preguntas guiadas por cláusula, selector de evidencias y generador de texto narrativo."
+            >
+              <Section5LeadershipPanel
+                valuesByFieldCode={activeSectionGuidedValues}
+                clauseChecks={activeSectionChecks}
+                onFieldChange={handleSectionGuidedFieldChange}
+                onApplyDraftText={(text) =>
+                  setSectionMetaDraft(activeSection.section_code, { final_text: text })
+                }
+                disabled={savingItems}
+              />
+            </SectionCard>
+          ) : null}
 
           <SectionCard
             title="C. Verificación por cláusulas ISO"

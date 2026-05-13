@@ -63,9 +63,10 @@ DEFAULT_SECTION_POINTS: dict[str, list[tuple[str, str]]] = {
         ("4.4", "SGC y procesos"),
     ],
     "5": [
-        ("5.1", "Liderazgo y Compromiso"),
+        ("5.1", "Liderazgo y Compromiso de la Alta Dirección"),
+        ("5.1.2", "Enfoque al Cliente"),
         ("5.2", "Política de Calidad"),
-        ("5.3", "Roles y Responsabilidades"),
+        ("5.3", "Roles, Responsabilidades y Autoridades"),
     ],
     "6": [
         ("6.1", "Riesgos y oportunidades"),
@@ -408,11 +409,27 @@ def _build_section_prompt(
     allowed_references_payload = ", ".join(allowed_references) if allowed_references else "Sin codigos"
     root = _normalize_section_root(section_code)
     climate_hint = ""
+    section5_hint = ""
     if root == "4":
         climate_hint = (
-            "En seccion 4, verificar explicitamente s? hay evidencia sobre cambio climatico "
+            "En seccion 4, verificar explicitamente si hay evidencia sobre cambio climatico "
             "(relevancia en 4.1 y requisitos de partes interesadas en 4.2). "
-            "S? no hay evidencia, indicarlo sin inferencias.\n"
+            "Si no hay evidencia, indicarlo sin inferencias.\n"
+        )
+    if root == "5":
+        section5_hint = (
+            "Seccion 5 requiere narrativa auditora profesional estructurada en cuatro bloques:\n"
+            "1) 5.1 Liderazgo: implicacion de la alta direccion, participacion en revisiones, "
+            "comunicacion interna, asignacion de recursos e integracion del SGC en los procesos.\n"
+            "2) 5.1.2 Enfoque al cliente: cumplimiento de requisitos, seguimiento de satisfaccion, "
+            "gestion de reclamaciones, canales de comunicacion y riesgos asociados al cliente.\n"
+            "3) 5.2 Politica de calidad: actualizacion, disponibilidad, coherencia estrategica, "
+            "comunicacion al personal y referencia al cambio climatico si aplica.\n"
+            "4) 5.3 Roles: designacion del responsable del SGC, definicion y comunicacion de "
+            "responsabilidades, estado del organigrama y conocimiento del personal.\n"
+            "Usa lenguaje tecnico auditor. Evita frases genericas. "
+            "Incorpora las evidencias seleccionadas y los datos del item s5_objective_evidence si existen. "
+            "Si hay no conformidades en los checks, mencionalas explicitamente con la clausula afectada.\n"
         )
     return (
         f"Empresa: {company_name}\n"
@@ -425,15 +442,16 @@ def _build_section_prompt(
         f"Notas del auditor: {notes_payload}\n\n"
         "Redacta el texto narrativo de esta seccion.\n"
         f"{climate_hint}"
+        f"{section5_hint}"
         "Devuelve SOLO estos 5 bloques y en este orden exacto (sin markdown ni texto adicional):\n"
         "Evidencias observadas: ...\n"
-        "Desviaciones año carencias: ...\n"
+        "Desviaciones y carencias: ...\n"
         "Conclusion de cumplimiento: ...\n"
         "Riesgo para el sistema: ...\n"
         "Accion recomendada: ...\n"
-        "Cada bloque debe contener 1-3 frases técnicas, concretas y auditables, apoyadas en la evidencia recibida. "
+        "Cada bloque debe contener 1-3 frases tecnicas, concretas y auditables, apoyadas en la evidencia recibida. "
         "No inventes datos no presentes en el contexto. "
-        "S? citas codigos año referencias, usa solo las referencias permitidas."
+        "Si citas codigos o referencias, usa solo las referencias permitidas."
     )
 
 

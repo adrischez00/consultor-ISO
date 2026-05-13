@@ -5210,3 +5210,193 @@ body {
 .rich-text-content > :last-child {
   margin-bottom: 0;
 }
+
+/* ── Section 5 Leadership Panel ──────────────────────────────────────────── */
+
+.s5-panel {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.s5-block {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: #f8fafc;
+  border: 1px solid #e4e9f0;
+  border-radius: 0.9rem;
+}
+
+.s5-block-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.s5-block-title {
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: #1e3a5f;
+  margin: 0 0 0.2rem;
+}
+
+.s5-block-desc {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Clauses accordion */
+
+.s5-clauses {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.s5-clause-block {
+  border: 1px solid #dde3ed;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+
+.s5-clause-block.s5-clause-open {
+  border-color: #3b82f6;
+}
+
+.s5-clause-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.9rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: #1e3a5f;
+  transition: background 0.12s;
+}
+
+.s5-clause-toggle:hover {
+  background: #f0f5ff;
+}
+
+.s5-clause-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.2rem;
+  padding: 0.15rem 0.5rem;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.s5-clause-name {
+  flex: 1;
+}
+
+.s5-clause-arrow {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.s5-question-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.9rem 0.75rem;
+  display: grid;
+  gap: 0.35rem;
+  border-top: 1px solid #edf1f6;
+}
+
+.s5-question-item {
+  font-size: 0.84rem;
+  color: #374151;
+  padding: 0.45rem 0.5rem;
+  background: #f8fafc;
+  border-left: 3px solid #bfdbfe;
+  border-radius: 0 0.35rem 0.35rem 0;
+  line-height: 1.45;
+}
+
+/* Evidence chips */
+
+.s5-evidence-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.s5-evidence-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 2rem;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+}
+
+.s5-evidence-chip:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.s5-evidence-chip-selected {
+  border-color: #2563eb;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.s5-evidence-chip-selected:hover:not(:disabled) {
+  border-color: #1d4ed8;
+  background: #bfdbfe;
+}
+
+.s5-evidence-chip:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.s5-chip-check {
+  font-size: 0.75rem;
+  font-weight: 800;
+  width: 1rem;
+  text-align: center;
+}
+
+.s5-evidence-count {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* Draft generator block */
+
+.s5-draft-block .s5-block-head {
+  align-items: center;
+}
+
+.s5-generate-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ── End Section 5 ───────────────────────────────────────────────────────── */
