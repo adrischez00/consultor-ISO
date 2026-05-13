@@ -7,6 +7,7 @@ const SECTION9_P09_GROUPS = getSectionFieldGroups("9").filter(
 );
 
 const CLAUSE_STATUS_LABEL = {
+  in_progress: "Sin evaluar",
   compliant: "Cumple",
   partial: "Parcial",
   non_compliant: "No cumple",
@@ -98,7 +99,7 @@ function hasTrackingEvidence(q1, q2, q3, target) {
   const values = [q1, q2, q3].filter((value) => Number.isFinite(value));
   if (values.length === 0) return false;
   const allZero = values.every((value) => value === 0);
-  if (allZero && !Number.isFinite(target)) return false;
+  if (allZero) return false;
   return true;
 }
 
@@ -237,6 +238,19 @@ function buildSignalStateFromRate(rate) {
 function getStatusLabel(status) {
   if (!status) return "Sin datos";
   return CLAUSE_STATUS_LABEL[status] || "Sin datos";
+}
+
+function resolveClauseUiStatus(check, clauseAnswers) {
+  if (!check || check.applicable === false) return null;
+
+  const normalized = String(check.clause_status || "").trim().toLowerCase();
+  const hasGuided = hasGuidedAnswerForClause(clauseAnswers || {});
+  const hasManualEvidence = hasText(check.evidence_summary) || hasText(check.observation_text);
+
+  if (normalized === "partial" || normalized === "non_compliant") return normalized;
+  if (normalized === "compliant" && (hasGuided || hasManualEvidence)) return "compliant";
+  if (normalized === "in_progress") return "in_progress";
+  return "in_progress";
 }
 
 function buildSection9DraftText({
@@ -650,7 +664,8 @@ export default function Section9PerformancePanel({
   }
 
   function getCurrentClauseStatus(clauseCode) {
-    return normalizedClauseStatusByCode[clauseCode] || null;
+    const check = (clauseChecks || []).find((entry) => entry.clause_code === clauseCode);
+    return resolveClauseUiStatus(check, guidedAnswers[clauseCode] || {});
   }
 
   function handleApplyToC(clauseCode, suggestedStatus) {
@@ -658,7 +673,7 @@ export default function Section9PerformancePanel({
     const currentStatus = getCurrentClauseStatus(clauseCode);
     if (currentStatus === suggestedStatus) return;
 
-    const shouldConfirm = currentStatus && currentStatus !== "compliant";
+    const shouldConfirm = Boolean(currentStatus) && currentStatus !== "in_progress";
     if (shouldConfirm) {
       setApplyConfirm({ clauseCode, suggestedStatus, currentStatus });
       return;

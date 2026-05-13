@@ -470,9 +470,45 @@ def _is_noncompliant_status(raw_status: str | None) -> bool:
     return normalized in {"non_compliant", "nonconform", "nonconforme", "nc", "failed", "ko"}
 
 
+def _is_compliant_status(raw_status: str | None) -> bool:
+    normalized = (raw_status or "").strip().lower()
+    return normalized in {"compliant", "cumple", "conforme", "ok", "passed"}
+
+
 def _is_partial_status(raw_status: str | None) -> bool:
     normalized = (raw_status or "").strip().lower()
-    return normalized in {"partial", "partially", "in_progress", "parcial"}
+    return normalized in {"partial", "partially", "parcial"}
+
+
+def _is_in_progress_status(raw_status: str | None) -> bool:
+    normalized = (raw_status or "").strip().lower()
+    return normalized in {
+        "in_progress",
+        "en_progreso",
+        "en progreso",
+        "sin_evaluar",
+        "sin evaluar",
+        "no_evaluado",
+        "no evaluado",
+    }
+
+
+def _is_not_applicable_status(raw_status: str | None) -> bool:
+    normalized = (raw_status or "").strip().lower()
+    return normalized in {
+        "not_applicable",
+        "not applicable",
+        "no_aplica",
+        "no aplica",
+        "na",
+        "n/a",
+    }
+
+
+def _is_clause_check_applicable(check: AuditReportClauseCheck) -> bool:
+    if not check.applicable:
+        return False
+    return not _is_not_applicable_status(check.clause_status)
 
 
 def _is_final_export_status(raw_status: str | None) -> bool:
@@ -510,9 +546,13 @@ def _build_structured_narrative_from_evidence(
     items: Sequence[AuditReportItem],
     project_context: str | None = None,
 ) -> str:
-    applicable_checks = [check for check in checks if check.applicable]
+    applicable_checks = [check for check in checks if _is_clause_check_applicable(check)]
+    not_applicable_checks = [check for check in checks if not _is_clause_check_applicable(check)]
     noncompliant = [check for check in applicable_checks if _is_noncompliant_status(check.clause_status)]
     partial = [check for check in applicable_checks if _is_partial_status(check.clause_status)]
+    in_progress = [check for check in applicable_checks if _is_in_progress_status(check.clause_status)]
+    compliant = [check for check in applicable_checks if _is_compliant_status(check.clause_status)]
+    evaluated_checks_count = len(noncompliant) + len(partial) + len(compliant)
     evidenced_items = [
         item for item in items if _has_text(item.value_text) or item.value_json not in (None, {}, [])
     ]
@@ -531,7 +571,7 @@ def _build_structured_narrative_from_evidence(
             break
 
     gap_samples: list[str] = []
-    for check in noncompliant + partial:
+    for check in noncompliant + partial + in_progress:
         clause_ref = _short_text(check.clause_code or check.clause_title or "clausula", max_len=24)
         finding_text = _short_text(
             check.observation_text or check.evidence_summary or "sin detalle adicional registrado",
@@ -543,17 +583,21 @@ def _build_structured_narrative_from_evidence(
 
     evidence_text = (
         f"Seccion {section.section_code} ({_short_text(section.title, max_len=48)}). "
-        f"Checks aplicables revisados: {len(applicable_checks)}. "
+        f"Checks que aplican: {len(applicable_checks)}. "
+        f"Evaluados: {evaluated_checks_count}. "
+        f"Sin evaluar: {len(in_progress)}. "
+        f"No aplica: {len(not_applicable_checks)}. "
         f"Campos con evidencia capturada: {len(evidenced_items)}. "
         f"Muestra de evidencia: {'; '.join(evidence_samples) if evidence_samples else 'sin muestra disponible'}."
     )
     if _has_text(project_context):
         evidence_text = f"{evidence_text} Contexto ISO complementario: {_short_text(project_context, max_len=140)}."
 
-    if noncompliant or partial:
+    if noncompliant or partial or in_progress:
         gaps_text = (
             f"No conformidades detectadas: {len(noncompliant)}. "
-            f"Desviaciones parciales/en progreso: {len(partial)}. "
+            f"Desviaciones parciales: {len(partial)}. "
+            f"Checks sin evaluar: {len(in_progress)}. "
             f"Muestra: {'; '.join(gap_samples) if gap_samples else 'sin detalle adicional'}."
         )
     else:
@@ -581,6 +625,11 @@ def _build_structured_narrative_from_evidence(
         conclusion_text = (
             "Cumplimiento parcial: la seccion muestra avance, pero persisten puntos pendientes de cierre."
         )
+    elif in_progress:
+        conclusion_text = (
+            "Evaluacion en curso: existen checks marcados como sin evaluar, por lo que no procede "
+            "declarar cumplimiento total con la evidencia actual."
+        )
     else:
         conclusion_text = "Cumplimiento conforme con la evidencia disponible y checks aplicables registrados."
 
@@ -593,6 +642,11 @@ def _build_structured_narrative_from_evidence(
         risk_text = (
             "Riesgo moderado por desviaciones parciales que pueden afectar consistencia operativa "
             "s? no se consolidan controles."
+        )
+    elif in_progress:
+        risk_text = (
+            "Riesgo moderado por evaluacion incompleta; es necesario cerrar los checks sin evaluar "
+            "para confirmar el estado real de cumplimiento."
         )
     else:
         risk_text = (
@@ -670,7 +724,7 @@ def build_document_integrity_notes(
 
     applicable_checks_by_section: dict[str, int] = defaultdict(int)
     for check in clause_checks:
-        if check.applicable:
+        if _is_clause_check_applicable(check):
             applicable_checks_by_section[check.section_code] += 1
 
     iso_sections = [section for section in sections if _is_iso_section(section.section_code)]
@@ -821,8 +875,10 @@ def _status_to_followup_label(raw_status: str | None) -> str:
     normalized = (raw_status or "").strip().lower()
     if normalized in {"completed", "compliant", "cumplida", "closed", "cerrada"}:
         return "cumplida"
-    if normalized in {"partial", "partially", "in_progress", "parcial"}:
+    if normalized in {"partial", "partially", "parcial"}:
         return "parcialmente"
+    if normalized in {"in_progress", "en_progreso", "en progreso"}:
+        return "en curso"
     return "no cumplida"
 
 
@@ -843,7 +899,7 @@ def _build_points_rows(
     for default_code, default_title in defaults:
         check = checks_by_code.pop(default_code.strip().lower(), None)
         title = check.clause_title if check and check.clause_title else default_title
-        marker = "X" if check and check.applicable else ""
+        marker = "X" if check and _is_clause_check_applicable(check) else ""
         rows.append((title, reference_standard, default_code, marker))
 
     extra_checks = list(checks_by_code.values())
@@ -854,7 +910,7 @@ def _build_points_rows(
                 check.clause_title or "-",
                 reference_standard,
                 check.clause_code or "-",
-                "X" if check.applicable else "",
+                "X" if _is_clause_check_applicable(check) else "",
             )
         )
 
@@ -1158,5 +1214,3 @@ def build_audit_report_docx(
     document.save(output)
     output.seek(0)
     return output
-
-

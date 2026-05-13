@@ -466,7 +466,7 @@ function AuditDetailPage() {
         clause_code: entry.clause_code || "",
         clause_title: entry.clause_title || "",
         applicable: Boolean(entry.applicable),
-        clause_status: entry.clause_status || "compliant",
+        clause_status: entry.clause_status || (code === "9" ? "in_progress" : "compliant"),
         evidence_summary: entry.evidence_summary || "",
         observation_text: entry.observation_text || "",
         sort_order: entry.sort_order || 0,
@@ -1354,12 +1354,14 @@ function AuditDetailPage() {
     try {
       const payload = (activeSectionChecks || []).map((check) => {
         const clauseStatus = normalizeRequiredText(check.clause_status);
-        const normalizedStatus = clauseStatus || "compliant";
-        const uiStatus = activeSectionCode === "9" ? getClauseStatusUiValue(check) : normalizedStatus;
-        const keepAsNeutral = activeSectionCode === "9" && !uiStatus;
+        const uiStatus = activeSectionCode === "9" ? getClauseStatusUiValue(check) : "";
+        const normalizedStatus =
+          activeSectionCode === "9" && uiStatus === "in_progress"
+            ? "in_progress"
+            : clauseStatus || "compliant";
         return {
           clause_code: normalizeRequiredText(check.clause_code),
-          applicable: keepAsNeutral ? false : Boolean(check.applicable),
+          applicable: Boolean(check.applicable),
           clause_status: normalizedStatus,
           evidence_summary: normalizeNullableText(check.evidence_summary),
           observation_text: normalizeNullableText(check.observation_text),
@@ -1576,10 +1578,11 @@ function AuditDetailPage() {
     );
     const hasManualEvidence =
       normalizeRequiredText(check?.evidence_summary) || normalizeRequiredText(check?.observation_text);
-    if ((!rawStatus || rawStatus === "compliant") && !hasManualEvidence && !hasGuidedEvidence) {
-      return "";
-    }
-    return rawStatus || "compliant";
+    const normalized = rawStatus.toLowerCase();
+    if (normalized === "partial" || normalized === "non_compliant") return normalized;
+    if (normalized === "compliant" && (hasManualEvidence || hasGuidedEvidence)) return "compliant";
+    if (normalized === "in_progress") return "in_progress";
+    return "in_progress";
   }
 
   if (loading) {
@@ -2672,71 +2675,75 @@ function AuditDetailPage() {
               <p className="empty-state">No hay cláusulas configuradas para esta sección.</p>
             ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" || activeSection.section_code === "8" || activeSection.section_code === "9" ? (
               <div className="s5-check-cards">
-                {activeSectionChecks.map((check, index) => (
-                  <div
-                    key={`${check.id || check.clause_code}-${index}`}
-                    className={`s5-check-card${!check.applicable ? " s5-check-card-na" : ""}`}
-                  >
-                    <div className="s5-check-card-head">
-                      <div className="s5-check-title">
-                        <strong>{check.clause_code}</strong>
-                        {check.clause_title && (
-                          <span className="soft-label">{check.clause_title}</span>
-                        )}
-                      </div>
-                      <label className="s5-check-apply-toggle">
-                        <input
-                          type="checkbox"
-                          checked={Boolean(check.applicable)}
-                          onChange={(event) =>
-                            updateClauseCheckRow(index, { applicable: event.target.checked })
-                          }
-                        />
-                        <span>Aplica</span>
-                      </label>
-                      <select
-                        className="input-select s5-check-status-select"
-                        value={getClauseStatusUiValue(check)}
-                        onChange={(event) =>
-                          updateClauseCheckRow(index, { clause_status: event.target.value })
-                        }
-                      >
-                        {activeSection.section_code === "9" ? (
-                          <option value="">Sin evaluar</option>
-                        ) : null}
-                        {CLAUSE_STATUS_OPTIONS.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    {check.applicable && (
-                      <div className="s5-check-card-body">
-                        <label className="s5-check-card-label">
-                          <span>Evidencia</span>
+                {activeSectionChecks.map((check, index) => {
+                  const clauseStatusValue = getClauseStatusUiValue(check);
+                  const showInProgressOption = clauseStatusValue === "in_progress";
+                  return (
+                    <div
+                      key={`${check.id || check.clause_code}-${index}`}
+                      className={`s5-check-card${!check.applicable ? " s5-check-card-na" : ""}`}
+                    >
+                      <div className="s5-check-card-head">
+                        <div className="s5-check-title">
+                          <strong>{check.clause_code}</strong>
+                          {check.clause_title && (
+                            <span className="soft-label">{check.clause_title}</span>
+                          )}
+                        </div>
+                        <label className="s5-check-apply-toggle">
                           <input
-                            className="input-text"
-                            value={check.evidence_summary || ""}
+                            type="checkbox"
+                            checked={Boolean(check.applicable)}
                             onChange={(event) =>
-                              updateClauseCheckRow(index, { evidence_summary: event.target.value })
+                              updateClauseCheckRow(index, { applicable: event.target.checked })
                             }
                           />
+                          <span>Aplica</span>
                         </label>
-                        <label className="s5-check-card-label">
-                          <span>Observación</span>
-                          <RichTextarea
-                            className="input-textarea"
-                            value={check.observation_text || ""}
-                            onChange={(event) =>
-                              updateClauseCheckRow(index, { observation_text: event.target.value })
-                            }
-                          />
-                        </label>
+                        <select
+                          className="input-select s5-check-status-select"
+                          value={clauseStatusValue}
+                          onChange={(event) =>
+                            updateClauseCheckRow(index, { clause_status: event.target.value })
+                          }
+                        >
+                          {showInProgressOption ? (
+                            <option value="in_progress">Sin evaluar</option>
+                          ) : null}
+                          {CLAUSE_STATUS_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {check.applicable && (
+                        <div className="s5-check-card-body">
+                          <label className="s5-check-card-label">
+                            <span>Evidencia</span>
+                            <input
+                              className="input-text"
+                              value={check.evidence_summary || ""}
+                              onChange={(event) =>
+                                updateClauseCheckRow(index, { evidence_summary: event.target.value })
+                              }
+                            />
+                          </label>
+                          <label className="s5-check-card-label">
+                            <span>Observación</span>
+                            <RichTextarea
+                              className="input-textarea"
+                              value={check.observation_text || ""}
+                              onChange={(event) =>
+                                updateClauseCheckRow(index, { observation_text: event.target.value })
+                              }
+                            />
+                          </label>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div
@@ -2759,68 +2766,75 @@ function AuditDetailPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {activeSectionChecks.map((check, index) => (
-                      <tr key={`${check.id || check.clause_code}-${index}`}>
-                        <td>
-                          <strong>{check.clause_code}</strong>
-                          <p className="soft-label">{check.clause_title || "-"}</p>
-                        </td>
-                        <td>
-                          <input
-                            type="checkbox"
-                            checked={Boolean(check.applicable)}
-                            onChange={(event) =>
-                              updateClauseCheckRow(index, {
-                                applicable: event.target.checked,
-                              })
-                            }
-                          />
-                        </td>
-                        <td>
-                          <select
-                            className="input-select"
-                            value={check.clause_status || "compliant"}
-                            onChange={(event) =>
-                              updateClauseCheckRow(index, {
-                                clause_status: event.target.value,
-                              })
-                            }
-                          >
-                            {CLAUSE_STATUS_OPTIONS.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>
-                          <input
-                            className={`input-text ${
-                              activeSection.section_code === "9" ? "audit-check-evidence-input" : ""
-                            }`}
-                            value={check.evidence_summary || ""}
-                            onChange={(event) =>
-                              updateClauseCheckRow(index, {
-                                evidence_summary: event.target.value,
-                              })
-                            }
-                          />
-                        </td>
-                        <td>
-                          <RichTextarea
-                            className={`input-textarea ${
-                              activeSection.section_code === "9" ? "audit-check-observation-input" : ""
-                            }`}
-                            value={check.observation_text || ""}
-                            onChange={(event) =>
-                              updateClauseCheckRow(index, {
-                                observation_text: event.target.value,
-                              })
-                            }
-                          />
-                        </td>
-                      </tr>
-                    ))}
+                    {activeSectionChecks.map((check, index) => {
+                      const clauseStatusValue = getClauseStatusUiValue(check);
+                      const showInProgressOption = clauseStatusValue === "in_progress";
+                      return (
+                        <tr key={`${check.id || check.clause_code}-${index}`}>
+                          <td>
+                            <strong>{check.clause_code}</strong>
+                            <p className="soft-label">{check.clause_title || "-"}</p>
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              checked={Boolean(check.applicable)}
+                              onChange={(event) =>
+                                updateClauseCheckRow(index, {
+                                  applicable: event.target.checked,
+                                })
+                              }
+                            />
+                          </td>
+                          <td>
+                            <select
+                              className="input-select"
+                              value={clauseStatusValue}
+                              onChange={(event) =>
+                                updateClauseCheckRow(index, {
+                                  clause_status: event.target.value,
+                                })
+                              }
+                            >
+                              {showInProgressOption ? (
+                                <option value="in_progress">Sin evaluar</option>
+                              ) : null}
+                              {CLAUSE_STATUS_OPTIONS.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <input
+                              className={`input-text ${
+                                activeSection.section_code === "9" ? "audit-check-evidence-input" : ""
+                              }`}
+                              value={check.evidence_summary || ""}
+                              onChange={(event) =>
+                                updateClauseCheckRow(index, {
+                                  evidence_summary: event.target.value,
+                                })
+                              }
+                            />
+                          </td>
+                          <td>
+                            <RichTextarea
+                              className={`input-textarea ${
+                                activeSection.section_code === "9" ? "audit-check-observation-input" : ""
+                              }`}
+                              value={check.observation_text || ""}
+                              onChange={(event) =>
+                                updateClauseCheckRow(index, {
+                                  observation_text: event.target.value,
+                                })
+                              }
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

@@ -181,12 +181,14 @@ function computeSuggestedStatus(clauseAnswers) {
 }
 
 const STATUS_LABEL = {
+  in_progress: "Sin evaluar",
   compliant: "Cumple",
   partial: "Parcial",
   non_compliant: "No cumple",
 };
 
 const STATUS_CLASS = {
+  in_progress: "s5-status-empty",
   compliant: "s5-status-compliant",
   partial: "s5-status-partial",
   non_compliant: "s5-status-noncompliant",
@@ -506,7 +508,8 @@ export default function Section5LeadershipPanel({
 
   function handleApplyToC(clauseCode, suggestedStatus) {
     const currentStatus = getCurrentClauseStatus(clauseCode);
-    const isDefaultOrEmpty = !currentStatus || currentStatus === "compliant";
+    const isDefaultOrEmpty =
+      !currentStatus || currentStatus === "compliant" || currentStatus === "in_progress";
     const alreadyMatches = currentStatus === suggestedStatus;
 
     if (alreadyMatches) return;

@@ -87,12 +87,14 @@ const AWARENESS_METHODS = [
 // ── Status constants ──────────────────────────────────────────────────────────
 
 const STATUS_LABEL = {
+  in_progress:   "Sin evaluar",
   compliant:     "Cumple",
   partial:       "Parcial",
   non_compliant: "No cumple",
 };
 
 const STATUS_CLASS = {
+  in_progress:   "s5-status-empty",
   compliant:     "s5-status-compliant",
   partial:       "s5-status-partial",
   non_compliant: "s5-status-noncompliant",
@@ -683,7 +685,7 @@ export default function Section7SupportPanel({
 
     const hasCustom = related.some((c) => {
       const s = getCurrentClauseStatus(c);
-      return s && s !== "compliant" && s !== suggestedStatus;
+      return s && s !== "compliant" && s !== "in_progress" && s !== suggestedStatus;
     });
 
     if (hasCustom) {

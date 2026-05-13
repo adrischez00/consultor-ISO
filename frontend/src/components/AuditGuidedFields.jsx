@@ -902,7 +902,7 @@ function evaluatePerformanceIndicatorStatus(target, annualValue, q1, q2, q3) {
 
   const numericTarget = parsePerformanceTarget(target);
   const allZero = quarterValues.every((value) => value === 0);
-  if (allZero && !Number.isFinite(numericTarget)) return "no_data";
+  if (allZero) return "no_data";
   if (!Number.isFinite(numericTarget)) return "in_progress";
   if (!Number.isFinite(annualValue)) return "no_data";
   return annualValue >= numericTarget ? "compliant" : "non_compliant";
