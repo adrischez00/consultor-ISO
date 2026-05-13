@@ -152,7 +152,7 @@ export function extractLegacyItems(sectionDefinition, items) {
     (sectionDefinition?.flat_fields || []).map((field) => String(field.field_code || "").trim())
   );
   const normalizedSectionCode = String(sectionDefinition?.section_code || "").trim();
-  const shouldDropLegacyItems = normalizedSectionCode === "6" || normalizedSectionCode === "9";
+  const shouldDropLegacyItems = normalizedSectionCode === "6" || normalizedSectionCode === "7" || normalizedSectionCode === "9";
 
   return (Array.isArray(items) ? items : []).filter((item) => {
     const code = String(item.item_code || "").trim();

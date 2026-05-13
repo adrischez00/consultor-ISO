@@ -78,7 +78,9 @@ function MatrixRow({ row, index, schema, isExpanded, onToggle, onUpdate, onRemov
               config={schema.typeConfig || {}}
             />
           )}
-          <StatusBadgeMatrix value={statusVal} config={statusCfg} />
+          {schema.statusField && (
+            <StatusBadgeMatrix value={statusVal} config={statusCfg} />
+          )}
           {schema.compactCols.map((col) => {
             const val = row[col.key];
             if (!val) return null;

@@ -28,6 +28,7 @@ import StepTabs from "../components/StepTabs";
 import AuditGuidedFields from "../components/AuditGuidedFields";
 import Section5LeadershipPanel from "../components/Section5LeadershipPanel";
 import Section6PlanningPanel from "../components/Section6PlanningPanel";
+import Section7SupportPanel from "../components/Section7SupportPanel";
 import { getSectionFieldDefinition, getSectionFieldGroups } from "../features/audits/sectionFieldDefinitions";
 import {
   buildGuidedValuesFromItems,
@@ -787,6 +788,34 @@ function AuditDetailPage() {
     "extraordinary_changes_summary",
   ]);
 
+  const SECTION7_HIDDEN_FROM_B = new Set([
+    "s7_guided_answers",
+    "competence_training_matrix",
+    "communication_matrix",
+    "awareness_actions_notes",
+    // Campos legacy cubiertos por el workspace
+    "staff_changes_summary",
+    "resources_sufficient",
+    "personnel_competent",
+    "staff_structure_summary",
+    "infrastructure_status_summary",
+    "vehicles_included",
+    "equipment_included",
+    "work_environment_summary",
+    "prl_compliance_notes",
+    "measurement_tools_summary",
+    "organizational_knowledge_managed",
+    "knowledge_management_summary",
+    "job_profiles_reference",
+    "training_2024_summary",
+    "training_2025_planned_summary",
+    "awareness_actions_summary",
+    "external_communication_channels",
+    "internal_communication_channels",
+    "last_meeting_date",
+    "last_meeting_topics",
+  ]);
+
   const SECTION5_HIDDEN_FROM_B = new Set([
     // Manejados por chips en B2
     "s5_objective_evidence",
@@ -826,8 +855,17 @@ function AuditDetailPage() {
         }))
         .filter((g) => g.fields.length > 0);
     }
+    if (activeSectionCode === "7") {
+      return groups
+        .filter((g) => g.field_group !== "workspace_s7")
+        .map((g) => ({
+          ...g,
+          fields: g.fields.filter((f) => !SECTION7_HIDDEN_FROM_B.has(f.field_code)),
+        }))
+        .filter((g) => g.fields.length > 0);
+    }
     return groups;
-  // SECTION5_HIDDEN_FROM_B / SECTION6_HIDDEN_FROM_B son constantes de render, no van en deps
+  // SECTION5/6/7_HIDDEN_FROM_B son constantes de render, no van en deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSectionCode]);
   const activeSectionGuidedValues = useMemo(() => {
@@ -2355,7 +2393,7 @@ function AuditDetailPage() {
             </div>
           </SectionCard>
 
-          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && (
+          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && activeSection.section_code !== "7" && (
             <SectionCard
               title="B. Datos de la sección"
               description="Formulario guiado alineado con el informe P03."
@@ -2463,6 +2501,37 @@ function AuditDetailPage() {
             </SectionCard>
           ) : null}
 
+          {activeSection.section_code === "7" ? (
+            <SectionCard
+              title="B. Workspace de auditoría guiada"
+              description="Recursos e infraestructura, competencia y formación, comunicación, información documentada y generador de texto narrativo."
+              actions={
+                <div className="inline-actions">
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={savingItems}
+                    onClick={handleSaveSectionItems}
+                  >
+                    {savingItems ? "Guardando..." : "Guardar datos"}
+                  </button>
+                </div>
+              }
+            >
+              <Section7SupportPanel
+                valuesByFieldCode={activeSectionGuidedValues}
+                clauseChecks={activeSectionChecks}
+                currentFinalText={activeSectionDraft?.final_text || ""}
+                onFieldChange={handleSectionGuidedFieldChange}
+                onApplyDraftText={(text) =>
+                  setSectionMetaDraft(activeSection.section_code, { final_text: text })
+                }
+                onApplySuggestedClauseCheck={handleApplySuggestedClauseCheck}
+                disabled={savingItems}
+              />
+            </SectionCard>
+          ) : null}
+
           <SectionCard
             title="C. Verificación por cláusulas ISO"
             description="Revisión compacta por cláusula aplicable en esta sección."
@@ -2479,7 +2548,7 @@ function AuditDetailPage() {
           >
             {activeSectionChecks.length === 0 ? (
               <p className="empty-state">No hay cláusulas configuradas para esta sección.</p>
-            ) : activeSection.section_code === "5" || activeSection.section_code === "6" ? (
+            ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" ? (
               <div className="s5-check-cards">
                 {activeSectionChecks.map((check, index) => (
                   <div

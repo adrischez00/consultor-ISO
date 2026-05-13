@@ -211,6 +211,9 @@ const JSON_FIELD_CODES = new Set([
   "quality_objectives_matrix",
   "planned_changes_log",
   "s6_guided_answers",
+  "competence_training_matrix",
+  "communication_matrix",
+  "s7_guided_answers",
 ]);
 
 const NUMBER_FIELD_CODES = new Set([
@@ -296,6 +299,14 @@ const HELP_TEXT_BY_FIELD = {
     "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 5. Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
   s6_guided_answers:
     "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 6 (6.1, 6.2, 6.3). Mismo patrón que s5_guided_answers.",
+  s7_guided_answers:
+    "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 7 (7.1–7.5). Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
+  competence_training_matrix:
+    "Registro de competencias, formación y estado de validez por persona y puesto (7.2). Cada fila incluye persona, rol, competencia requerida, formación recibida, evidencia y estado.",
+  communication_matrix:
+    "Registro de canales de comunicación interna y externa (7.4). Cada fila incluye tema, destinatario, canal, frecuencia, responsable y evidencia.",
+  awareness_actions_notes:
+    "Acciones realizadas para asegurar la toma de conciencia del personal sobre la política, objetivos y contribución al SGC.",
   quality_objectives_matrix:
     "Matriz de objetivos de calidad del periodo (6.2). Cada fila incluye objetivo, indicador, meta, resultado, estado, responsable, plazo, evidencia y acciones correctivas.",
   planned_changes_log:
@@ -372,6 +383,10 @@ const LABEL_OVERRIDES = {
   quality_objectives_matrix: "Matriz de objetivos de calidad (§6.2)",
   planned_changes_log: "Registro de cambios del SGC (§6.3)",
   s6_guided_answers: "Respuestas guiadas del auditor (§6)",
+  s7_guided_answers: "Respuestas guiadas del auditor (§7)",
+  competence_training_matrix: "Matriz de competencias y formación (§7.2)",
+  communication_matrix: "Matriz de comunicación (§7.4)",
+  awareness_actions_notes: "Observaciones de toma de conciencia",
 };
 
 const PLACEHOLDER_OVERRIDES = {
@@ -647,60 +662,81 @@ export const sectionFieldDefinitions = {
     section_title: "Apoyo",
     groups: [
       buildGroup(
-        "recursos_personas",
-        "Recursos y personas",
-        "Dimensionamiento, estructura y competencia.",
+        "recursos_s7",
+        "7.1 Recursos e infraestructura",
+        "Personas, infraestructura, ambiente de trabajo, PRL y medios de seguimiento.",
         [
           "employee_count",
           "partner_count",
+          "maintenance_reference_document",
+          "prl_provider_name",
+          "time_tracking_tool_name",
+          // Legacy — preservados para compatibilidad
           "staff_changes_summary",
           "resources_sufficient",
           "personnel_competent",
           "staff_structure_summary",
-        ]
-      ),
-      buildGroup(
-        "infraestructura_entorno",
-        "Infraestructura y entorno",
-        "Condiciones de trabajo, PRL y mantenimiento.",
-        [
           "infrastructure_status_summary",
-          "maintenance_reference_document",
           "vehicles_included",
           "equipment_included",
           "work_environment_summary",
-          "prl_provider_name",
           "prl_compliance_notes",
+          "measurement_tools_summary",
         ]
       ),
       buildGroup(
-        "seguimiento_conocimiento",
-        "Seguimiento y conocimiento",
-        "Medición, conocimiento organizacional y formación.",
+        "competencia_s7",
+        "7.2 Competencia y formación",
+        "Competencias requeridas, formación y evaluación de eficacia por puesto.",
         [
-          "time_tracking_tool_name",
-          "measurement_tools_summary",
-          "organizational_knowledge_managed",
-          "knowledge_management_summary",
           "job_profiles_reference",
           "training_2024_summary",
           "training_2025_planned_summary",
+          "organizational_knowledge_managed",
+          "knowledge_management_summary",
+          "competence_training_matrix",
+        ]
+      ),
+      buildGroup(
+        "conciencia_s7",
+        "7.3 Toma de conciencia",
+        "Conocimiento del personal sobre política, objetivos y contribución al SGC.",
+        [
+          "awareness_actions_notes",
+          // Legacy
           "awareness_actions_summary",
         ]
       ),
       buildGroup(
-        "comunicacion_documentacion",
-        "Comunicación y documentación",
-        "Canales de comunicación y control documental.",
+        "comunicacion_s7",
+        "7.4 Comunicación",
+        "Canales de comunicación interna y externa definidos y controlados.",
         [
+          "communication_matrix",
+          // Legacy
           "external_communication_channels",
           "internal_communication_channels",
           "last_meeting_date",
           "last_meeting_topics",
+        ]
+      ),
+      buildGroup(
+        "documentacion_s7",
+        "7.5 Información documentada",
+        "Control, revisión y accesibilidad de documentos y registros.",
+        [
           "document_control_reference",
           "document_control_revision",
           "document_control_date",
           "documents_accessible",
+        ]
+      ),
+      buildGroup(
+        "workspace_s7",
+        "Workspace guiado sección 7",
+        "Respuestas del auditor a preguntas guiadas por cláusula.",
+        [
+          "s7_guided_answers",
         ]
       ),
     ],

@@ -6135,3 +6135,156 @@ body {
 }
 
 /* ── End Section 6 ───────────────────────────────────────────────────────── */
+
+/* ── Section 7 ─────────────────────────────────────────────────────────── */
+
+.s7-context-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.s7-accessible-row {
+  margin-top: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+}
+
+.s7-accessible-label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+}
+
+.s7-accessible-label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #1d4ed8;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.s5-context-textarea {
+  font-size: 0.83rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+  color: #1e293b;
+  resize: vertical;
+  min-height: 4rem;
+  font-family: inherit;
+  line-height: 1.45;
+  width: 100%;
+  outline: none;
+}
+
+.s5-context-textarea:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* awareness chips */
+.s7-chips-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.s7-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  border: 1.5px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  line-height: 1.3;
+  font-family: inherit;
+}
+
+.s7-chip:hover:not(:disabled) {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.s7-chip:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.s7-chip-active {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.s7-chip-active:hover:not(:disabled) {
+  background: #bfdbfe;
+  border-color: #2563eb;
+}
+
+/* matrix summary bar */
+.s7-matrix-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.s7-ms-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.s7-ms-valid {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.s7-ms-pending {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.s7-ms-expired {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.s7-ms-insuf {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+/* documents_accessible warning */
+.s7-accessible-warning {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+/* ── End Section 7 ───────────────────────────────────────────────────────── */
