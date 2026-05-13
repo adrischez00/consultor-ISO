@@ -894,9 +894,17 @@ function parsePerformanceTarget(target) {
   return normalized;
 }
 
-function evaluatePerformanceIndicatorStatus(target, annualValue) {
+function evaluatePerformanceIndicatorStatus(target, annualValue, q1, q2, q3) {
+  const quarterValues = [q1, q2, q3]
+    .map((value) => normalizePerformanceNumber(value))
+    .filter((value) => Number.isFinite(value));
+  if (quarterValues.length === 0) return "no_data";
+
   const numericTarget = parsePerformanceTarget(target);
-  if (!Number.isFinite(numericTarget) || !Number.isFinite(annualValue)) return "in_progress";
+  const allZero = quarterValues.every((value) => value === 0);
+  if (allZero && !Number.isFinite(numericTarget)) return "no_data";
+  if (!Number.isFinite(numericTarget)) return "in_progress";
+  if (!Number.isFinite(annualValue)) return "no_data";
   return annualValue >= numericTarget ? "compliant" : "non_compliant";
 }
 
@@ -906,6 +914,9 @@ function getPerformanceIndicatorStatusBadge(status) {
   }
   if (status === "non_compliant") {
     return { label: "No cumple", tone: "non-compliant" };
+  }
+  if (status === "no_data") {
+    return { label: "Sin datos", tone: "no-data" };
   }
   return { label: "En progreso", tone: "in-progress" };
 }
@@ -2662,7 +2673,13 @@ function AuditGuidedFields({
           q2: trackingRow.q2,
           q3: trackingRow.q3,
           annualValue,
-          statusCode: evaluatePerformanceIndicatorStatus(indicatorRow.target, annualValue),
+          statusCode: evaluatePerformanceIndicatorStatus(
+            indicatorRow.target,
+            annualValue,
+            trackingRow.q1,
+            trackingRow.q2,
+            trackingRow.q3
+          ),
         };
       }),
     [performanceModel, performanceTrackingByIndicator]

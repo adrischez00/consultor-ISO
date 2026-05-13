@@ -216,6 +216,7 @@ const JSON_FIELD_CODES = new Set([
   "s7_guided_answers",
   "document_traceability_matrix",
   "s8_guided_answers",
+  "s9_guided_answers",
 ]);
 
 const NUMBER_FIELD_CODES = new Set([
@@ -321,6 +322,9 @@ const HELP_TEXT_BY_FIELD = {
     "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 8 (8.1, 8.2, 8.4, 8.6, 8.7). Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
   document_traceability_matrix:
     "Matriz de trazabilidad documental de la muestra auditada (8.x). Cada fila incluye tipo de documento, referencia, fecha, estado de verificación y observaciones.",
+  supplier_average_score: "Valoración media obtenida en la evaluación de proveedores, en escala 0–10.",
+  s9_guided_answers:
+    "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 9 (9.1, 9.1.2, 9.2 y 9.3). Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
 };
 
 const LABEL_OVERRIDES = {
@@ -395,6 +399,8 @@ const LABEL_OVERRIDES = {
   awareness_actions_notes: "Observaciones de toma de conciencia",
   s8_guided_answers: "Respuestas guiadas del auditor (§8)",
   document_traceability_matrix: "Matriz de trazabilidad documental (§8)",
+  supplier_average_score: "Valoración media de proveedores",
+  s9_guided_answers: "Respuestas guiadas del auditor (§9)",
 };
 
 const PLACEHOLDER_OVERRIDES = {
@@ -831,6 +837,47 @@ export const sectionFieldDefinitions = {
         "Sistema integrado por pestañas para catálogo, seguimiento, gráfico y valores.",
         [
           "performance_indicators_matrix",
+        ]
+      ),
+      buildGroup(
+        "satisfaccion_cliente",
+        "Seguimiento de satisfaccion del cliente (9.1.2)",
+        "Datos de encuestas, respuesta y valoracion global de cliente.",
+        [
+          "customer_satisfaction_surveys_count",
+          "customer_satisfaction_response_rate",
+          "customer_satisfaction_global_score",
+          "customer_satisfaction_recommendation",
+        ]
+      ),
+      buildGroup(
+        "auditoria_interna",
+        "Auditoria interna (9.2)",
+        "Programa interno, fecha y resumen de hallazgos.",
+        [
+          "internal_audit_program_exists",
+          "internal_audit_plan_date",
+          "internal_audit_summary",
+        ]
+      ),
+      buildGroup(
+        "revision_direccion",
+        "Revision por la direccion (9.3)",
+        "Fecha de revision, entradas revisadas y acciones acordadas.",
+        [
+          "management_review_date",
+          "management_review_summary",
+        ]
+      ),
+      buildGroup(
+        "workspace_s9",
+        "Workspace de auditoria guiada (§9)",
+        "Preguntas guiadas y resumen auditor de evaluacion del desempeno.",
+        [
+          "s9_guided_answers",
+          "performance_conclusions_summary",
+          "performance_trends_summary",
+          "performance_deviations_summary",
         ]
       ),
     ],

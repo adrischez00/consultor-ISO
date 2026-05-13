@@ -1900,6 +1900,12 @@ body {
   color: #825a02;
 }
 
+.audit-performance-status-badge.no-data {
+  background: #f1f5f9;
+  border-color: #d8e1ec;
+  color: #475467;
+}
+
 .audit-performance-chart-legend {
   display: flex;
   flex-wrap: wrap;
@@ -5858,6 +5864,208 @@ body {
 .s5-check-card-label .input-text,
 .s5-check-card-label .input-textarea {
   font-size: 0.83rem;
+}
+
+/* -- Section 9 dashboard -- */
+
+.s9-panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.s9-summary-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.s9-summary-card {
+  border: 1px solid #d7e0ec;
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f9fd 100%);
+  padding: 0.55rem 0.62rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.s9-summary-card span {
+  color: #607086;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.s9-summary-card strong {
+  color: #0f172a;
+  font-size: 1.02rem;
+  line-height: 1.1;
+}
+
+.s9-signal-bar {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.s9-signal-card {
+  border: 1px solid #d5deea;
+  border-radius: 0.82rem;
+  padding: 0.48rem 0.56rem;
+  display: grid;
+  gap: 0.18rem;
+  background: #ffffff;
+}
+
+.s9-signal-title {
+  margin: 0;
+  color: #475467;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.s9-signal-value {
+  margin: 0;
+  color: #111827;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.s9-signal-ok {
+  background: #ecfdf3;
+  border-color: #b7e4c7;
+}
+
+.s9-signal-warning {
+  background: #fff8e6;
+  border-color: #f3d499;
+}
+
+.s9-signal-critical {
+  background: #fff1f2;
+  border-color: #f9b5bf;
+}
+
+.s9-signal-neutral {
+  background: #f8fafc;
+  border-color: #d9e1eb;
+}
+
+.s9-p09-host {
+  border: 1px solid #d8e1ec;
+  border-radius: 0.95rem;
+  background: #fcfdff;
+  padding: 0.58rem;
+}
+
+.s9-p09-host .audit-performance-panel-v2 {
+  margin: 0;
+  padding: 0.82rem;
+  gap: 0.7rem;
+}
+
+.s9-p09-host .audit-performance-tab-content {
+  padding: 0.64rem;
+}
+
+.s9-p09-host .audit-performance-catalog-row {
+  padding: 0.58rem;
+  gap: 0.5rem;
+}
+
+.s9-p09-host .audit-performance-catalog-grid {
+  gap: 0.44rem;
+}
+
+.s9-p09-host .audit-performance-field .input-text,
+.s9-p09-host .audit-performance-field .input-select {
+  min-height: 2.18rem;
+  font-size: 0.84rem;
+}
+
+.s9-context-grid {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.s9-context-card {
+  border: 1px solid #d7e1ee;
+  border-radius: 0.9rem;
+  background: #ffffff;
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.s9-context-card h4 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.89rem;
+}
+
+.s9-context-fields {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.s9-field-wide {
+  grid-column: 1 / -1;
+}
+
+.s9-guided-block .s5-summary-bar {
+  margin-bottom: 0.2rem;
+}
+
+.s9-narrative-tools {
+  border: 1px solid #d8e1ec;
+  border-radius: 0.9rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.s9-narrative-header {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.s9-narrative-header h4 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 1180px) {
+  .s9-summary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .s9-signal-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .s9-context-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .s9-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .s9-signal-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .s9-context-fields {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── End Section 5 ───────────────────────────────────────────────────────── */

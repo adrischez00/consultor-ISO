@@ -30,6 +30,7 @@ import Section5LeadershipPanel from "../components/Section5LeadershipPanel";
 import Section6PlanningPanel from "../components/Section6PlanningPanel";
 import Section7SupportPanel from "../components/Section7SupportPanel";
 import Section8OperationPanel from "../components/Section8OperationPanel";
+import Section9PerformancePanel from "../components/Section9PerformancePanel";
 import { getSectionFieldDefinition, getSectionFieldGroups } from "../features/audits/sectionFieldDefinitions";
 import {
   buildGuidedValuesFromItems,
@@ -905,6 +906,12 @@ function AuditDetailPage() {
       buildGuidedValuesFromItems(activeSectionDefinition, activeSectionItems)
     );
   }, [activeSectionCode, activeSectionDefinition, activeSectionItems, guidedValuesBySection]);
+  const section9GuidedAnswers = useMemo(() => {
+    if (activeSectionCode !== "9") return {};
+    const raw = activeSectionGuidedValues?.s9_guided_answers;
+    if (raw && typeof raw === "object" && !Array.isArray(raw)) return raw;
+    return {};
+  }, [activeSectionCode, activeSectionGuidedValues]);
   const activeSectionLegacyItems = useMemo(
     () => extractLegacyItems(activeSectionDefinition, activeSectionItems),
     [activeSectionDefinition, activeSectionItems]
@@ -1345,14 +1352,20 @@ function AuditDetailPage() {
     setError("");
     setStatusMessage("");
     try {
-      const payload = (activeSectionChecks || []).map((check) => ({
-        clause_code: normalizeRequiredText(check.clause_code),
-        applicable: Boolean(check.applicable),
-        clause_status: normalizeRequiredText(check.clause_status || "compliant"),
-        evidence_summary: normalizeNullableText(check.evidence_summary),
-        observation_text: normalizeNullableText(check.observation_text),
-        sort_order: normalizeSortOrder(check.sort_order),
-      }));
+      const payload = (activeSectionChecks || []).map((check) => {
+        const clauseStatus = normalizeRequiredText(check.clause_status);
+        const normalizedStatus = clauseStatus || "compliant";
+        const uiStatus = activeSectionCode === "9" ? getClauseStatusUiValue(check) : normalizedStatus;
+        const keepAsNeutral = activeSectionCode === "9" && !uiStatus;
+        return {
+          clause_code: normalizeRequiredText(check.clause_code),
+          applicable: keepAsNeutral ? false : Boolean(check.applicable),
+          clause_status: normalizedStatus,
+          evidence_summary: normalizeNullableText(check.evidence_summary),
+          observation_text: normalizeNullableText(check.observation_text),
+          sort_order: normalizeSortOrder(check.sort_order),
+        };
+      });
 
       const saved = await putAuditClauseChecks(reportId, payload);
       const regrouped = mapBySection(saved);
@@ -1550,6 +1563,23 @@ function AuditDetailPage() {
         : check
     );
     setSectionChecksDraft(activeSectionCode, nextChecks);
+  }
+
+  function getClauseStatusUiValue(check) {
+    const rawStatus = normalizeRequiredText(check?.clause_status);
+    if (activeSectionCode !== "9") return rawStatus || "compliant";
+
+    const clauseCode = normalizeRequiredText(check?.clause_code);
+    const clauseAnswers = section9GuidedAnswers?.[clauseCode];
+    const hasGuidedEvidence = Object.entries(clauseAnswers || {}).some(
+      ([key, value]) => /^q\d+$/.test(key) && normalizeRequiredText(value)
+    );
+    const hasManualEvidence =
+      normalizeRequiredText(check?.evidence_summary) || normalizeRequiredText(check?.observation_text);
+    if ((!rawStatus || rawStatus === "compliant") && !hasManualEvidence && !hasGuidedEvidence) {
+      return "";
+    }
+    return rawStatus || "compliant";
   }
 
   if (loading) {
@@ -2423,7 +2453,7 @@ function AuditDetailPage() {
             </div>
           </SectionCard>
 
-          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && activeSection.section_code !== "7" && activeSection.section_code !== "8" && (
+          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && activeSection.section_code !== "7" && activeSection.section_code !== "8" && activeSection.section_code !== "9" && (
             <SectionCard
               title="B. Datos de la sección"
               description="Formulario guiado alineado con el informe P03."
@@ -2487,6 +2517,37 @@ function AuditDetailPage() {
               }
             >
               <Section5LeadershipPanel
+                valuesByFieldCode={activeSectionGuidedValues}
+                clauseChecks={activeSectionChecks}
+                currentFinalText={activeSectionDraft?.final_text || ""}
+                onFieldChange={handleSectionGuidedFieldChange}
+                onApplyDraftText={(text) =>
+                  setSectionMetaDraft(activeSection.section_code, { final_text: text })
+                }
+                onApplySuggestedClauseCheck={handleApplySuggestedClauseCheck}
+                disabled={savingItems}
+              />
+            </SectionCard>
+          ) : null}
+
+          {activeSection.section_code === "9" ? (
+            <SectionCard
+              title="B. Workspace de evaluacion del desempeno"
+              description="Panel ejecutivo de la clausula 9 con P09 Indicadores, preguntas guiadas, senales y generador narrativo."
+              actions={
+                <div className="inline-actions">
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={savingItems}
+                    onClick={handleSaveSectionItems}
+                  >
+                    {savingItems ? "Guardando..." : "Guardar datos"}
+                  </button>
+                </div>
+              }
+            >
+              <Section9PerformancePanel
                 valuesByFieldCode={activeSectionGuidedValues}
                 clauseChecks={activeSectionChecks}
                 currentFinalText={activeSectionDraft?.final_text || ""}
@@ -2609,7 +2670,7 @@ function AuditDetailPage() {
           >
             {activeSectionChecks.length === 0 ? (
               <p className="empty-state">No hay cláusulas configuradas para esta sección.</p>
-            ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" || activeSection.section_code === "8" ? (
+            ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" || activeSection.section_code === "8" || activeSection.section_code === "9" ? (
               <div className="s5-check-cards">
                 {activeSectionChecks.map((check, index) => (
                   <div
@@ -2635,11 +2696,14 @@ function AuditDetailPage() {
                       </label>
                       <select
                         className="input-select s5-check-status-select"
-                        value={check.clause_status || "compliant"}
+                        value={getClauseStatusUiValue(check)}
                         onChange={(event) =>
                           updateClauseCheckRow(index, { clause_status: event.target.value })
                         }
                       >
+                        {activeSection.section_code === "9" ? (
+                          <option value="">Sin evaluar</option>
+                        ) : null}
                         {CLAUSE_STATUS_OPTIONS.map((option) => (
                           <option key={option.value} value={option.value}>
                             {option.label}
