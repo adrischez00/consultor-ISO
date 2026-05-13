@@ -820,7 +820,10 @@ function AuditDetailPage() {
     [activeSectionDefinition, activeSectionItems]
   );
   const activeSectionFieldCompletion = useMemo(() => {
-    const fields = activeSectionDefinition?.flat_fields || [];
+    // Para sección 5, activeSectionGroups ya tiene los campos ocultos filtrados,
+    // por lo que el contador refleja solo los campos visibles en el bloque B.
+    // Para el resto de secciones el resultado es idéntico al original.
+    const fields = activeSectionGroups.flatMap((g) => g.fields);
     if (fields.length === 0) return { completed: 0, total: 0 };
     const completed = fields.filter((field) => {
       const value = activeSectionGuidedValues[field.field_code];
@@ -837,7 +840,7 @@ function AuditDetailPage() {
       return String(value ?? "").trim().length > 0;
     }).length;
     return { completed, total: fields.length };
-  }, [activeSectionDefinition, activeSectionGuidedValues]);
+  }, [activeSectionGroups, activeSectionGuidedValues]);
 
   const sectionStatusSummary = useMemo(() => {
     const total = sectionsWithDraftStatus.length;

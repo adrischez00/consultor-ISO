@@ -101,8 +101,11 @@ function computeSuggestedStatus(clauseAnswers) {
     .filter(([key, val]) => !key.endsWith("_comment") && val)
     .map(([, val]) => val);
   if (answers.length === 0) return null;
-  if (answers.some((a) => a === "no")) return "non_compliant";
-  if (answers.some((a) => a === "partial")) return "partial";
+  // Excluir "na" para determinar el estado real; si todo es N/A no hay sugerencia
+  const realAnswers = answers.filter((a) => a !== "na");
+  if (realAnswers.length === 0) return null;
+  if (realAnswers.some((a) => a === "no")) return "non_compliant";
+  if (realAnswers.some((a) => a === "partial")) return "partial";
   return "compliant";
 }
 
