@@ -771,10 +771,43 @@ function AuditDetailPage() {
     () => getSectionFieldDefinition(activeSectionCode),
     [activeSectionCode]
   );
-  const activeSectionGroups = useMemo(
-    () => getSectionFieldGroups(activeSectionCode),
-    [activeSectionCode]
-  );
+  // Campos de sección 5 que Section5LeadershipPanel maneja como preguntas interactivas
+  // o como chips de evidencia. Se ocultan de AuditGuidedFields (bloque B) para evitar
+  // duplicidades, pero se mantienen en sectionFieldDefinitions para backward compat.
+  const SECTION5_HIDDEN_FROM_B = new Set([
+    // Manejados por chips en B2
+    "s5_objective_evidence",
+    "s5_guided_answers",
+    // Booleanos cubiertos por preguntas guiadas en B2
+    "management_resources_adequate",
+    "sgc_integrated_in_business",
+    "s512_requirements_met",
+    "s512_feedback_tracked",
+    "s512_evidence_notes",
+    "quality_policy_updated",
+    "quality_policy_available",
+    "quality_policy_coherent",
+    "quality_policy_includes_climate_change",
+    "roles_defined",
+    "org_chart_updated",
+    "staff_aware_of_roles",
+  ]);
+
+  const activeSectionGroups = useMemo(() => {
+    const groups = getSectionFieldGroups(activeSectionCode);
+    if (activeSectionCode === "5") {
+      return groups
+        .filter((g) => g.field_group !== "evidencias_s5")
+        .map((g) => ({
+          ...g,
+          fields: g.fields.filter((f) => !SECTION5_HIDDEN_FROM_B.has(f.field_code)),
+        }))
+        .filter((g) => g.fields.length > 0);
+    }
+    return groups;
+  // SECTION5_HIDDEN_FROM_B es constante de módulo, no necesita ir en deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSectionCode]);
   const activeSectionGuidedValues = useMemo(() => {
     if (!activeSectionCode) return {};
     return (
@@ -1412,6 +1445,16 @@ function AuditDetailPage() {
     if (!activeSectionCode) return;
     const nextChecks = activeSectionChecks.map((entry, rowIndex) =>
       rowIndex === index ? { ...entry, ...patch } : entry
+    );
+    setSectionChecksDraft(activeSectionCode, nextChecks);
+  }
+
+  function handleApplySuggestedClauseCheck(clauseCode, suggestedStatus) {
+    if (!activeSectionCode) return;
+    const nextChecks = activeSectionChecks.map((check) =>
+      check.clause_code === clauseCode
+        ? { ...check, clause_status: suggestedStatus }
+        : check
     );
     setSectionChecksDraft(activeSectionCode, nextChecks);
   }
@@ -2339,10 +2382,12 @@ function AuditDetailPage() {
               <Section5LeadershipPanel
                 valuesByFieldCode={activeSectionGuidedValues}
                 clauseChecks={activeSectionChecks}
+                currentFinalText={activeSectionDraft?.final_text || ""}
                 onFieldChange={handleSectionGuidedFieldChange}
                 onApplyDraftText={(text) =>
                   setSectionMetaDraft(activeSection.section_code, { final_text: text })
                 }
+                onApplySuggestedClauseCheck={handleApplySuggestedClauseCheck}
                 disabled={savingItems}
               />
             </SectionCard>

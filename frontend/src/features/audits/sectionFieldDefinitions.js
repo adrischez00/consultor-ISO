@@ -207,6 +207,7 @@ const LIST_FIELD_CODES = new Set([
 const JSON_FIELD_CODES = new Set([
   "performance_indicators_matrix",
   "s5_objective_evidence",
+  "s5_guided_answers",
 ]);
 
 const NUMBER_FIELD_CODES = new Set([
@@ -288,6 +289,8 @@ const HELP_TEXT_BY_FIELD = {
     "Evidencias documentales revisadas en relación al enfoque al cliente: encuestas, registros de reclamaciones, indicadores comerciales...",
   s5_objective_evidence:
     "Selecciona las evidencias documentales revisadas durante la auditoría de esta sección. Se incorporarán al texto final del informe.",
+  s5_guided_answers:
+    "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 5. Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
   quality_policy_change_summary:
     "Describe los cambios realizados respecto a la versión anterior: nueva redacción, nuevos compromisos, actualización de objetivos...",
   roles_changes_summary:
@@ -578,6 +581,7 @@ export const sectionFieldDefinitions = {
         "Selecciona los documentos y registros revisados durante la auditoría de esta sección.",
         [
           "s5_objective_evidence",
+          "s5_guided_answers",
         ]
       ),
     ],
