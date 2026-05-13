@@ -27,6 +27,7 @@ import StatusBadge from "../components/StatusBadge";
 import StepTabs from "../components/StepTabs";
 import AuditGuidedFields from "../components/AuditGuidedFields";
 import Section5LeadershipPanel from "../components/Section5LeadershipPanel";
+import Section6PlanningPanel from "../components/Section6PlanningPanel";
 import { getSectionFieldDefinition, getSectionFieldGroups } from "../features/audits/sectionFieldDefinitions";
 import {
   buildGuidedValuesFromItems,
@@ -774,6 +775,18 @@ function AuditDetailPage() {
   // Campos de sección 5 que Section5LeadershipPanel maneja como preguntas interactivas
   // o como chips de evidencia. Se ocultan de AuditGuidedFields (bloque B) para evitar
   // duplicidades, pero se mantienen en sectionFieldDefinitions para backward compat.
+  const SECTION6_HIDDEN_FROM_B = new Set([
+    "s6_guided_answers",
+    "quality_objectives_matrix",
+    "planned_changes_log",
+    "objectives_are_measurable",
+    "previous_objectives",
+    "current_objectives",
+    "change_planning_method_summary",
+    "extraordinary_changes_exist",
+    "extraordinary_changes_summary",
+  ]);
+
   const SECTION5_HIDDEN_FROM_B = new Set([
     // Manejados por chips en B2
     "s5_objective_evidence",
@@ -804,8 +817,17 @@ function AuditDetailPage() {
         }))
         .filter((g) => g.fields.length > 0);
     }
+    if (activeSectionCode === "6") {
+      return groups
+        .filter((g) => g.field_group !== "workspace_s6")
+        .map((g) => ({
+          ...g,
+          fields: g.fields.filter((f) => !SECTION6_HIDDEN_FROM_B.has(f.field_code)),
+        }))
+        .filter((g) => g.fields.length > 0);
+    }
     return groups;
-  // SECTION5_HIDDEN_FROM_B es constante de módulo, no necesita ir en deps
+  // SECTION5_HIDDEN_FROM_B / SECTION6_HIDDEN_FROM_B son constantes de render, no van en deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSectionCode]);
   const activeSectionGuidedValues = useMemo(() => {
@@ -2333,7 +2355,7 @@ function AuditDetailPage() {
             </div>
           </SectionCard>
 
-          {activeSection.section_code !== "5" && (
+          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && (
             <SectionCard
               title="B. Datos de la sección"
               description="Formulario guiado alineado con el informe P03."
@@ -2410,6 +2432,37 @@ function AuditDetailPage() {
             </SectionCard>
           ) : null}
 
+          {activeSection.section_code === "6" ? (
+            <SectionCard
+              title="B. Workspace de auditoría guiada"
+              description="Riesgos y oportunidades, objetivos de calidad, planificación de cambios y generador de texto narrativo."
+              actions={
+                <div className="inline-actions">
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={savingItems}
+                    onClick={handleSaveSectionItems}
+                  >
+                    {savingItems ? "Guardando..." : "Guardar datos"}
+                  </button>
+                </div>
+              }
+            >
+              <Section6PlanningPanel
+                valuesByFieldCode={activeSectionGuidedValues}
+                clauseChecks={activeSectionChecks}
+                currentFinalText={activeSectionDraft?.final_text || ""}
+                onFieldChange={handleSectionGuidedFieldChange}
+                onApplyDraftText={(text) =>
+                  setSectionMetaDraft(activeSection.section_code, { final_text: text })
+                }
+                onApplySuggestedClauseCheck={handleApplySuggestedClauseCheck}
+                disabled={savingItems}
+              />
+            </SectionCard>
+          ) : null}
+
           <SectionCard
             title="C. Verificación por cláusulas ISO"
             description="Revisión compacta por cláusula aplicable en esta sección."
@@ -2426,7 +2479,7 @@ function AuditDetailPage() {
           >
             {activeSectionChecks.length === 0 ? (
               <p className="empty-state">No hay cláusulas configuradas para esta sección.</p>
-            ) : activeSection.section_code === "5" ? (
+            ) : activeSection.section_code === "5" || activeSection.section_code === "6" ? (
               <div className="s5-check-cards">
                 {activeSectionChecks.map((check, index) => (
                   <div

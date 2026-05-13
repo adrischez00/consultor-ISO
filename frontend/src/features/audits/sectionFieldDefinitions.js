@@ -208,6 +208,9 @@ const JSON_FIELD_CODES = new Set([
   "performance_indicators_matrix",
   "s5_objective_evidence",
   "s5_guided_answers",
+  "quality_objectives_matrix",
+  "planned_changes_log",
+  "s6_guided_answers",
 ]);
 
 const NUMBER_FIELD_CODES = new Set([
@@ -291,6 +294,12 @@ const HELP_TEXT_BY_FIELD = {
     "Selecciona las evidencias documentales revisadas durante la auditoría de esta sección. Se incorporarán al texto final del informe.",
   s5_guided_answers:
     "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 5. Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
+  s6_guided_answers:
+    "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 6 (6.1, 6.2, 6.3). Mismo patrón que s5_guided_answers.",
+  quality_objectives_matrix:
+    "Matriz de objetivos de calidad del periodo (6.2). Cada fila incluye objetivo, indicador, meta, resultado, estado, responsable, plazo, evidencia y acciones correctivas.",
+  planned_changes_log:
+    "Registro de cambios planificados o realizados en el SGC (6.3). Cada fila incluye descripción, tipo, motivo, impacto, responsable, estado, fecha y evidencia.",
   quality_policy_change_summary:
     "Describe los cambios realizados respecto a la versión anterior: nueva redacción, nuevos compromisos, actualización de objetivos...",
   roles_changes_summary:
@@ -360,6 +369,9 @@ const LABEL_OVERRIDES = {
   quality_policy_coherent: "Coherente con el contexto y dirección estratégica",
   staff_aware_of_roles: "El personal conoce sus funciones y autoridades",
   s5_objective_evidence: "Evidencias objetivas revisadas (§5)",
+  quality_objectives_matrix: "Matriz de objetivos de calidad (§6.2)",
+  planned_changes_log: "Registro de cambios del SGC (§6.3)",
+  s6_guided_answers: "Respuestas guiadas del auditor (§6)",
 };
 
 const PLACEHOLDER_OVERRIDES = {
@@ -599,23 +611,33 @@ export const sectionFieldDefinitions = {
       buildGroup(
         "objetivos_calidad",
         "6.2 Objetivos de calidad",
-        "Objetivos anteriores y actuales con trazabilidad.",
+        "Matriz de objetivos con indicador, meta, resultado y seguimiento.",
         [
           "objectives_reference_document",
           "objectives_are_measurable",
           "previous_objectives",
           "current_objectives",
+          "quality_objectives_matrix",
         ]
       ),
       buildGroup(
         "planificacion_cambios",
         "6.3 Planificacion de cambios",
-        "Gestión de cambios y revisión por la dirección.",
+        "Registro de cambios planificados o realizados en el SGC.",
         [
           "management_review_planned_date",
           "change_planning_method_summary",
           "extraordinary_changes_exist",
           "extraordinary_changes_summary",
+          "planned_changes_log",
+        ]
+      ),
+      buildGroup(
+        "workspace_s6",
+        "Workspace guiado sección 6",
+        "Respuestas del auditor a preguntas guiadas por cláusula.",
+        [
+          "s6_guided_answers",
         ]
       ),
     ],

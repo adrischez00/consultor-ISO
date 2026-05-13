@@ -5861,3 +5861,277 @@ body {
 }
 
 /* ── End Section 5 ───────────────────────────────────────────────────────── */
+
+/* ── Section 6 ─────────────────────────────────────────────────────────── */
+
+.s6-p09-note-zone {
+  margin-bottom: 0.5rem;
+}
+
+.s6-p09-note {
+  font-size: 0.82rem;
+  color: #4b5563;
+  background: #f0f4ff;
+  border: 1px solid #c7d7fc;
+  border-radius: 7px;
+  padding: 0.6rem 0.85rem;
+  line-height: 1.5;
+}
+
+/* ── EditableAuditMatrix ─────────────────────────────────────────────────── */
+
+.audit-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mat-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.mat-row {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+
+.mat-row-open {
+  border-color: #93c5fd;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.07);
+}
+
+.mat-row-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.8rem;
+  background: #f8fafc;
+  cursor: default;
+}
+
+.mat-row-open .mat-row-head {
+  background: #eff6ff;
+  border-bottom: 1px solid #bfdbfe;
+}
+
+.mat-row-primary {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mat-row-primary-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.mat-row-empty-text {
+  color: #94a3b8;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.mat-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.mat-row-meta-item {
+  font-size: 0.75rem;
+  color: #64748b;
+  background: #f1f5f9;
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  white-space: nowrap;
+}
+
+.mat-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+/* Status badges */
+.mat-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 5px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+
+.mat-badge-achieved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.mat-badge-partial {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.mat-badge-not-achieved {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.mat-badge-progress {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.mat-badge-cancelled {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.mat-badge-default {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.mat-badge-type {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+/* Expand / Remove buttons */
+.mat-btn-expand {
+  font-size: 0.7rem;
+  background: none;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  padding: 0.2rem 0.45rem;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.mat-btn-expand:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.mat-btn-remove {
+  font-size: 1rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
+  transition: color 0.12s, background 0.12s;
+}
+
+.mat-btn-remove:hover:not(:disabled) {
+  color: #ef4444;
+  background: #fee2e2;
+}
+
+/* Expanded body */
+.mat-row-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  padding: 0.7rem 0.8rem;
+}
+
+.mat-expand-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mat-expand-field-wide {
+  grid-column: 1 / -1;
+}
+
+.mat-expand-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.mat-expand-input,
+.mat-expand-select {
+  font-size: 0.83rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.mat-expand-input:focus,
+.mat-expand-select:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.mat-expand-textarea {
+  font-size: 0.83rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+  color: #1e293b;
+  outline: none;
+  resize: vertical;
+  min-height: 4rem;
+  font-family: inherit;
+  line-height: 1.45;
+  transition: border-color 0.15s;
+}
+
+.mat-expand-textarea:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Add / Empty */
+.mat-add-btn {
+  align-self: flex-start;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px dashed #93c5fd;
+  border-radius: 7px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.mat-add-btn:hover {
+  background: #dbeafe;
+  border-color: #60a5fa;
+}
+
+.mat-empty {
+  font-size: 0.83rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin: 0 0 0.6rem;
+}
+
+/* ── End Section 6 ───────────────────────────────────────────────────────── */
