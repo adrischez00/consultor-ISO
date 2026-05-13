@@ -60,6 +60,77 @@ const ANSWER_OPTIONS = [
   { value: "na", label: "N/A", color: "s5-ans-na" },
 ];
 
+// ── Campos contextuales por cláusula (integrados en cada acordeón) ───────────
+
+const CLAUSE_CONTEXT_FIELDS = {
+  "5.1": [
+    {
+      field_code: "top_management_involvement_summary",
+      label: "Implicación de la alta dirección",
+      type: "textarea",
+      placeholder: "Participación y compromiso observados durante la auditoría...",
+    },
+  ],
+  "5.1.2": [
+    {
+      field_code: "s512_satisfaction_summary",
+      label: "Satisfacción del cliente",
+      type: "textarea",
+      placeholder: "Resultados de encuestas, NPS, valoraciones globales...",
+    },
+    {
+      field_code: "s512_complaints_summary",
+      label: "Reclamaciones e incidencias",
+      type: "textarea",
+      placeholder: "Volumen, tipología, estado de resolución...",
+    },
+  ],
+  "5.2": [
+    {
+      field_code: "quality_policy_revision",
+      label: "Revisión nº",
+      type: "text",
+      placeholder: "p.ej. 3",
+      inline: true,
+    },
+    {
+      field_code: "quality_policy_date",
+      label: "Fecha de la política",
+      type: "date",
+      inline: true,
+    },
+    {
+      field_code: "quality_policy_change_summary",
+      label: "Cambios respecto a versión anterior",
+      type: "textarea",
+      placeholder: "Principales modificaciones desde la última revisión...",
+    },
+  ],
+  "5.3": [
+    {
+      field_code: "quality_system_responsible_name",
+      label: "Responsable del SGC",
+      type: "text",
+      placeholder: "Nombre y cargo",
+      inline: true,
+    },
+    {
+      field_code: "roles_document_reference",
+      label: "Ref. documento de roles",
+      type: "text",
+      placeholder: "p.ej. P05 v2",
+      inline: true,
+    },
+    {
+      field_code: "org_chart_reference",
+      label: "Referencia organigrama",
+      type: "text",
+      placeholder: "p.ej. Organigrama 2024",
+      inline: true,
+    },
+  ],
+};
+
 const EVIDENCE_OPTIONS = [
   { id: "rev_direccion", label: "Acta de revisión por la dirección" },
   { id: "politica_calidad", label: "Política de calidad vigente" },
@@ -578,6 +649,48 @@ export default function Section5LeadershipPanel({
 
                 {isOpen && (
                   <div className="s5-clause-body">
+
+                    {/* Campos contextuales de esta cláusula */}
+                    {CLAUSE_CONTEXT_FIELDS[item.clause] && (() => {
+                      const ctxFields = CLAUSE_CONTEXT_FIELDS[item.clause];
+                      const inlineFields = ctxFields.filter((f) => f.inline);
+                      const fullFields = ctxFields.filter((f) => !f.inline);
+                      return (
+                        <div className="s5-context-zone">
+                          {inlineFields.length > 0 && (
+                            <div className="s5-context-row">
+                              {inlineFields.map((f) => (
+                                <div key={f.field_code} className="s5-context-field">
+                                  <span className="s5-context-label">{f.label}</span>
+                                  <input
+                                    type={f.type === "date" ? "date" : "text"}
+                                    className="s5-context-input"
+                                    value={valuesByFieldCode?.[f.field_code] || ""}
+                                    placeholder={f.placeholder}
+                                    disabled={disabled}
+                                    onChange={(e) => onFieldChange(f.field_code, e.target.value)}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {fullFields.map((f) => (
+                            <div key={f.field_code} className="s5-context-wide">
+                              <span className="s5-context-label">{f.label}</span>
+                              <textarea
+                                className="s5-context-textarea"
+                                value={valuesByFieldCode?.[f.field_code] || ""}
+                                placeholder={f.placeholder}
+                                rows={2}
+                                disabled={disabled}
+                                onChange={(e) => onFieldChange(f.field_code, e.target.value)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    })()}
+
                     <ul className="s5-question-list">
                       {item.questions.map((q, idx) => {
                         const answer = getAnswer(item.clause, idx);
@@ -731,8 +844,8 @@ export default function Section5LeadershipPanel({
           <div className="s5-block-intro">
             <h4 className="s5-block-title">Generar texto narrativo del informe</h4>
             <p className="s5-block-desc">
-              Crea un borrador profesional usando datos del bloque B, respuestas guiadas,
-              evidencias y estado de cláusulas. Edítalo libremente en el bloque D.
+              Crea un borrador profesional usando los campos contextuales, respuestas guiadas,
+              evidencias seleccionadas y estado de cláusulas. Edítalo libremente en el bloque D.
             </p>
           </div>
 

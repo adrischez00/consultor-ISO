@@ -2333,54 +2333,68 @@ function AuditDetailPage() {
             </div>
           </SectionCard>
 
-          <SectionCard
-            title="B. Datos de la sección"
-            description="Formulario guiado alineado con el informe P03."
-            actions={
-              <div className="inline-actions">
-                <span className="soft-label">
-                  Completados: {activeSectionFieldCompletion.completed}/{activeSectionFieldCompletion.total}
-                </span>
-                <button
-                  type="button"
-                  className="btn-primary"
-                  disabled={savingItems}
-                  onClick={handleSaveSectionItems}
-                >
-                  {savingItems ? "Guardando..." : "Guardar datos"}
-                </button>
-              </div>
-            }
-          >
-            <AuditGuidedFields
-              auditReportId={reportId}
-              sectionTitle={activeSection.title}
-              groups={activeSectionGroups}
-              valuesByFieldCode={activeSectionGuidedValues}
-              onFieldChange={handleSectionGuidedFieldChange}
-              disabled={savingItems}
-            />
+          {activeSection.section_code !== "5" && (
+            <SectionCard
+              title="B. Datos de la sección"
+              description="Formulario guiado alineado con el informe P03."
+              actions={
+                <div className="inline-actions">
+                  <span className="soft-label">
+                    Completados: {activeSectionFieldCompletion.completed}/{activeSectionFieldCompletion.total}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={savingItems}
+                    onClick={handleSaveSectionItems}
+                  >
+                    {savingItems ? "Guardando..." : "Guardar datos"}
+                  </button>
+                </div>
+              }
+            >
+              <AuditGuidedFields
+                auditReportId={reportId}
+                sectionTitle={activeSection.title}
+                groups={activeSectionGroups}
+                valuesByFieldCode={activeSectionGuidedValues}
+                onFieldChange={handleSectionGuidedFieldChange}
+                disabled={savingItems}
+              />
 
-            {activeSectionLegacyItems.length > 0 ? (
-              <details className="audit-legacy-items">
-                <summary>
-                  Datos legacy detectados ({activeSectionLegacyItems.length}) - se conservarán al guardar
-                </summary>
-                <ul className="simple-list">
-                  {activeSectionLegacyItems.map((item) => (
-                    <li key={`${item.item_code}-${item.sort_order}`}>
-                      <strong>{item.item_code}</strong> - {item.item_label || "-"}
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            ) : null}
-          </SectionCard>
+              {activeSectionLegacyItems.length > 0 ? (
+                <details className="audit-legacy-items">
+                  <summary>
+                    Datos legacy detectados ({activeSectionLegacyItems.length}) - se conservarán al guardar
+                  </summary>
+                  <ul className="simple-list">
+                    {activeSectionLegacyItems.map((item) => (
+                      <li key={`${item.item_code}-${item.sort_order}`}>
+                        <strong>{item.item_code}</strong> - {item.item_label || "-"}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ) : null}
+            </SectionCard>
+          )}
 
           {activeSection.section_code === "5" ? (
             <SectionCard
-              title="B2. Auditor — Preguntas, evidencias y texto"
-              description="Herramientas de apoyo al auditor: preguntas guiadas por cláusula, selector de evidencias y generador de texto narrativo."
+              title="B. Workspace de auditoría guiada"
+              description="Campos contextuales, preguntas guiadas por cláusula, evidencias objetivas y generador de texto narrativo."
+              actions={
+                <div className="inline-actions">
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={savingItems}
+                    onClick={handleSaveSectionItems}
+                  >
+                    {savingItems ? "Guardando..." : "Guardar datos"}
+                  </button>
+                </div>
+              }
             >
               <Section5LeadershipPanel
                 valuesByFieldCode={activeSectionGuidedValues}
@@ -2412,6 +2426,71 @@ function AuditDetailPage() {
           >
             {activeSectionChecks.length === 0 ? (
               <p className="empty-state">No hay cláusulas configuradas para esta sección.</p>
+            ) : activeSection.section_code === "5" ? (
+              <div className="s5-check-cards">
+                {activeSectionChecks.map((check, index) => (
+                  <div
+                    key={`${check.id || check.clause_code}-${index}`}
+                    className={`s5-check-card${!check.applicable ? " s5-check-card-na" : ""}`}
+                  >
+                    <div className="s5-check-card-head">
+                      <div className="s5-check-title">
+                        <strong>{check.clause_code}</strong>
+                        {check.clause_title && (
+                          <span className="soft-label">{check.clause_title}</span>
+                        )}
+                      </div>
+                      <label className="s5-check-apply-toggle">
+                        <input
+                          type="checkbox"
+                          checked={Boolean(check.applicable)}
+                          onChange={(event) =>
+                            updateClauseCheckRow(index, { applicable: event.target.checked })
+                          }
+                        />
+                        <span>Aplica</span>
+                      </label>
+                      <select
+                        className="input-select s5-check-status-select"
+                        value={check.clause_status || "compliant"}
+                        onChange={(event) =>
+                          updateClauseCheckRow(index, { clause_status: event.target.value })
+                        }
+                      >
+                        {CLAUSE_STATUS_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {check.applicable && (
+                      <div className="s5-check-card-body">
+                        <label className="s5-check-card-label">
+                          <span>Evidencia</span>
+                          <input
+                            className="input-text"
+                            value={check.evidence_summary || ""}
+                            onChange={(event) =>
+                              updateClauseCheckRow(index, { evidence_summary: event.target.value })
+                            }
+                          />
+                        </label>
+                        <label className="s5-check-card-label">
+                          <span>Observación</span>
+                          <RichTextarea
+                            className="input-textarea"
+                            value={check.observation_text || ""}
+                            onChange={(event) =>
+                              updateClauseCheckRow(index, { observation_text: event.target.value })
+                            }
+                          />
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             ) : (
               <div
                 className={`audit-check-table-wrap ${
