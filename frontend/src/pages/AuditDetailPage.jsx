@@ -29,6 +29,7 @@ import AuditGuidedFields from "../components/AuditGuidedFields";
 import Section5LeadershipPanel from "../components/Section5LeadershipPanel";
 import Section6PlanningPanel from "../components/Section6PlanningPanel";
 import Section7SupportPanel from "../components/Section7SupportPanel";
+import Section8OperationPanel from "../components/Section8OperationPanel";
 import { getSectionFieldDefinition, getSectionFieldGroups } from "../features/audits/sectionFieldDefinitions";
 import {
   buildGuidedValuesFromItems,
@@ -816,6 +817,26 @@ function AuditDetailPage() {
     "last_meeting_topics",
   ]);
 
+  const SECTION8_HIDDEN_FROM_B = new Set([
+    // Gestionados por el workspace panel
+    "s8_guided_answers",
+    "document_traceability_matrix",
+    // Muestra operativa — reemplazada por la matriz de trazabilidad
+    "sample_project_name",
+    "sample_budget_code",
+    "sample_budget_date",
+    "sample_contract_date",
+    "sample_invoice_code",
+    "sample_invoice_date",
+    "sample_payment_terms",
+    // Resúmenes cubiertos por las preguntas guiadas
+    "operational_control_summary",
+    "service_requirements_summary",
+    "supplier_control_summary",
+    "release_evidence_summary",
+    "nonconformities_summary",
+  ]);
+
   const SECTION5_HIDDEN_FROM_B = new Set([
     // Manejados por chips en B2
     "s5_objective_evidence",
@@ -861,6 +882,15 @@ function AuditDetailPage() {
         .map((g) => ({
           ...g,
           fields: g.fields.filter((f) => !SECTION7_HIDDEN_FROM_B.has(f.field_code)),
+        }))
+        .filter((g) => g.fields.length > 0);
+    }
+    if (activeSectionCode === "8") {
+      return groups
+        .filter((g) => g.field_group !== "workspace_s8")
+        .map((g) => ({
+          ...g,
+          fields: g.fields.filter((f) => !SECTION8_HIDDEN_FROM_B.has(f.field_code)),
         }))
         .filter((g) => g.fields.length > 0);
     }
@@ -2532,6 +2562,37 @@ function AuditDetailPage() {
             </SectionCard>
           ) : null}
 
+          {activeSection.section_code === "8" ? (
+            <SectionCard
+              title="B. Workspace de auditoría guiada"
+              description="Control operacional, requisitos del cliente, proveedores externos, trazabilidad documental, liberación del servicio y no conformidades."
+              actions={
+                <div className="inline-actions">
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={savingItems}
+                    onClick={handleSaveSectionItems}
+                  >
+                    {savingItems ? "Guardando..." : "Guardar datos"}
+                  </button>
+                </div>
+              }
+            >
+              <Section8OperationPanel
+                valuesByFieldCode={activeSectionGuidedValues}
+                clauseChecks={activeSectionChecks}
+                currentFinalText={activeSectionDraft?.final_text || ""}
+                onFieldChange={handleSectionGuidedFieldChange}
+                onApplyDraftText={(text) =>
+                  setSectionMetaDraft(activeSection.section_code, { final_text: text })
+                }
+                onApplySuggestedClauseCheck={handleApplySuggestedClauseCheck}
+                disabled={savingItems}
+              />
+            </SectionCard>
+          ) : null}
+
           <SectionCard
             title="C. Verificación por cláusulas ISO"
             description="Revisión compacta por cláusula aplicable en esta sección."
@@ -2548,7 +2609,7 @@ function AuditDetailPage() {
           >
             {activeSectionChecks.length === 0 ? (
               <p className="empty-state">No hay cláusulas configuradas para esta sección.</p>
-            ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" ? (
+            ) : activeSection.section_code === "5" || activeSection.section_code === "6" || activeSection.section_code === "7" || activeSection.section_code === "8" ? (
               <div className="s5-check-cards">
                 {activeSectionChecks.map((check, index) => (
                   <div

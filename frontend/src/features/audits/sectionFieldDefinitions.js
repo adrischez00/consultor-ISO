@@ -214,6 +214,8 @@ const JSON_FIELD_CODES = new Set([
   "competence_training_matrix",
   "communication_matrix",
   "s7_guided_answers",
+  "document_traceability_matrix",
+  "s8_guided_answers",
 ]);
 
 const NUMBER_FIELD_CODES = new Set([
@@ -315,6 +317,10 @@ const HELP_TEXT_BY_FIELD = {
     "Describe los cambios realizados respecto a la versión anterior: nueva redacción, nuevos compromisos, actualización de objetivos...",
   roles_changes_summary:
     "Describe cambios en la estructura organizativa, nuevas responsabilidades asignadas o modificaciones al organigrama.",
+  s8_guided_answers:
+    "Respuestas del auditor a las preguntas guiadas por cláusula de la sección 8 (8.1, 8.2, 8.4, 8.6, 8.7). Almacena estado (sí/parcial/no/na) y comentario opcional por pregunta.",
+  document_traceability_matrix:
+    "Matriz de trazabilidad documental de la muestra auditada (8.x). Cada fila incluye tipo de documento, referencia, fecha, estado de verificación y observaciones.",
 };
 
 const LABEL_OVERRIDES = {
@@ -387,6 +393,8 @@ const LABEL_OVERRIDES = {
   competence_training_matrix: "Matriz de competencias y formación (§7.2)",
   communication_matrix: "Matriz de comunicación (§7.4)",
   awareness_actions_notes: "Observaciones de toma de conciencia",
+  s8_guided_answers: "Respuestas guiadas del auditor (§8)",
+  document_traceability_matrix: "Matriz de trazabilidad documental (§8)",
 };
 
 const PLACEHOLDER_OVERRIDES = {
@@ -800,6 +808,15 @@ export const sectionFieldDefinitions = {
           "nonconformities_document_reference",
           "nonconformities_count",
           "nonconformities_summary",
+        ]
+      ),
+      buildGroup(
+        "workspace_s8",
+        "Workspace de auditoría guiada (§8)",
+        "Preguntas guiadas y matriz de trazabilidad — gestionados por el panel interactivo.",
+        [
+          "s8_guided_answers",
+          "document_traceability_matrix",
         ]
       ),
     ],
