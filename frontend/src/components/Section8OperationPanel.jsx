@@ -155,16 +155,21 @@ function computeSuggestedStatus(clauseAnswers) {
   if (answers.length === 0) return null;
   if (answers.some((v) => v === "no"))      return "non_compliant";
   if (answers.some((v) => v === "partial")) return "partial";
+  // Todas N/A → sin conclusión aplicable (no se infiere Cumple)
+  if (answers.every((v) => v === "na"))     return null;
   if (answers.every((v) => v === "yes" || v === "na")) return "compliant";
   return "partial";
 }
 
 function computeSuggestedStatus84(clauseAnswers, supplierCount, supplierScore) {
   const questionStatus = computeSuggestedStatus(clauseAnswers);
-  const count = Number(supplierCount) || 0;
+  // Solo aplicar señal de proveedor cuando el campo está explícitamente relleno
+  if (supplierCount == null || supplierCount === "") return questionStatus;
+  const count = Number(supplierCount);
+  if (!Number.isFinite(count)) return questionStatus;
   let supplierStatus = null;
   if (count === 0) supplierStatus = "non_compliant";
-  else if (supplierScore != null && Number(supplierScore) < 5) supplierStatus = "partial";
+  else if (supplierScore != null && supplierScore !== "" && Number(supplierScore) < 5) supplierStatus = "partial";
   else supplierStatus = "compliant";
   return worstStatus(questionStatus, supplierStatus);
 }
@@ -179,7 +184,8 @@ function computeSuggestedStatus87(clauseAnswers, ncCount) {
   const questionStatus = computeSuggestedStatus(clauseAnswers);
   const count = Number(ncCount) || 0;
   if (count > 0) {
-    const actionsAnswer = (clauseAnswers || {}).q3;
+    // q2 = "¿Las no conformidades tienen acciones correctivas asociadas y con seguimiento?"
+    const actionsAnswer = (clauseAnswers || {}).q2;
     if (!actionsAnswer || actionsAnswer === "no") return worstStatus(questionStatus, "partial");
   }
   return questionStatus;
@@ -340,8 +346,8 @@ function buildSection8DraftText(valuesByFieldCode, guidedAnswers, traceabilityMa
       if (ncRef) block += `, ${pl(ncCount, "registrada", "registradas")} en ${ncRef}`;
       block += ".";
       if (ncSummary) block += `\n${ncSummary}`;
-      if (ans87.q3 === "yes") block += "\nSe han definido acciones correctivas con seguimiento asociado a las no conformidades.";
-      if (ans87.q4 === "yes") block += "\nSe realiza análisis de causas raíz para las no conformidades recurrentes.";
+      if (ans87.q2 === "yes") block += "\nSe han definido acciones correctivas con seguimiento asociado a las no conformidades.";
+      if (ans87.q3 === "yes") block += "\nSe realiza análisis de causas raíz para las no conformidades recurrentes.";
       if (ncCount > 3) block += "\nEl volumen de no conformidades requiere un análisis sistemático de causas raíz y la implementación de acciones correctivas de carácter preventivo.";
     }
     parts.push(`CONTROL DE SALIDAS NO CONFORMES (8.7)\n\n${block}`);
@@ -516,16 +522,20 @@ export default function Section8OperationPanel({
   // ── Señales operacionales ──────────────────────────────────────────────────
 
   const operationalSignals = useMemo(() => {
-    const supplierCount = Number(valuesByFieldCode?.supplier_evaluation_count) || 0;
+    const rawSupplierCount = valuesByFieldCode?.supplier_evaluation_count;
+    const supplierCountSet = rawSupplierCount != null && rawSupplierCount !== "";
+    const supplierCount = supplierCountSet ? Number(rawSupplierCount) : null;
     const supplierScore = valuesByFieldCode?.supplier_average_score;
     const releaseControl = valuesByFieldCode?.service_release_control_exists;
     const ncCount = Number(valuesByFieldCode?.nonconformities_count) || 0;
     const tMatrix = traceabilityMatrix;
 
     const supplierSig = (() => {
+      if (!supplierCountSet)
+        return { id: "suppliers", label: "Proveedores evaluados", status: "neutral", detail: "Sin datos" };
       if (supplierCount === 0)
         return { id: "suppliers", label: "Proveedores evaluados", status: "critical", detail: "Sin evaluaciones" };
-      if (supplierScore != null && Number(supplierScore) < 5)
+      if (supplierScore != null && supplierScore !== "" && Number(supplierScore) < 5)
         return { id: "suppliers", label: "Proveedores evaluados", status: "warning", detail: `${supplierCount} eval. · Score ${supplierScore}/10` };
       return { id: "suppliers", label: "Proveedores evaluados", status: "ok", detail: `${supplierCount} ${pl(supplierCount, "evaluado", "evaluados")}` };
     })();
@@ -575,14 +585,17 @@ export default function Section8OperationPanel({
 
   const operationalRisks = useMemo(() => {
     const risks = [];
-    const supplierCount = Number(valuesByFieldCode?.supplier_evaluation_count) || 0;
+    const rawSupplierCount = valuesByFieldCode?.supplier_evaluation_count;
+    const supplierCountSet = rawSupplierCount != null && rawSupplierCount !== "";
+    const supplierCount = supplierCountSet ? Number(rawSupplierCount) : null;
     const supplierScore = valuesByFieldCode?.supplier_average_score;
     const releaseControl = valuesByFieldCode?.service_release_control_exists;
     const ncCount = Number(valuesByFieldCode?.nonconformities_count) || 0;
 
-    if (supplierCount === 0) {
+    // Solo alertar de proveedores cuando el campo está explícitamente relleno
+    if (supplierCountSet && supplierCount === 0) {
       risks.push({ id: "no_supplier", label: "Proveedor crítico sin evaluación documentada", severity: "critical" });
-    } else if (supplierScore != null && Number(supplierScore) < 5) {
+    } else if (supplierCountSet && supplierScore != null && supplierScore !== "" && Number(supplierScore) < 5) {
       risks.push({ id: "low_score", label: `Score de proveedor bajo (${supplierScore}/10) — revisar panel de proveedores`, severity: "warning" });
     }
     if (releaseControl === false) {

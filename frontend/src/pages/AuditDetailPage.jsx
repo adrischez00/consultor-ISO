@@ -2423,7 +2423,7 @@ function AuditDetailPage() {
             </div>
           </SectionCard>
 
-          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && activeSection.section_code !== "7" && (
+          {activeSection.section_code !== "5" && activeSection.section_code !== "6" && activeSection.section_code !== "7" && activeSection.section_code !== "8" && (
             <SectionCard
               title="B. Datos de la sección"
               description="Formulario guiado alineado con el informe P03."
