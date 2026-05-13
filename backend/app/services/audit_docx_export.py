@@ -25,8 +25,12 @@ from app.models.client import Client
 logger = logging.getLogger(__name__)
 
 WATERMARK_LOGO_ENV_VAR = "AUDIT_DOCX_WATERMARK_LOGO"
-WATERMARK_DEFAULT_RELATIVE_PATH = Path("assets") / "docx" / "watermark_logo.png"
+WATERMARK_DEFAULT_RELATIVE_PATH = Path("assets") / "docx" / "logoH.png"
 _WATERMARK_ANCHOR_REGISTERED = False
+WATERMARK_ALPHA_AMT = 4500
+WATERMARK_USE_GRAYSCALE = False
+WATERMARK_MINIMAL_SURFACES_MODE = True
+WATERMARK_ROTATION_DEGREES = -14.0
 
 SYSTEM_PROMPT = (
     "Actúa como auditor interno ISO 9001 redactando un informe en español técnico y profesional. "
@@ -1516,6 +1520,12 @@ def _resolve_watermark_logo_path() -> Path | None:
     return None
 
 
+def _watermark_active_for_visuals() -> bool:
+    if not WATERMARK_MINIMAL_SURFACES_MODE:
+        return False
+    return _resolve_watermark_logo_path() is not None
+
+
 def _register_watermark_anchor_class() -> bool:
     global _WATERMARK_ANCHOR_REGISTERED
     if _WATERMARK_ANCHOR_REGISTERED:
@@ -1560,6 +1570,11 @@ def _register_watermark_anchor_class() -> bool:
         ) -> Any:
             pic_id = 0
             pic = CT_Picture.new(pic_id, filename, r_id, cx, cy)
+            _apply_watermark_blip_effect(
+                pic,
+                alpha_amt=WATERMARK_ALPHA_AMT,
+                grayscale=WATERMARK_USE_GRAYSCALE,
+            )
             return cls.new(cx, cy, shape_id, pic, pos_x, pos_y)
 
         @classmethod
@@ -1588,6 +1603,47 @@ def _register_watermark_anchor_class() -> bool:
     return True
 
 
+def _apply_watermark_blip_effect(
+    pic: Any,
+    *,
+    alpha_amt: int = 9000,
+    grayscale: bool = True,
+) -> None:
+    toolkit = _get_docx_toolkit()
+    OxmlElement = toolkit.get("OxmlElement")
+    if OxmlElement is None:
+        return
+    try:
+        blips = pic.xpath(".//a:blip")
+        if not blips:
+            return
+        blip = blips[0]
+        for child in list(blip):
+            local_name = str(child.tag).rsplit("}", 1)[-1]
+            if local_name in {"alphaModFix", "grayscl"}:
+                blip.remove(child)
+        if grayscale:
+            blip.append(OxmlElement("a:grayscl"))
+        alpha_node = OxmlElement("a:alphaModFix")
+        alpha_value = max(1000, min(100000, int(alpha_amt)))
+        alpha_node.set("amt", str(alpha_value))
+        blip.append(alpha_node)
+    except Exception:
+        return
+
+
+def _apply_watermark_rotation(pic: Any, *, rotation_degrees: float) -> None:
+    try:
+        xfrm_nodes = pic.xpath(".//pic:spPr/a:xfrm")
+        if not xfrm_nodes:
+            return
+        # DrawingML rotation uses 1/60000 degree units.
+        rot_units = int(rotation_degrees * 60000)
+        xfrm_nodes[0].set("rot", str(rot_units))
+    except Exception:
+        return
+
+
 def _add_float_picture(
     paragraph: Any,
     image_path: Path,
@@ -1606,6 +1662,9 @@ def _add_float_picture(
         cx, cy = image.scaled_dimensions(width_emu, None)
         shape_id, filename = run.part.next_id, image.filename
         anchor = CT_Anchor.new_pic_anchor(shape_id, r_id, filename, int(cx), int(cy), int(pos_x_emu), int(pos_y_emu))
+        pic_nodes = anchor.xpath(".//pic:pic")
+        if pic_nodes:
+            _apply_watermark_rotation(pic_nodes[0], rotation_degrees=WATERMARK_ROTATION_DEGREES)
         run._r.add_drawing(anchor)
         return True
     except Exception:
@@ -1615,19 +1674,25 @@ def _add_float_picture(
 def _add_logo_watermark(document: Any) -> None:
     logo_path = _resolve_watermark_logo_path()
     if logo_path is None:
+        logger.info(
+            "Marca de agua DOCX desactivada: no se encontró logo en %s (ni en variable %s).",
+            str(_backend_root_dir() / WATERMARK_DEFAULT_RELATIVE_PATH),
+            WATERMARK_LOGO_ENV_VAR,
+        )
         return
     if not _register_watermark_anchor_class():
         logger.warning("No se pudo registrar soporte de anclaje DOCX para marca de agua.")
         return
 
+    seen_header_elements: set[int] = set()
     for section in document.sections:
         page_width = int(section.page_width or 0)
         page_height = int(section.page_height or 0)
         if page_width <= 0 or page_height <= 0:
             continue
-        target_width = int(page_width * 0.56)
+        target_width = int(page_width * 0.78)
         pos_x = int((page_width - target_width) / 2)
-        pos_y = int(page_height * 0.22)
+        pos_y = int(page_height * 0.18)
 
         headers: list[Any] = [section.header]
         try:
@@ -1636,17 +1701,19 @@ def _add_logo_watermark(document: Any) -> None:
         except Exception:
             pass
 
-        seen_headers: set[int] = set()
         for header in headers:
-            header_id = id(header)
-            if header_id in seen_headers:
+            header_id = id(getattr(header, "_element", header))
+            if header_id in seen_header_elements:
                 continue
-            seen_headers.add(header_id)
+            seen_header_elements.add(header_id)
             try:
                 header.is_linked_to_previous = False
             except Exception:
                 pass
-            paragraph = header.add_paragraph()
+            for existing_paragraph in list(getattr(header, "paragraphs", [])):
+                _clear_paragraph(existing_paragraph)
+            paragraph = header.paragraphs[0] if header.paragraphs else header.add_paragraph()
+            _clear_paragraph(paragraph)
             _style_paragraph(paragraph, before_pt=0, after_pt=0, line_spacing=1.0)
             if not _add_float_picture(
                 paragraph,
@@ -1806,6 +1873,7 @@ def _format_table_visual(
     zebra_fill: str = "FBFCFE",
     align: str = "left",
 ) -> None:
+    minimal_surfaces = _watermark_active_for_visuals()
     table.style = "Table Grid"
     align_enum = _get_docx_toolkit().get("WD_TABLE_ALIGNMENT")
     if align_enum is not None:
@@ -1815,13 +1883,14 @@ def _format_table_visual(
     for row_index, row in enumerate(table.rows):
         for cell in row.cells:
             if row_index == 0:
-                _set_cell_shading(cell, header_fill)
+                if not minimal_surfaces:
+                    _set_cell_shading(cell, header_fill)
                 for paragraph in cell.paragraphs:
                     _style_paragraph(paragraph, before_pt=0, after_pt=3.0, line_spacing=1.14)
                     for run in paragraph.runs:
                         _style_run(run, bold=True, size_pt=9.5, color_hex="0F172A")
             else:
-                if row_index % 2 == 0:
+                if row_index % 2 == 0 and not minimal_surfaces:
                     _set_cell_shading(cell, zebra_fill)
                 for paragraph in cell.paragraphs:
                     _style_paragraph(paragraph, before_pt=0, after_pt=2.8, line_spacing=1.14)
@@ -1878,11 +1947,13 @@ def add_info_card(
     fill_hex: str = "F8FAFC",
     border_hex: str = "D7E0EB",
 ) -> None:
+    minimal_surfaces = _watermark_active_for_visuals()
     table = document.add_table(rows=1, cols=1)
     table.style = "Table Grid"
     _set_table_borders(table, color_hex=border_hex, size="3")
     cell = table.rows[0].cells[0]
-    _set_cell_shading(cell, fill_hex)
+    if fill_hex and not minimal_surfaces:
+        _set_cell_shading(cell, fill_hex)
 
     heading = cell.paragraphs[0]
     _clear_paragraph(heading)
@@ -1917,7 +1988,8 @@ def add_risk_box(
     _set_table_borders(table, color_hex="D7C8CF", size="3")
     cell = table.rows[0].cells[0]
     signal = SIGNAL_STATE_DISPLAY.get(severity, SIGNAL_STATE_DISPLAY["warning"])
-    _set_cell_shading(cell, signal["fill"])
+    if not _watermark_active_for_visuals():
+        _set_cell_shading(cell, signal["fill"])
     heading = cell.paragraphs[0]
     _clear_paragraph(heading)
     run = heading.add_run(f"{signal['icon']} {title.strip()}")
@@ -1968,7 +2040,8 @@ def add_signal_row(document: Any, signals: Sequence[Mapping[str, str]]) -> None:
     for index, signal in enumerate(clean_signals):
         state = SIGNAL_STATE_DISPLAY.get(signal.get("status", "neutral"), SIGNAL_STATE_DISPLAY["neutral"])
         cell = table.rows[0].cells[index]
-        _set_cell_shading(cell, state["fill"])
+        if not _watermark_active_for_visuals():
+            _set_cell_shading(cell, state["fill"])
         paragraph = cell.paragraphs[0]
         _clear_paragraph(paragraph)
         label_run = paragraph.add_run(_to_display(signal.get("label")))
